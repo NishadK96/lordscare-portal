@@ -320,6 +320,12 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
 .empty-state svg { width: 34px; height: 34px; color: #4d7d68; }
 .empty-state h3 { color: #3f4d46; margin: 13px 0 4px; }
 .empty-state p { font-size: 10px; }
+.empty-state.compact-empty { min-height: 260px; }
+.empty-inline { min-height: 84px; display: flex; align-items: center; justify-content: center; gap: 11px; padding: 15px; color: #7b8882; border: 1px dashed #d5dfda; border-radius: 10px; background: #fafcfb; }
+.empty-inline > svg { width: 23px; color: #4b7d67; }
+.empty-inline > span { display: grid; gap: 4px; }
+.empty-inline strong { color: #44524b; font-size: 10px; }
+.empty-inline small { color: #88938e; font-size: 8px; line-height: 1.45; }
 .request-workspace { display: grid; grid-template-columns: 310px minmax(0, 1fr); min-height: 520px; border: 1px solid #e1e8e4; border-radius: 13px; overflow: hidden; }
 .request-queue { max-height: 680px; overflow-y: auto; background: #f6f8f7; border-right: 1px solid #e1e8e4; }
 .request-queue > button { width: 100%; display: flex; align-items: flex-start; gap: 9px; border: 0; border-bottom: 1px solid #e4eae7; padding: 14px; color: inherit; background: transparent; text-align: left; }

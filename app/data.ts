@@ -1,19 +1,3 @@
-export const customer = {
-  name: "Arjun",
-  email: "arjun@example.com",
-  plan: "3 Accounts · 3 Months",
-  amount: "₹1,100",
-  renewal: "18 September 2026",
-  daysLeft: 45,
-  status: "Active",
-};
-
-export const gameAccounts = [
-  { id: "acc-1", name: "Arjun Main", kingdom: "K:1187", status: "Online", sync: "2 min ago" },
-  { id: "acc-2", name: "Iron Farm", kingdom: "K:1187", status: "Online", sync: "4 min ago" },
-  { id: "acc-3", name: "Stone Farm", kingdom: "K:1187", status: "Setup pending", sync: "Awaiting approval" },
-];
-
 export const commands = [
   { command: "tbal", description: "Check your resource balance", group: "Resources", admin: false },
   { command: "tfood 5M", description: "Request 5M food", group: "Resources", admin: false },
@@ -35,19 +19,6 @@ export const commands = [
   { command: "tmigrate", description: "Start the configured migration action", group: "Bank admin", admin: true },
   { command: "tabort", description: "Cancel pending resource shipments", group: "Bank admin", admin: true },
   { command: "trecall", description: "Recall troops", group: "Bank admin", admin: true },
-];
-
-export const adminCustomers = [
-  { id: "LC-1048", name: "Arjun Mehta", accounts: 3, plan: "3 months", renewal: "18 Sep 2026", status: "Active", amount: "₹1,100" },
-  { id: "LC-1047", name: "Maya Rao", accounts: 1, plan: "Monthly", renewal: "08 Aug 2026", status: "Due soon", amount: "₹150" },
-  { id: "LC-1046", name: "Kiran S", accounts: 5, plan: "Yearly", renewal: "12 Jun 2027", status: "Active", amount: "₹6,000" },
-  { id: "LC-1045", name: "Dev Patel", accounts: 2, plan: "3 months", renewal: "03 Aug 2026", status: "Expired", amount: "₹750" },
-];
-
-export const settingsRequests = [
-  { id: "REQ-029", customer: "Arjun Mehta", account: "Stone Farm", submitted: "Today, 10:24", change: "Enable gathering · Vergeway collection", status: "Pending" },
-  { id: "REQ-028", customer: "Maya Rao", account: "Maya Main", submitted: "Yesterday, 18:06", change: "Shield reminder: 4 hours", status: "Pending" },
-  { id: "REQ-027", customer: "Kiran S", account: "Kiran Farm 2", submitted: "02 Aug, 13:40", change: "Hunting: level 2 monsters", status: "Approved" },
 ];
 
 export const planPrices = [
