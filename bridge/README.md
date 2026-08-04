@@ -17,8 +17,8 @@ The bridge reads approved LordsCare requests from Supabase and applies an allowl
 
 1. Copy this `bridge` folder to the Windows VPS.
 2. Copy `bridge.config.example.json` to `bridge.config.json`.
-3. Set `AccountRoots` to the one or more folders that contain the Lords Bot account folders. The bridge scans every `settings.json` below those roots automatically.
-4. In LordsCare, set each account's **Bot slot reference** to its exact local folder name, such as `NishadV6`, or its relative folder path when accounts are nested. This is entered while assigning the account to its customer; no per-account bridge configuration is required.
+3. Set `AccountRoots` to the Lords Bot `config` folder. The standard desktop example is `%USERPROFILE%\Desktop\LordsBot-Release\config`; Windows environment variables are expanded automatically.
+4. The bridge scans every numeric account folder and its `settings.json` automatically. In LordsCare, set each account's **Bot slot reference** to the exact numeric folder name, such as `458747971`. This is entered while assigning the account to its customer; no per-account bridge configuration is required.
 5. Use the optional `Accounts` object only when duplicate folder names or an unusual layout require a manual override.
 6. Confirm the shelter enum values against one controlled Lords Bot account before disabling dry-run mode.
 7. Store credentials as Windows user environment variables, never in the configuration file:

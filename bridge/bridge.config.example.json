@@ -7,7 +7,7 @@
   "BlockedProcessNames": ["LordsMobileBot"],
   "SettingsFileName": "settings.json",
   "AccountRoots": [
-    "C:\\LordsBot\\accounts"
+    "%USERPROFILE%\\Desktop\\LordsBot-Release\\config"
   ],
   "ShelterEnums": {
     "Behavior": { "off": 0, "always": 1, "under_attack": 2 },

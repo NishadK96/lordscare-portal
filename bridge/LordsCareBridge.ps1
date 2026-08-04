@@ -117,11 +117,12 @@ function Get-AccountIndex($Config) {
     $index = @{}
     $fileName = if ([string]::IsNullOrWhiteSpace($Config.SettingsFileName)) { "settings.json" } else { [string]$Config.SettingsFileName }
     foreach ($root in @($Config.AccountRoots)) {
-        if (-not (Test-Path -LiteralPath $root -PathType Container)) {
-            Write-BridgeLog "Account root was not found: $root"
+        $expandedRoot = [Environment]::ExpandEnvironmentVariables([string]$root)
+        if (-not (Test-Path -LiteralPath $expandedRoot -PathType Container)) {
+            Write-BridgeLog "Account root was not found: $expandedRoot"
             continue
         }
-        $rootPath = (Resolve-Path -LiteralPath $root).Path.TrimEnd('\', '/')
+        $rootPath = (Resolve-Path -LiteralPath $expandedRoot).Path.TrimEnd('\', '/')
         foreach ($file in Get-ChildItem -LiteralPath $rootPath -Filter $fileName -File -Recurse -ErrorAction SilentlyContinue) {
             $relativeDirectory = $file.Directory.FullName.Substring($rootPath.Length).TrimStart('\', '/')
             Add-AccountIndexEntry $index $file.Directory.Name $file.FullName
