@@ -291,6 +291,7 @@ td:first-child { display: grid; gap: 3px; }
 td:first-child strong { color: var(--ink); font-size: 11px; }
 td:first-child small { color: #9aa39f; font-size: 8px; }
 .table-action { min-height: 31px; padding: 0 10px; white-space: nowrap; font-size: 9px; }
+.table-actions { display: flex; gap: 6px; }
 .table-tools { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
 .table-tools .search-box { width: 320px; }
 .timeline article { display: grid; grid-template-columns: 43px 1fr auto auto; align-items: center; gap: 15px; padding: 17px 0; border-top: 1px solid #edf1ef; }
@@ -370,6 +371,21 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
 .modal-card > .muted { font-size: 11px; }
 .modal-card .form-message { margin: 14px 0 0; }
 .plan-modal { width: min(560px, 100%); }
+.accounts-modal { width: min(720px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; }
+.account-capacity { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 17px 0; padding: 11px 13px; border-radius: 10px; color: #63716a; background: #f3f7f5; font-size: 10px; }
+.managed-account-list { margin-bottom: 20px; border: 1px solid #e3eae6; border-radius: 11px; overflow: hidden; }
+.managed-account-list article { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-top: 1px solid #e9eeeb; }
+.managed-account-list article:first-child { border-top: 0; }
+.managed-account-list article > div:nth-child(2) { flex: 1; display: grid; gap: 3px; }
+.managed-account-list strong { font-size: 10px; }
+.managed-account-list small { color: #89948f; font-size: 8px; }
+.danger-icon { color: #a84b46; }
+.danger-icon:disabled { opacity: .45; cursor: wait; }
+.account-empty { margin-bottom: 20px; }
+.account-form { padding-top: 20px; border-top: 1px solid #e7ece9; }
+.account-form-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.account-form-head h3 { margin: 0; font-size: 16px; }
+.credential-warning { display: flex; align-items: center; gap: 7px; margin: 0; padding: 9px 11px; border-radius: 8px; color: #557065; background: #edf6f2; font-size: 9px; }
 .modal-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .plan-dialog-actions { display: flex; justify-content: flex-end; gap: 9px; padding-top: 5px; }
 
@@ -435,4 +451,6 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
   .request-detail { padding: 17px; }
   .modal-form-grid { grid-template-columns: 1fr; }
   .plan-dialog-actions { display: grid; }
+  .managed-account-list article { flex-wrap: wrap; }
+  .managed-account-list article > div:nth-child(2) { min-width: 150px; }
 }

@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Bell, CalendarDays, Check, ChevronDown, CircleUserRound, Clock3, Command,
   Copy, CreditCard, Gauge, Gamepad2, Headphones, LayoutDashboard, LogOut,
-  Menu, MoreHorizontal, Plus, RefreshCw, Search, Settings2, ShieldCheck,
-  SlidersHorizontal, Sparkles, Users, WalletCards, X,
+  Menu, MoreHorizontal, Pencil, Plus, RefreshCw, Search, Settings2, ShieldCheck,
+  SlidersHorizontal, Sparkles, Trash2, Users, WalletCards, X,
 } from "lucide-react";
 import { commands, planPrices } from "./data";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
@@ -28,7 +28,8 @@ type LiveSettingRequest = {
   adminNote?: string;
 };
 type CustomerSnapshot = { name: string; email: string; plan: string; amount: string; renewal: string; renewalShort: string; daysLeft: number; status: string; accounts: PortalAccount[]; openRequests: number };
-type AdminCustomerRow = { id: string; userId: string; subscriptionId?: string; planId?: string; name: string; accounts: number; plan: string; renewal: string; status: string; amount: string; amountValue: number; startedAt?: string; renewsAt?: string };
+type AdminCustomerRow = { id: string; userId: string; subscriptionId?: string; planId?: string; accountLimit: number; name: string; accounts: number; plan: string; renewal: string; status: string; amount: string; amountValue: number; startedAt?: string; renewsAt?: string };
+type ManagedGameAccount = { id: string; display_name: string; account_reference: string; kingdom: string | null; bot_slot_reference: string | null; status: string };
 
 const customerNav: NavItem[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -295,6 +296,7 @@ export function AdminPortal() {
   const [pendingRequests, setPendingRequests] = useState(0);
   const [loading, setLoading] = useState(true);
   const [managingPlan, setManagingPlan] = useState<AdminCustomerRow | null>(null);
+  const [managingAccounts, setManagingAccounts] = useState<AdminCustomerRow | null>(null);
 
   async function loadAdminData() {
     const supabase = getSupabaseBrowserClient();
@@ -317,7 +319,7 @@ export function AdminPortal() {
       const renewalDate = subscription?.renews_at ? new Date(subscription.renews_at) : null;
       const days = renewalDate ? Math.ceil((renewalDate.getTime() - Date.now()) / 86400000) : null;
       const status = subscription ? (subscription.status === "active" && days !== null && days <= 7 ? "due soon" : subscription.status.replaceAll("_", " ")) : "no subscription";
-      return { id: profile.customer_code || profile.id.slice(0, 8), userId: profile.id, subscriptionId: subscription?.id, planId: subscription?.plan_id, name: profile.full_name, accounts: accountCounts.get(profile.id) ?? 0, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "Not scheduled", status, amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—", amountValue: subscription ? Number(subscription.amount_paid_inr) : 0, startedAt: subscription?.started_at, renewsAt: subscription?.renews_at };
+      return { id: profile.customer_code || profile.id.slice(0, 8), userId: profile.id, subscriptionId: subscription?.id, planId: subscription?.plan_id, accountLimit: plan?.account_limit ?? 0, name: profile.full_name, accounts: accountCounts.get(profile.id) ?? 0, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "Not scheduled", status, amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—", amountValue: subscription ? Number(subscription.amount_paid_inr) : 0, startedAt: subscription?.started_at, renewsAt: subscription?.renews_at };
     });
     setCustomers(rows); setManagedAccounts((accounts ?? []).length); setPendingRequests(requestCount ?? 0); setLoading(false);
   }
@@ -328,12 +330,13 @@ export function AdminPortal() {
   const activeValue = activeCustomers.reduce((sum, row) => sum + row.amountValue, 0);
   return <PortalFrame role="admin" active={active} setActive={setActive}>
     {active === "overview" && <AdminOverview setActive={setActive} onAdd={() => setAdding(true)} customers={customers} managedAccounts={managedAccounts} pendingRequests={pendingRequests} renewalsDue={renewalsDue} activeValue={activeValue} loading={loading} />}
-    {active === "customers" && <CustomersView onAdd={() => setAdding(true)} onManage={setManagingPlan} rows={customers} loading={loading} />}
+    {active === "customers" && <CustomersView onAdd={() => setAdding(true)} onManagePlan={setManagingPlan} onManageAccounts={setManagingAccounts} rows={customers} loading={loading} />}
     {active === "renewals" && <RenewalsView rows={customers} loading={loading} />}
     {active === "requests" && <RequestsView />}
     {active === "plans" && <PlansView />}
     {adding && <AddCustomerDialog onClose={() => setAdding(false)} />}
     {managingPlan && <ManagePlanDialog customer={managingPlan} onClose={() => setManagingPlan(null)} onSaved={() => { setManagingPlan(null); setLoading(true); loadAdminData(); }} />}
+    {managingAccounts && <ManageAccountsDialog customer={managingAccounts} onClose={() => setManagingAccounts(null)} onChanged={loadAdminData} />}
   </PortalFrame>;
 }
 
@@ -342,13 +345,75 @@ function AdminOverview({ setActive, onAdd, customers, managedAccounts, pendingRe
   return <><section className="admin-welcome"><div><p className="eyebrow">Live business records</p><h2>Admin overview</h2><p>All figures below come directly from Supabase.</p></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></section><section className="stat-grid four"><article><span className="metric-icon blue"><Users /></span><div><small>Active customers</small><strong>{loading ? "—" : activeCount}</strong><p>Recorded subscriptions</p></div></article><article><span className="metric-icon green"><Gamepad2 /></span><div><small>Managed accounts</small><strong>{loading ? "—" : managedAccounts}</strong><p>Connected account records</p></div></article><article><span className="metric-icon amber"><CreditCard /></span><div><small>Active plan value</small><strong>{loading ? "—" : `₹${activeValue.toLocaleString("en-IN")}`}</strong><p>Amounts recorded on active plans</p></div></article><article><span className="metric-icon violet"><RefreshCw /></span><div><small>Renewals due</small><strong>{loading ? "—" : renewalsDue.length}</strong><p>Due soon, past due or expired</p></div></article></section><div className="content-grid admin-grid"><section className="panel"><div className="panel-head"><div><p className="eyebrow">Action queue</p><h3>Setting requests</h3></div><button className="text-button" onClick={() => setActive("requests")}>View all</button></div>{loading ? <p className="empty-copy">Loading requests…</p> : pendingRequests ? <div className="empty-inline"><Settings2 /><span><strong>{pendingRequests} pending {pendingRequests === 1 ? "request" : "requests"}</strong><small>Open the request queue to review the submitted settings.</small></span></div> : <div className="empty-inline"><Settings2 /><span><strong>No pending requests</strong><small>New customer submissions will appear here.</small></span></div>}</section><section className="panel"><div className="panel-head"><div><p className="eyebrow">Renewal queue</p><h3>Renewals</h3></div><button className="text-button" onClick={() => setActive("renewals")}>View all</button></div><div className="renewal-list">{loading ? <p className="empty-copy">Loading renewals…</p> : renewalsDue.length ? renewalsDue.slice(0, 3).map((item) => <div key={item.id}><div className="date-box"><CalendarDays size={18} /></div><div><strong>{item.name}</strong><small>{item.renewal} · {item.amount}</small></div><Status>{item.status}</Status></div>) : <div className="empty-inline"><CalendarDays /><span><strong>No renewals due</strong><small>Upcoming and overdue subscriptions will appear here.</small></span></div>}</div></section></div><section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">Live customers</p><h3>Customers</h3></div><button className="text-button" onClick={() => setActive("customers")}>Manage customers</button></div><CustomerTable rows={customers.slice(0, 5)} loading={loading} /></section></>;
 }
 
-function CustomerTable({ rows, loading = false, onManage }: { rows: AdminCustomerRow[]; loading?: boolean; onManage?: (customer: AdminCustomerRow) => void }) {
+function CustomerTable({ rows, loading = false, onManagePlan, onManageAccounts }: { rows: AdminCustomerRow[]; loading?: boolean; onManagePlan?: (customer: AdminCustomerRow) => void; onManageAccounts?: (customer: AdminCustomerRow) => void }) {
   if (loading) return <div className="empty-state compact-empty"><RefreshCw /><h3>Loading customers…</h3></div>;
   if (!rows.length) return <div className="empty-state compact-empty"><Users /><h3>No customers yet</h3><p>Real customer records will appear after they are created.</p></div>;
-  return <div className="table-wrap"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Renewal</th><th>Amount</th><th>Status</th>{onManage && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><small>{item.id}</small></td><td>{item.plan}</td><td>{item.accounts}</td><td>{item.renewal}</td><td><strong>{item.amount}</strong></td><td><Status>{item.status}</Status></td>{onManage && <td><button className="secondary-button table-action" onClick={() => onManage(item)}>Manage plan</button></td>}</tr>)}</tbody></table></div>;
+  const hasActions = onManagePlan || onManageAccounts;
+  return <div className="table-wrap"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Renewal</th><th>Amount</th><th>Status</th>{hasActions && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><small>{item.id}</small></td><td>{item.plan}</td><td>{item.accounts}{item.accountLimit ? ` / ${item.accountLimit}` : ""}</td><td>{item.renewal}</td><td><strong>{item.amount}</strong></td><td><Status>{item.status}</Status></td>{hasActions && <td><div className="table-actions">{onManageAccounts && <button className="secondary-button table-action" onClick={() => onManageAccounts(item)}>Accounts</button>}{onManagePlan && <button className="secondary-button table-action" onClick={() => onManagePlan(item)}>Plan</button>}</div></td>}</tr>)}</tbody></table></div>;
 }
 
-function CustomersView({ onAdd, onManage, rows, loading }: { onAdd: () => void; onManage: (customer: AdminCustomerRow) => void; rows: AdminCustomerRow[]; loading: boolean }) { const [query, setQuery] = useState(""); const filtered = rows.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())); return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">{loading ? "Loading" : `${rows.length} customer records`}</p><h3>Customer management</h3></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></div><div className="table-tools"><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search customers…" /></div><button className="secondary-button"><SlidersHorizontal size={16} />Filter</button></div><CustomerTable rows={filtered} loading={loading} onManage={onManage} /></section>; }
+function CustomersView({ onAdd, onManagePlan, onManageAccounts, rows, loading }: { onAdd: () => void; onManagePlan: (customer: AdminCustomerRow) => void; onManageAccounts: (customer: AdminCustomerRow) => void; rows: AdminCustomerRow[]; loading: boolean }) { const [query, setQuery] = useState(""); const filtered = rows.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())); return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">{loading ? "Loading" : `${rows.length} customer records`}</p><h3>Customer management</h3></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></div><div className="table-tools"><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search customers…" /></div><button className="secondary-button"><SlidersHorizontal size={16} />Filter</button></div><CustomerTable rows={filtered} loading={loading} onManagePlan={onManagePlan} onManageAccounts={onManageAccounts} /></section>; }
+
+const emptyAccountForm = { display_name: "", account_reference: "", kingdom: "", bot_slot_reference: "", status: "setup_pending" };
+
+function ManageAccountsDialog({ customer, onClose, onChanged }: { customer: AdminCustomerRow; onClose: () => void; onChanged: () => void }) {
+  const [accounts, setAccounts] = useState<ManagedGameAccount[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState(emptyAccountForm);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function loadAccounts() {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    const { data, error } = await supabase.from("game_accounts").select("id, display_name, account_reference, kingdom, bot_slot_reference, status").eq("user_id", customer.userId).order("created_at");
+    setLoading(false);
+    if (error) { setMessage(error.message); return; }
+    setAccounts((data ?? []) as ManagedGameAccount[]);
+  }
+
+  useEffect(() => { loadAccounts(); }, [customer.userId]);
+
+  function edit(account: ManagedGameAccount) {
+    setEditingId(account.id);
+    setForm({ display_name: account.display_name, account_reference: account.account_reference, kingdom: account.kingdom ?? "", bot_slot_reference: account.bot_slot_reference ?? "", status: account.status });
+    setMessage("");
+  }
+
+  function resetForm() { setEditingId(null); setForm(emptyAccountForm); setMessage(""); }
+
+  async function save(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!customer.subscriptionId) { setMessage("Assign a plan before adding an account."); return; }
+    if (!editingId && accounts.length >= customer.accountLimit) { setMessage(`This plan allows ${customer.accountLimit} ${customer.accountLimit === 1 ? "account" : "accounts"}. Upgrade the plan to add more.`); return; }
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    setBusy(true); setMessage("");
+    const payload = { user_id: customer.userId, subscription_id: customer.subscriptionId, display_name: form.display_name.trim(), account_reference: form.account_reference.trim(), kingdom: form.kingdom.trim() || null, bot_slot_reference: form.bot_slot_reference.trim() || null, status: form.status, updated_at: new Date().toISOString() };
+    const result = editingId ? await supabase.from("game_accounts").update(payload).eq("id", editingId) : await supabase.from("game_accounts").insert(payload);
+    if (result.error) { setBusy(false); setMessage(result.error.code === "23505" ? "That account reference is already in use." : result.error.message); return; }
+    const { data: auth } = await supabase.auth.getUser();
+    if (auth.user) await supabase.from("audit_log").insert({ actor_id: auth.user.id, action: editingId ? "game_account_updated" : "game_account_added", entity_type: "game_account", entity_id: editingId || customer.userId, details: { customer_id: customer.userId, account_reference: payload.account_reference, status: payload.status } });
+    setBusy(false); resetForm(); await loadAccounts(); onChanged();
+  }
+
+  async function remove(account: ManagedGameAccount) {
+    if (!window.confirm(`Remove ${account.display_name}? Its saved setting-request history will also be deleted.`)) return;
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    setBusy(true); setMessage("");
+    const { error } = await supabase.from("game_accounts").delete().eq("id", account.id);
+    if (error) { setBusy(false); setMessage(error.message); return; }
+    const { data: auth } = await supabase.auth.getUser();
+    if (auth.user) await supabase.from("audit_log").insert({ actor_id: auth.user.id, action: "game_account_removed", entity_type: "game_account", entity_id: account.id, details: { customer_id: customer.userId, account_reference: account.account_reference } });
+    if (editingId === account.id) resetForm();
+    setBusy(false); await loadAccounts(); onChanged();
+  }
+
+  const atLimit = !editingId && customer.accountLimit > 0 && accounts.length >= customer.accountLimit;
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card accounts-modal" role="dialog" aria-modal="true" aria-labelledby="manage-accounts-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Customer accounts</p><h2 id="manage-accounts-title">Manage {customer.name}</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><div className="account-capacity"><span><strong>{accounts.length}</strong> of <strong>{customer.accountLimit}</strong> plan slots used</span><Status>{customer.status}</Status></div>{loading ? <p className="empty-copy">Loading accounts…</p> : accounts.length ? <div className="managed-account-list">{accounts.map((account) => <article key={account.id}><span className="game-avatar"><Gamepad2 /></span><div><strong>{account.display_name}</strong><small>{account.account_reference}{account.kingdom ? ` · ${account.kingdom}` : ""}</small></div><Status>{account.status.replaceAll("_", " ")}</Status><button className="icon-btn" onClick={() => edit(account)} aria-label={`Edit ${account.display_name}`}><Pencil size={15} /></button><button className="icon-btn danger-icon" onClick={() => remove(account)} disabled={busy} aria-label={`Remove ${account.display_name}`}><Trash2 size={15} /></button></article>)}</div> : <div className="empty-inline account-empty"><Gamepad2 /><span><strong>No accounts added</strong><small>Add the customer’s first managed game account below.</small></span></div>}<form className="support-form account-form" onSubmit={save}><div className="account-form-head"><div><p className="eyebrow">{editingId ? "Edit account" : "Add account"}</p><h3>{editingId ? "Update account details" : "Connect a game account"}</h3></div>{editingId && <button type="button" className="text-button" onClick={resetForm}>Cancel editing</button>}</div><div className="modal-form-grid"><label>Account name<input value={form.display_name} onChange={(event) => setForm({ ...form, display_name: event.target.value })} placeholder="Castle or account name" required /></label><label>Account reference<input value={form.account_reference} onChange={(event) => setForm({ ...form, account_reference: event.target.value })} placeholder="Unique ID or reference" required /></label></div><div className="modal-form-grid"><label>Kingdom<input value={form.kingdom} onChange={(event) => setForm({ ...form, kingdom: event.target.value })} placeholder="Optional" /></label><label>Bot slot reference<input value={form.bot_slot_reference} onChange={(event) => setForm({ ...form, bot_slot_reference: event.target.value })} placeholder="Optional internal slot" /></label></div><label>Status<select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value })}><option value="setup_pending">Setup pending</option><option value="active">Active</option><option value="paused">Paused</option><option value="disconnected">Disconnected</option></select></label><p className="credential-warning"><ShieldCheck size={15} />Never enter a game password, verification code or access key here.</p><button className="primary-button" disabled={busy || atLimit || !customer.subscriptionId}>{busy ? "Saving…" : editingId ? "Save account changes" : atLimit ? "Plan account limit reached" : "Add account"}</button></form>{!customer.subscriptionId && <p className="form-message">Assign a customer plan before adding accounts.</p>}{message && <p className="form-message">{message}</p>}</section></div>;
+}
 
 type DatabasePlan = { id: string; code: string; account_limit: number; term_months: number; price_inr: number };
 
