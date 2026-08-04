@@ -209,8 +209,16 @@ $script:AccountIndex = Get-AccountIndex $config
 do {
     try {
         $select = [Uri]::EscapeDataString("id,game_account_id,requested_settings,game_accounts!inner(account_reference,bot_slot_reference,display_name)")
-        $requests = @(Invoke-Supabase "GET" "bot_setting_requests?status=eq.approved&select=$select&order=created_at.asc&limit=20")
+        $rawRequests = Invoke-Supabase "GET" "bot_setting_requests?status=eq.approved&select=$select&order=created_at.asc&limit=20"
+        $requests = @($rawRequests)
+        # Windows PowerShell 5.1 can preserve a JSON root array as one nested
+        # pipeline item. Flatten that wrapper so every request is processed
+        # independently instead of projecting all request properties together.
+        while ($requests.Count -eq 1 -and $requests[0] -is [System.Array]) {
+            $requests = @($requests[0])
+        }
         if ($requests.Count -eq 0) { Write-BridgeLog "No approved requests are waiting." }
+        else { Write-BridgeLog "Processing $($requests.Count) approved request(s)." }
         foreach ($request in $requests) {
             try { Process-Request $request $config }
             catch {
