@@ -1,10 +1,10 @@
 {
-  "DryRun": true,
-  "RunOnce": true,
+  "DryRun": false,
+  "RunOnce": false,
   "PollSeconds": 30,
-  "AutoRestartBot": false,
+  "AutoRestartBot": true,
   "MinimumRestartIntervalSeconds": 900,
-  "BotExecutablePath": "%USERPROFILE%\\Desktop\\LordsBot-Release\\LordsMobileBot.exe",
+  "BotExecutablePath": "C:\\Users\\Administrator\\Desktop\\LordsBot-Release\\LordsMobileBot.exe",
   "GracefulShutdownTimeoutSeconds": 45,
   "ForceStopOnShutdownTimeout": false,
   "BotStartupTimeoutSeconds": 60,
@@ -13,7 +13,7 @@
   "BlockedProcessNames": ["LordsMobileBot"],
   "SettingsFileName": "settings.json",
   "AccountRoots": [
-    "%USERPROFILE%\\Desktop\\LordsBot-Release\\config"
+    "C:\\Users\\Administrator\\Desktop\\LordsBot-Release\\config"
   ],
   "ShelterEnums": {
     "Behavior": { "off": 0, "always": 1, "under_attack": 2 },

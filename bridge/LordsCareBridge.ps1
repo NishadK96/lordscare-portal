@@ -5,7 +5,11 @@ $ErrorActionPreference = "Stop"
 if ([string]::IsNullOrWhiteSpace($ConfigPath)) { $ConfigPath = Join-Path $PSScriptRoot "bridge.config.json" }
 
 function Write-BridgeLog([string]$Message) {
-    Write-Host "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $Message"
+    $line = "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $Message"
+    Write-Host $line
+    if (-not [string]::IsNullOrWhiteSpace($script:LogPath)) {
+        try { Add-Content -LiteralPath $script:LogPath -Value $line -Encoding UTF8 } catch { }
+    }
 }
 
 function Get-RequiredEnvironment([string]$Name) {
@@ -155,6 +159,69 @@ function Assert-LordsBotStopped($Config) {
     }
 }
 
+function Get-LordsBotProcesses($Config) {
+    $found = [System.Collections.ArrayList]::new()
+    foreach ($processName in @($Config.BlockedProcessNames)) {
+        foreach ($process in @(Get-Process -Name ([string]$processName) -ErrorAction SilentlyContinue)) {
+            if (-not (@($found | ForEach-Object { $_.Id }) -contains $process.Id)) { $found.Add($process) | Out-Null }
+        }
+    }
+    return $found
+}
+
+function Stop-LordsBotGracefully($Config) {
+    $processes = @(Get-LordsBotProcesses $Config)
+    if ($processes.Count -eq 0) { return $false }
+
+    Write-BridgeLog "Requesting a graceful close of Lords Bot."
+    foreach ($process in $processes) {
+        try {
+            if ($process.MainWindowHandle -ne 0) { $null = $process.CloseMainWindow() }
+        }
+        catch { Write-BridgeLog "Could not send a close request to Lords Bot process $($process.Id)." }
+    }
+
+    $timeoutSeconds = if (Test-HasProperty $Config "GracefulShutdownTimeoutSeconds") { [int]$Config.GracefulShutdownTimeoutSeconds } else { 45 }
+    $deadline = (Get-Date).AddSeconds($timeoutSeconds)
+    do {
+        Start-Sleep -Milliseconds 500
+        $remaining = @(Get-LordsBotProcesses $Config)
+    } while ($remaining.Count -gt 0 -and (Get-Date) -lt $deadline)
+
+    if ($remaining.Count -gt 0) {
+        $force = (Test-HasProperty $Config "ForceStopOnShutdownTimeout") -and [bool]$Config.ForceStopOnShutdownTimeout
+        if (-not $force) { throw "Lords Bot did not close within $timeoutSeconds seconds. Configuration files were not changed." }
+        Write-BridgeLog "Graceful shutdown timed out; force-stopping Lords Bot as configured."
+        foreach ($process in $remaining) { Stop-Process -Id $process.Id -Force -ErrorAction Stop }
+        Start-Sleep -Seconds 2
+        if (@(Get-LordsBotProcesses $Config).Count -gt 0) { throw "Lords Bot is still running after the forced stop." }
+    }
+
+    Write-BridgeLog "Lords Bot stopped successfully."
+    return $true
+}
+
+function Start-LordsBot($Config) {
+    if (@(Get-LordsBotProcesses $Config).Count -gt 0) {
+        Write-BridgeLog "Lords Bot is already running."
+        return
+    }
+    if (-not (Test-HasProperty $Config "BotExecutablePath")) { throw "BotExecutablePath is not configured." }
+    $executablePath = [Environment]::ExpandEnvironmentVariables([string]$Config.BotExecutablePath)
+    if (-not (Test-Path -LiteralPath $executablePath -PathType Leaf)) { throw "Lords Bot executable was not found at $executablePath" }
+
+    Write-BridgeLog "Starting Lords Bot."
+    Start-Process -FilePath $executablePath -WorkingDirectory (Split-Path -Parent $executablePath) | Out-Null
+    $timeoutSeconds = if (Test-HasProperty $Config "BotStartupTimeoutSeconds") { [int]$Config.BotStartupTimeoutSeconds } else { 60 }
+    $deadline = (Get-Date).AddSeconds($timeoutSeconds)
+    do {
+        Start-Sleep -Seconds 1
+        $running = @(Get-LordsBotProcesses $Config).Count -gt 0
+    } while (-not $running -and (Get-Date) -lt $deadline)
+    if (-not $running) { throw "Lords Bot did not start within $timeoutSeconds seconds." }
+    Write-BridgeLog "Lords Bot restarted successfully."
+}
+
 function Write-DryRunReport($Request, $Changes, $Config) {
     $folder = Join-Path $PSScriptRoot ([string]$Config.DryRunOutputDirectory)
     New-Item -ItemType Directory -Path $folder -Force | Out-Null
@@ -200,33 +267,107 @@ function Process-Request($Request, $Config) {
 
 if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) { throw "Bridge configuration was not found at $ConfigPath" }
 $config = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
-$script:SupabaseUrl = Get-RequiredEnvironment "LORDSCARE_SUPABASE_URL"
-$script:ApiKey = [Environment]::GetEnvironmentVariable("LORDSCARE_SUPABASE_SECRET_KEY")
-if ([string]::IsNullOrWhiteSpace($script:ApiKey)) { $script:ApiKey = [Environment]::GetEnvironmentVariable("LORDSCARE_SUPABASE_SERVICE_ROLE_KEY") }
-if ([string]::IsNullOrWhiteSpace($script:ApiKey)) { throw "LORDSCARE_SUPABASE_SECRET_KEY is not configured." }
-$script:AccountIndex = Get-AccountIndex $config
+$script:LogPath = Join-Path $PSScriptRoot "LordsCareBridge.log"
+$script:RestartFlagPath = Join-Path $PSScriptRoot "restart-required.flag"
+$script:ReportedRequestFailures = @{}
+$lastAutomatedRestart = [DateTime]::MinValue
 
-do {
-    try {
-        $select = [Uri]::EscapeDataString("id,game_account_id,requested_settings,game_accounts!inner(account_reference,bot_slot_reference,display_name)")
-        $rawRequests = Invoke-Supabase "GET" "bot_setting_requests?status=eq.approved&select=$select&order=created_at.asc&limit=20"
-        $requests = @($rawRequests)
-        # Windows PowerShell 5.1 can preserve a JSON root array as one nested
-        # pipeline item. Flatten that wrapper so every request is processed
-        # independently instead of projecting all request properties together.
-        while ($requests.Count -eq 1 -and $requests[0] -is [System.Array]) {
-            $requests = @($requests[0])
-        }
-        if ($requests.Count -eq 0) { Write-BridgeLog "No approved requests are waiting." }
-        else { Write-BridgeLog "Processing $($requests.Count) approved request(s)." }
-        foreach ($request in $requests) {
-            try { Process-Request $request $config }
-            catch {
-                Write-BridgeLog "Request $($request.id) was not applied: $($_.Exception.Message)"
-                try { Record-Audit "settings_request_bridge_failed" ([string]$request.id) @{ account_id = $request.game_account_id; error = $_.Exception.Message } } catch { Write-BridgeLog "Could not record the failure audit event." }
+$mutex = New-Object System.Threading.Mutex($false, "Global\LordsCareBridge")
+if (-not $mutex.WaitOne(0, $false)) {
+    Write-BridgeLog "Another LordsCare Bridge instance is already running."
+    exit 0
+}
+
+try {
+    $script:SupabaseUrl = Get-RequiredEnvironment "LORDSCARE_SUPABASE_URL"
+    $script:ApiKey = [Environment]::GetEnvironmentVariable("LORDSCARE_SUPABASE_SECRET_KEY")
+    if ([string]::IsNullOrWhiteSpace($script:ApiKey)) { $script:ApiKey = [Environment]::GetEnvironmentVariable("LORDSCARE_SUPABASE_SERVICE_ROLE_KEY") }
+    if ([string]::IsNullOrWhiteSpace($script:ApiKey)) { throw "LORDSCARE_SUPABASE_SECRET_KEY is not configured." }
+    $script:AccountIndex = Get-AccountIndex $config
+    Write-BridgeLog "LordsCare Bridge started."
+
+    do {
+        try {
+            if (Test-Path -LiteralPath $script:RestartFlagPath -PathType Leaf) {
+                if (@(Get-LordsBotProcesses $config).Count -gt 0) {
+                    Remove-Item -LiteralPath $script:RestartFlagPath -Force
+                }
+                else {
+                    Write-BridgeLog "A previous cycle stopped Lords Bot but did not restart it. Retrying startup."
+                    Start-LordsBot $config
+                    Remove-Item -LiteralPath $script:RestartFlagPath -Force
+                }
+            }
+
+            $select = [Uri]::EscapeDataString("id,game_account_id,requested_settings,game_accounts!inner(account_reference,bot_slot_reference,display_name)")
+            $rawRequests = Invoke-Supabase "GET" "bot_setting_requests?status=eq.approved&select=$select&order=created_at.asc&limit=20"
+            $requests = @($rawRequests)
+            # Windows PowerShell 5.1 can preserve a JSON root array as one nested
+            # pipeline item. Flatten that wrapper so requests stay independent.
+            while ($requests.Count -eq 1 -and $requests[0] -is [System.Array]) { $requests = @($requests[0]) }
+
+            $supportedRequests = [System.Collections.ArrayList]::new()
+            foreach ($request in $requests) {
+                $category = [string]$request.requested_settings.settings_category
+                if ($category -eq "protection") {
+                    $supportedRequests.Add($request) | Out-Null
+                }
+                elseif (-not $script:ReportedRequestFailures.ContainsKey([string]$request.id)) {
+                    $message = "Category '$category' is not supported by this bridge version."
+                    Write-BridgeLog "Request $($request.id) was not applied: $message"
+                    try { Record-Audit "settings_request_bridge_failed" ([string]$request.id) @{ account_id = $request.game_account_id; error = $message } } catch { Write-BridgeLog "Could not record the failure audit event." }
+                    $script:ReportedRequestFailures[[string]$request.id] = $true
+                }
+            }
+
+            if ($supportedRequests.Count -eq 0) {
+                if ($requests.Count -eq 0) { Write-BridgeLog "No approved requests are waiting." }
+            }
+            elseif ($config.DryRun) {
+                Write-BridgeLog "Dry-running $($supportedRequests.Count) supported request(s)."
+                foreach ($request in $supportedRequests) { Process-Request $request $config }
+            }
+            else {
+                $autoRestart = (Test-HasProperty $config "AutoRestartBot") -and [bool]$config.AutoRestartBot
+                $minimumSeconds = if (Test-HasProperty $config "MinimumRestartIntervalSeconds") { [int]$config.MinimumRestartIntervalSeconds } else { 900 }
+                $elapsedSeconds = ((Get-Date) - $lastAutomatedRestart).TotalSeconds
+
+                if ($autoRestart -and $lastAutomatedRestart -ne [DateTime]::MinValue -and $elapsedSeconds -lt $minimumSeconds) {
+                    $waitSeconds = [Math]::Ceiling($minimumSeconds - $elapsedSeconds)
+                    Write-BridgeLog "$($supportedRequests.Count) supported request(s) queued; next automatic restart is available in $waitSeconds seconds."
+                }
+                else {
+                    Write-BridgeLog "Processing $($supportedRequests.Count) supported request(s) as one batch."
+                    $botWasRunning = @(Get-LordsBotProcesses $config).Count -gt 0
+                    $botWasStopped = $false
+                    try {
+                        if ($autoRestart -and $botWasRunning) {
+                            $botWasStopped = Stop-LordsBotGracefully $config
+                            if ($botWasStopped) { Set-Content -LiteralPath $script:RestartFlagPath -Value (Get-Date).ToUniversalTime().ToString("o") -Encoding ASCII }
+                        }
+                        foreach ($request in $supportedRequests) {
+                            try { Process-Request $request $config }
+                            catch {
+                                Write-BridgeLog "Request $($request.id) was not applied: $($_.Exception.Message)"
+                                try { Record-Audit "settings_request_bridge_failed" ([string]$request.id) @{ account_id = $request.game_account_id; error = $_.Exception.Message } } catch { Write-BridgeLog "Could not record the failure audit event." }
+                            }
+                        }
+                    }
+                    finally {
+                        if ($botWasStopped) {
+                            Start-LordsBot $config
+                            if (Test-Path -LiteralPath $script:RestartFlagPath) { Remove-Item -LiteralPath $script:RestartFlagPath -Force }
+                            $lastAutomatedRestart = Get-Date
+                        }
+                    }
+                }
             }
         }
-    }
-    catch { Write-BridgeLog "Bridge poll failed: $($_.Exception.Message)" }
-    if (-not $config.RunOnce) { Start-Sleep -Seconds ([int]$config.PollSeconds) }
-} while (-not $config.RunOnce)
+        catch { Write-BridgeLog "Bridge poll failed: $($_.Exception.Message)" }
+        if (-not $config.RunOnce) { Start-Sleep -Seconds ([int]$config.PollSeconds) }
+    } while (-not $config.RunOnce)
+}
+finally {
+    try { $mutex.ReleaseMutex() } catch { }
+    $mutex.Dispose()
+}

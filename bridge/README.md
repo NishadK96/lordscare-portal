@@ -1,4 +1,4 @@
-# LordsCare Windows Bridge
+# LordsCare Windows Bridge v3
 
 The bridge reads approved LordsCare requests from Supabase and applies an allowlisted set of changes to the matching Lords Bot `settings.json` file.
 
@@ -12,6 +12,12 @@ The bridge reads approved LordsCare requests from Supabase and applies an allowl
 - Live writes require Lords Bot to be stopped.
 - Every live write uses atomic replacement and creates a timestamped backup.
 - A request is marked `applied` only after a successful settings-file write.
+- Continuous mode can batch supported requests, gracefully close only
+  `LordsMobileBot.exe`, apply the batch, and restart the bot.
+- Automatic cycles have a configurable minimum restart interval to avoid
+  repeatedly interrupting managed accounts.
+- A single-instance lock prevents duplicate background workers.
+- If the bot cannot restart, a persistent flag makes the next poll retry startup.
 
 ## Windows setup
 
@@ -37,4 +43,40 @@ The bridge reads approved LordsCare requests from Supabase and applies an allowl
 9. Inspect the generated `dry-run` patch reports. They contain only changed paths and values, not full account settings.
 10. After verification, stop Lords Bot, set `DryRun` to `false`, and run the bridge again.
 
-Set `RunOnce` to `false` for continuous polling. Keep `RequireLordsBotStopped` enabled until a verified account-reload mechanism is added.
+## Automatic mode for this VPS
+
+The included `bridge.config.v3.json` is prepared for:
+
+```text
+C:\Users\Administrator\Desktop\LordsBot-Release\LordsMobileBot.exe
+C:\Users\Administrator\Desktop\LordsBot-Release\config
+```
+
+It polls every 30 seconds and batches supported requests, with no more than one
+automatic Lords Bot restart every 15 minutes. It first sends a normal Windows
+close request to Lords Bot and waits 45 seconds. Forced termination is disabled.
+The G Lords Panel processes are not stopped.
+
+To enable it:
+
+1. Rename the current `bridge.config.json` as a backup.
+2. Copy `bridge.config.v3.json` to `bridge.config.json`.
+3. Confirm the Supabase user environment variables are still present.
+4. From an Administrator Command Prompt, run:
+
+   ```bat
+   powershell.exe -ExecutionPolicy Bypass -File "C:\LordsCare-Windows-Bridge\Install-LordsCareBridgeTask.ps1" -ConfigPath "C:\LordsCare-Windows-Bridge\bridge.config.json"
+   ```
+
+The task starts immediately and at every Administrator logon. It runs only in
+that interactive user session so it can close and restart the desktop bot.
+Operational messages are appended to `LordsCareBridge.log`.
+
+To remove the task:
+
+```bat
+powershell.exe -ExecutionPolicy Bypass -File "C:\LordsCare-Windows-Bridge\Uninstall-LordsCareBridgeTask.ps1"
+```
+
+Only the Protection category is currently supported. Unsupported requests stay
+approved and are logged once per bridge process; they do not trigger a restart.
