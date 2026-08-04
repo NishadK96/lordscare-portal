@@ -28,7 +28,7 @@ type LiveSettingRequest = {
   adminNote?: string;
 };
 type CustomerSnapshot = { name: string; email: string; plan: string; amount: string; renewal: string; renewalShort: string; daysLeft: number; status: string; accounts: PortalAccount[]; openRequests: number };
-type AdminCustomerRow = { id: string; name: string; accounts: number; plan: string; renewal: string; status: string; amount: string; amountValue: number };
+type AdminCustomerRow = { id: string; userId: string; subscriptionId?: string; planId?: string; name: string; accounts: number; plan: string; renewal: string; status: string; amount: string; amountValue: number; startedAt?: string; renewsAt?: string };
 
 const customerNav: NavItem[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -294,13 +294,14 @@ export function AdminPortal() {
   const [managedAccounts, setManagedAccounts] = useState(0);
   const [pendingRequests, setPendingRequests] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [managingPlan, setManagingPlan] = useState<AdminCustomerRow | null>(null);
 
   async function loadAdminData() {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) { setCustomers([]); setManagedAccounts(0); setPendingRequests(0); setLoading(false); return; }
     const [{ data: profiles }, { data: subscriptions }, { data: plans }, { data: accounts }, { count: requestCount }] = await Promise.all([
       supabase.from("profiles").select("id, full_name, customer_code").eq("role", "customer").order("created_at", { ascending: false }),
-      supabase.from("subscriptions").select("id, user_id, plan_id, status, amount_paid_inr, renews_at, created_at").order("created_at", { ascending: false }),
+      supabase.from("subscriptions").select("id, user_id, plan_id, status, amount_paid_inr, started_at, renews_at, created_at").order("created_at", { ascending: false }),
       supabase.from("plans").select("id, account_limit, term_months"),
       supabase.from("game_accounts").select("id, user_id"),
       supabase.from("bot_setting_requests").select("id", { count: "exact", head: true }).eq("status", "pending"),
@@ -316,7 +317,7 @@ export function AdminPortal() {
       const renewalDate = subscription?.renews_at ? new Date(subscription.renews_at) : null;
       const days = renewalDate ? Math.ceil((renewalDate.getTime() - Date.now()) / 86400000) : null;
       const status = subscription ? (subscription.status === "active" && days !== null && days <= 7 ? "due soon" : subscription.status.replaceAll("_", " ")) : "no subscription";
-      return { id: profile.customer_code || profile.id.slice(0, 8), name: profile.full_name, accounts: accountCounts.get(profile.id) ?? 0, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "Not scheduled", status, amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—", amountValue: subscription ? Number(subscription.amount_paid_inr) : 0 };
+      return { id: profile.customer_code || profile.id.slice(0, 8), userId: profile.id, subscriptionId: subscription?.id, planId: subscription?.plan_id, name: profile.full_name, accounts: accountCounts.get(profile.id) ?? 0, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "Not scheduled", status, amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—", amountValue: subscription ? Number(subscription.amount_paid_inr) : 0, startedAt: subscription?.started_at, renewsAt: subscription?.renews_at };
     });
     setCustomers(rows); setManagedAccounts((accounts ?? []).length); setPendingRequests(requestCount ?? 0); setLoading(false);
   }
@@ -327,11 +328,12 @@ export function AdminPortal() {
   const activeValue = activeCustomers.reduce((sum, row) => sum + row.amountValue, 0);
   return <PortalFrame role="admin" active={active} setActive={setActive}>
     {active === "overview" && <AdminOverview setActive={setActive} onAdd={() => setAdding(true)} customers={customers} managedAccounts={managedAccounts} pendingRequests={pendingRequests} renewalsDue={renewalsDue} activeValue={activeValue} loading={loading} />}
-    {active === "customers" && <CustomersView onAdd={() => setAdding(true)} rows={customers} loading={loading} />}
+    {active === "customers" && <CustomersView onAdd={() => setAdding(true)} onManage={setManagingPlan} rows={customers} loading={loading} />}
     {active === "renewals" && <RenewalsView rows={customers} loading={loading} />}
     {active === "requests" && <RequestsView />}
     {active === "plans" && <PlansView />}
     {adding && <AddCustomerDialog onClose={() => setAdding(false)} />}
+    {managingPlan && <ManagePlanDialog customer={managingPlan} onClose={() => setManagingPlan(null)} onSaved={() => { setManagingPlan(null); setLoading(true); loadAdminData(); }} />}
   </PortalFrame>;
 }
 
@@ -340,13 +342,76 @@ function AdminOverview({ setActive, onAdd, customers, managedAccounts, pendingRe
   return <><section className="admin-welcome"><div><p className="eyebrow">Live business records</p><h2>Admin overview</h2><p>All figures below come directly from Supabase.</p></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></section><section className="stat-grid four"><article><span className="metric-icon blue"><Users /></span><div><small>Active customers</small><strong>{loading ? "—" : activeCount}</strong><p>Recorded subscriptions</p></div></article><article><span className="metric-icon green"><Gamepad2 /></span><div><small>Managed accounts</small><strong>{loading ? "—" : managedAccounts}</strong><p>Connected account records</p></div></article><article><span className="metric-icon amber"><CreditCard /></span><div><small>Active plan value</small><strong>{loading ? "—" : `₹${activeValue.toLocaleString("en-IN")}`}</strong><p>Amounts recorded on active plans</p></div></article><article><span className="metric-icon violet"><RefreshCw /></span><div><small>Renewals due</small><strong>{loading ? "—" : renewalsDue.length}</strong><p>Due soon, past due or expired</p></div></article></section><div className="content-grid admin-grid"><section className="panel"><div className="panel-head"><div><p className="eyebrow">Action queue</p><h3>Setting requests</h3></div><button className="text-button" onClick={() => setActive("requests")}>View all</button></div>{loading ? <p className="empty-copy">Loading requests…</p> : pendingRequests ? <div className="empty-inline"><Settings2 /><span><strong>{pendingRequests} pending {pendingRequests === 1 ? "request" : "requests"}</strong><small>Open the request queue to review the submitted settings.</small></span></div> : <div className="empty-inline"><Settings2 /><span><strong>No pending requests</strong><small>New customer submissions will appear here.</small></span></div>}</section><section className="panel"><div className="panel-head"><div><p className="eyebrow">Renewal queue</p><h3>Renewals</h3></div><button className="text-button" onClick={() => setActive("renewals")}>View all</button></div><div className="renewal-list">{loading ? <p className="empty-copy">Loading renewals…</p> : renewalsDue.length ? renewalsDue.slice(0, 3).map((item) => <div key={item.id}><div className="date-box"><CalendarDays size={18} /></div><div><strong>{item.name}</strong><small>{item.renewal} · {item.amount}</small></div><Status>{item.status}</Status></div>) : <div className="empty-inline"><CalendarDays /><span><strong>No renewals due</strong><small>Upcoming and overdue subscriptions will appear here.</small></span></div>}</div></section></div><section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">Live customers</p><h3>Customers</h3></div><button className="text-button" onClick={() => setActive("customers")}>Manage customers</button></div><CustomerTable rows={customers.slice(0, 5)} loading={loading} /></section></>;
 }
 
-function CustomerTable({ rows, loading = false }: { rows: AdminCustomerRow[]; loading?: boolean }) {
+function CustomerTable({ rows, loading = false, onManage }: { rows: AdminCustomerRow[]; loading?: boolean; onManage?: (customer: AdminCustomerRow) => void }) {
   if (loading) return <div className="empty-state compact-empty"><RefreshCw /><h3>Loading customers…</h3></div>;
   if (!rows.length) return <div className="empty-state compact-empty"><Users /><h3>No customers yet</h3><p>Real customer records will appear after they are created.</p></div>;
-  return <div className="table-wrap"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Renewal</th><th>Amount</th><th>Status</th><th /></tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><small>{item.id}</small></td><td>{item.plan}</td><td>{item.accounts}</td><td>{item.renewal}</td><td><strong>{item.amount}</strong></td><td><Status>{item.status}</Status></td><td><button className="icon-btn"><MoreHorizontal size={19} /></button></td></tr>)}</tbody></table></div>;
+  return <div className="table-wrap"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Renewal</th><th>Amount</th><th>Status</th>{onManage && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><small>{item.id}</small></td><td>{item.plan}</td><td>{item.accounts}</td><td>{item.renewal}</td><td><strong>{item.amount}</strong></td><td><Status>{item.status}</Status></td>{onManage && <td><button className="secondary-button table-action" onClick={() => onManage(item)}>Manage plan</button></td>}</tr>)}</tbody></table></div>;
 }
 
-function CustomersView({ onAdd, rows, loading }: { onAdd: () => void; rows: AdminCustomerRow[]; loading: boolean }) { const [query, setQuery] = useState(""); const filtered = rows.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())); return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">{loading ? "Loading" : `${rows.length} customer records`}</p><h3>Customer management</h3></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></div><div className="table-tools"><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search customers…" /></div><button className="secondary-button"><SlidersHorizontal size={16} />Filter</button></div><CustomerTable rows={filtered} loading={loading} /></section>; }
+function CustomersView({ onAdd, onManage, rows, loading }: { onAdd: () => void; onManage: (customer: AdminCustomerRow) => void; rows: AdminCustomerRow[]; loading: boolean }) { const [query, setQuery] = useState(""); const filtered = rows.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())); return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">{loading ? "Loading" : `${rows.length} customer records`}</p><h3>Customer management</h3></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></div><div className="table-tools"><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search customers…" /></div><button className="secondary-button"><SlidersHorizontal size={16} />Filter</button></div><CustomerTable rows={filtered} loading={loading} onManage={onManage} /></section>; }
+
+type DatabasePlan = { id: string; code: string; account_limit: number; term_months: number; price_inr: number };
+
+function ManagePlanDialog({ customer, onClose, onSaved }: { customer: AdminCustomerRow; onClose: () => void; onSaved: () => void }) {
+  const [plans, setPlans] = useState<DatabasePlan[]>([]);
+  const [planId, setPlanId] = useState(customer.planId ?? "");
+  const [status, setStatus] = useState(customer.status === "due soon" ? "active" : customer.status.replaceAll(" ", "_"));
+  const [amount, setAmount] = useState(customer.amountValue || 0);
+  const [startedAt, setStartedAt] = useState(customer.startedAt?.slice(0, 10) ?? new Date().toISOString().slice(0, 10));
+  const [renewsAt, setRenewsAt] = useState(customer.renewsAt?.slice(0, 10) ?? "");
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    supabase.from("plans").select("id, code, account_limit, term_months, price_inr").eq("active", true).order("account_limit").order("term_months").then(({ data }) => {
+      const rows = (data ?? []) as DatabasePlan[];
+      setPlans(rows);
+      const selected = rows.find((plan) => plan.id === (customer.planId ?? rows[0]?.id));
+      if (!planId && selected) setPlanId(selected.id);
+      if (!customer.amountValue && selected) setAmount(selected.price_inr);
+    });
+  }, [customer.amountValue, customer.planId, planId]);
+
+  function selectPlan(id: string) {
+    setPlanId(id);
+    const selected = plans.find((plan) => plan.id === id);
+    if (selected) setAmount(selected.price_inr);
+  }
+
+  function setRenewalFromStart(start: string, selectedPlanId = planId) {
+    const selected = plans.find((plan) => plan.id === selectedPlanId);
+    if (!selected || !start) return;
+    const date = new Date(`${start}T00:00:00`);
+    date.setMonth(date.getMonth() + selected.term_months);
+    setRenewsAt(date.toISOString().slice(0, 10));
+  }
+
+  async function save(renewNow = false) {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase || !planId) { setMessage("Select a plan before saving."); return; }
+    setBusy(true); setMessage("");
+    let start = startedAt;
+    let renewal = renewsAt;
+    if (renewNow) {
+      start = new Date().toISOString().slice(0, 10);
+      const selected = plans.find((plan) => plan.id === planId)!;
+      const date = new Date(`${start}T00:00:00`);
+      date.setMonth(date.getMonth() + selected.term_months);
+      renewal = date.toISOString().slice(0, 10);
+      setStartedAt(start); setRenewsAt(renewal); setStatus("active");
+    }
+    const payload = { user_id: customer.userId, plan_id: planId, status: renewNow ? "active" : status, amount_paid_inr: Number(amount), started_at: start ? `${start}T00:00:00.000Z` : null, renews_at: renewal ? `${renewal}T00:00:00.000Z` : null, updated_at: new Date().toISOString() };
+    const result = customer.subscriptionId ? await supabase.from("subscriptions").update(payload).eq("id", customer.subscriptionId) : await supabase.from("subscriptions").insert(payload);
+    if (result.error) { setMessage(result.error.message); setBusy(false); return; }
+    const { data: auth } = await supabase.auth.getUser();
+    if (auth.user) await supabase.from("audit_log").insert({ actor_id: auth.user.id, action: customer.subscriptionId ? (renewNow ? "subscription_renewed" : "subscription_updated") : "subscription_assigned", entity_type: "subscription", entity_id: customer.subscriptionId || customer.userId, details: { customer_id: customer.userId, plan_id: planId, status: renewNow ? "active" : status, amount_paid_inr: Number(amount), renews_at: renewal } });
+    setBusy(false); onSaved();
+  }
+
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card plan-modal" role="dialog" aria-modal="true" aria-labelledby="manage-plan-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Customer subscription</p><h2 id="manage-plan-title">Manage {customer.name}</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">Assign a plan, change its status and dates, or start a fresh renewal period.</p><div className="support-form"><label>Plan<select value={planId} onChange={(event) => selectPlan(event.target.value)}><option value="">Select a plan</option>{plans.map((plan) => <option key={plan.id} value={plan.id}>{plan.account_limit} {plan.account_limit === 1 ? "account" : "accounts"} · {plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"} · ₹{plan.price_inr.toLocaleString("en-IN")}</option>)}</select></label><div className="modal-form-grid"><label>Status<select value={status} onChange={(event) => setStatus(event.target.value)}><option value="pending">Pending</option><option value="active">Active</option><option value="past_due">Past due</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option></select></label><label>Amount paid (₹)<input type="number" min="0" value={amount} onChange={(event) => setAmount(Number(event.target.value))} /></label></div><div className="modal-form-grid"><label>Start date<input type="date" value={startedAt} onChange={(event) => { setStartedAt(event.target.value); setRenewalFromStart(event.target.value); }} /></label><label>Renewal date<input type="date" value={renewsAt} onChange={(event) => setRenewsAt(event.target.value)} /></label></div><div className="plan-dialog-actions"><button className="secondary-button" disabled={busy} onClick={() => save(false)}>{customer.subscriptionId ? "Save changes" : "Assign plan"}</button><button className="primary-button" disabled={busy || !planId} onClick={() => save(true)}><RefreshCw size={16} />Renew from today</button></div></div>{message && <p className="form-message">{message}</p>}</section></div>;
+}
 
 function AddCustomerDialog({ onClose }: { onClose: () => void }) {
   const [message, setMessage] = useState("");

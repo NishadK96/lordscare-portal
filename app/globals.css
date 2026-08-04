@@ -290,6 +290,7 @@ td { padding: 13px 12px; border-bottom: 1px solid #edf1ef; color: #55625c; font-
 td:first-child { display: grid; gap: 3px; }
 td:first-child strong { color: var(--ink); font-size: 11px; }
 td:first-child small { color: #9aa39f; font-size: 8px; }
+.table-action { min-height: 31px; padding: 0 10px; white-space: nowrap; font-size: 9px; }
 .table-tools { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
 .table-tools .search-box { width: 320px; }
 .timeline article { display: grid; grid-template-columns: 43px 1fr auto auto; align-items: center; gap: 15px; padding: 17px 0; border-top: 1px solid #edf1ef; }
@@ -368,6 +369,9 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
 .modal-head h2 { margin: 0; font-size: 24px; letter-spacing: -.04em; }
 .modal-card > .muted { font-size: 11px; }
 .modal-card .form-message { margin: 14px 0 0; }
+.plan-modal { width: min(560px, 100%); }
+.modal-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.plan-dialog-actions { display: flex; justify-content: flex-end; gap: 9px; padding-top: 5px; }
 
 @media (max-width: 1120px) {
   .login-page { grid-template-columns: 1fr 1fr; }
@@ -429,4 +433,6 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
   .request-meta { grid-template-columns: 1fr; }
   .comparison-row { grid-template-columns: 1.2fr .8fr .8fr; padding: 9px 7px; font-size: 8px; }
   .request-detail { padding: 17px; }
+  .modal-form-grid { grid-template-columns: 1fr; }
+  .plan-dialog-actions { display: grid; }
 }
