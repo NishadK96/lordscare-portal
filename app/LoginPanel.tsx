@@ -46,7 +46,7 @@ export function LoginPanel() {
       return;
     }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/customer`,
+      redirectTo: `${window.location.origin}/set-password`,
     });
     setMessage(error ? error.message : "Password reset link sent.");
   }
