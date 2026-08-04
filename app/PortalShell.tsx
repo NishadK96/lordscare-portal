@@ -12,6 +12,21 @@ import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 
 type Role = "customer" | "admin";
 type NavItem = { id: string; label: string; icon: React.ComponentType<{ size?: number }> };
+type PortalAccount = { id: string; name: string; kingdom: string; status: string; sync: string; reference?: string };
+type LiveSettingRequest = {
+  id: string;
+  userId: string;
+  accountId: string;
+  customer: string;
+  customerCode?: string;
+  account: string;
+  accountReference?: string;
+  submitted: string;
+  createdAt: string;
+  settings: Record<string, unknown>;
+  status: string;
+  adminNote?: string;
+};
 
 const customerNav: NavItem[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -156,13 +171,40 @@ const settingCategories = [
 ] as const;
 
 function BotSettings() {
+  const [accounts, setAccounts] = useState<PortalAccount[]>(gameAccounts);
   const [account, setAccount] = useState(gameAccounts[0].id);
+  const [history, setHistory] = useState<LiveSettingRequest[]>([]);
+  const [loadingRecords, setLoadingRecords] = useState(isSupabaseConfigured);
   const [category, setCategory] = useState<(typeof settingCategories)[number][0]>("daily");
   const [submitted, setSubmitted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    let mounted = true;
+    (async () => {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth.user || !mounted) return;
+      const [{ data: accountRows }, { data: requestRows }] = await Promise.all([
+        supabase.from("game_accounts").select("id, display_name, account_reference, kingdom, status, last_sync_at").eq("user_id", auth.user.id).order("created_at"),
+        supabase.from("bot_setting_requests").select("id, game_account_id, requested_settings, status, admin_note, created_at").eq("user_id", auth.user.id).order("created_at", { ascending: false }),
+      ]);
+      if (!mounted) return;
+      const liveAccounts: PortalAccount[] = (accountRows ?? []).map((row) => ({ id: row.id, name: row.display_name, reference: row.account_reference, kingdom: row.kingdom || "Kingdom not recorded", status: String(row.status).replaceAll("_", " "), sync: row.last_sync_at ? new Date(row.last_sync_at).toLocaleString("en-IN") : "Not synced yet" }));
+      setAccounts(liveAccounts);
+      setAccount(liveAccounts[0]?.id ?? "");
+      const names = new Map(liveAccounts.map((item) => [item.id, item]));
+      setHistory((requestRows ?? []).map((row) => ({ id: row.id, userId: auth.user!.id, accountId: row.game_account_id, customer: "You", account: names.get(row.game_account_id)?.name ?? "Account", accountReference: names.get(row.game_account_id)?.reference, submitted: new Date(row.created_at).toLocaleString("en-IN"), createdAt: row.created_at, settings: row.requested_settings ?? {}, status: row.status, adminNote: row.admin_note ?? undefined })));
+      setLoadingRecords(false);
+    })();
+    return () => { mounted = false; };
+  }, []);
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); setSaving(true); setError("");
+    if (!account) { setSaving(false); setError("No active game account is connected to your profile yet."); return; }
     const form = new FormData(event.currentTarget);
     const settings = Object.fromEntries(form.entries());
     const supabase = getSupabaseBrowserClient();
@@ -177,7 +219,7 @@ function BotSettings() {
   }
   if (submitted) return <section className="success-card"><span><Check /></span><p className="eyebrow">Request received</p><h2>Your configuration request is now pending review.</h2><p>We will review it before applying anything to your bot account. You can continue using the current settings meanwhile.</p><button className="primary-button compact" onClick={() => setSubmitted(false)}>Submit another request</button></section>;
   return <form className="settings-layout settings-expanded" onSubmit={submit}>
-    <section className="panel settings-sidebar"><div className="panel-head"><div><p className="eyebrow">Step 1</p><h3>Select account</h3></div></div><div className="account-picker">{gameAccounts.map((item) => <label key={item.id} className={account === item.id ? "selected" : ""}><input type="radio" name="account" value={item.id} checked={account === item.id} onChange={() => setAccount(item.id)} /><span className="game-avatar"><Gamepad2 /></span><div><strong>{item.name}</strong><small>{item.kingdom}</small></div><i>{account === item.id && <Check size={14} />}</i></label>)}</div><div className="specific-settings-note"><ShieldCheck size={17} /><p><strong>Specific settings only</strong><span>Only the category submitted in this request will be reviewed. Existing settings outside it stay unchanged.</span></p></div></section>
+    <section className="panel settings-sidebar"><div className="panel-head"><div><p className="eyebrow">Step 1</p><h3>Select account</h3></div></div><div className="account-picker">{loadingRecords ? <p className="empty-copy">Loading your accounts…</p> : accounts.length ? accounts.map((item) => <label key={item.id} className={account === item.id ? "selected" : ""}><input type="radio" name="account" value={item.id} checked={account === item.id} onChange={() => setAccount(item.id)} /><span className="game-avatar"><Gamepad2 /></span><div><strong>{item.name}</strong><small>{item.kingdom}</small></div><i>{account === item.id && <Check size={14} />}</i></label>) : <div className="empty-mini"><Gamepad2 /><strong>No connected accounts</strong><span>Ask LordsCare to add your game-account reference before submitting settings.</span></div>}</div><div className="specific-settings-note"><ShieldCheck size={17} /><p><strong>Specific settings only</strong><span>Only the category submitted in this request will be reviewed. Existing settings outside it stay unchanged.</span></p></div>{history.length > 0 && <div className="customer-history"><p className="eyebrow">Recent requests</p>{history.slice(0, 5).map((request) => <article key={request.id}><div><strong>{String(request.settings.settings_category ?? "Settings").replaceAll("_", " ")}</strong><small>{request.account} · {request.submitted}</small></div><Status>{request.status}</Status>{request.adminNote && <p>{request.adminNote}</p>}</article>)}</div>}</section>
     <section className="panel settings-main"><div className="panel-head"><div><p className="eyebrow">Step 2</p><h3>Choose requested settings</h3><p className="muted">Based on the official Lords Bot account-setting categories. Every request requires owner approval.</p></div><a className="docs-link" href="https://help.lords-bot.com/topic/account-settings/" target="_blank" rel="noreferrer">Official guide</a></div>
       <input type="hidden" name="settings_category" value={category} />
       <div className="settings-tabs" role="tablist">{settingCategories.map(([id, label]) => <button key={id} type="button" className={category === id ? "active" : ""} onClick={() => setCategory(id)}>{label}</button>)}</div>
@@ -241,6 +283,104 @@ function AddCustomerDialog({ onClose }: { onClose: () => void }) {
 
 function RenewalsView() { return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">Renewal workflow</p><h3>Upcoming and overdue renewals</h3><p className="muted">Reminder points: 7 days, 3 days, 1 day and expiry day.</p></div></div><div className="timeline">{adminCustomers.map((item) => <article key={item.id}><div className="timeline-dot"><CalendarDays /></div><div><span>{item.renewal}</span><h3>{item.name}</h3><p>{item.accounts} accounts · {item.plan} · {item.amount}</p></div><Status>{item.status}</Status><button className="secondary-button">Record renewal</button></article>)}</div></section>; }
 
-function RequestsView() { const [requests, setRequests] = useState(settingsRequests); function update(id: string, status: string) { setRequests((rows) => rows.map((row) => row.id === id ? { ...row, status } : row)); } return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">Owner approval required</p><h3>Bot setting requests</h3><p className="muted">Review every requested change before applying it to the bot.</p></div></div><div className="review-list">{requests.map((request) => <article key={request.id}><div className="review-top"><div><span>{request.id} · {request.submitted}</span><h3>{request.customer}</h3><p>{request.account}</p></div><Status>{request.status}</Status></div><div className="change-box"><Settings2 /><span><small>Requested change</small><strong>{request.change}</strong></span></div><label>Admin note<input placeholder="Optional note for the customer" /></label><div className="review-actions"><button className="secondary-button" onClick={() => update(request.id, "Rejected")}>Reject</button><button className="primary-button compact" onClick={() => update(request.id, "Approved")}><Check size={16} />Approve</button></div></article>)}</div></section>; }
+function readableSetting(key: string) {
+  return key.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function readableValue(value: unknown) {
+  if (value === "on" || value === true) return "Enabled";
+  if (value === false) return "Disabled";
+  return String(value ?? "Not set").replaceAll("_", " ");
+}
+
+function RequestsView() {
+  const [requests, setRequests] = useState<LiveSettingRequest[]>([]);
+  const [selectedId, setSelectedId] = useState("");
+  const [filter, setFilter] = useState("pending");
+  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState("");
+  const [message, setMessage] = useState("");
+
+  async function loadRequests() {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) {
+      const demo = settingsRequests.map((item, index) => ({ id: item.id, userId: `demo-${index}`, accountId: `demo-account-${index}`, customer: item.customer, account: item.account, submitted: item.submitted, createdAt: new Date(Date.now() - index * 86400000).toISOString(), settings: { settings_category: "daily", requested_change: item.change }, status: item.status.toLowerCase() }));
+      setRequests(demo); setSelectedId(demo[0]?.id ?? ""); setLoading(false); return;
+    }
+    const { data: rows, error: rowsError } = await supabase.from("bot_setting_requests").select("id, user_id, game_account_id, requested_settings, status, admin_note, created_at").order("created_at", { ascending: false });
+    if (rowsError) { setMessage(rowsError.message); setLoading(false); return; }
+    const userIds = [...new Set((rows ?? []).map((row) => row.user_id))];
+    const accountIds = [...new Set((rows ?? []).map((row) => row.game_account_id))];
+    const [{ data: profiles }, { data: accounts }] = await Promise.all([
+      userIds.length ? supabase.from("profiles").select("id, full_name, customer_code").in("id", userIds) : Promise.resolve({ data: [] }),
+      accountIds.length ? supabase.from("game_accounts").select("id, display_name, account_reference").in("id", accountIds) : Promise.resolve({ data: [] }),
+    ]);
+    const profileMap = new Map((profiles ?? []).map((row) => [row.id, row]));
+    const accountMap = new Map((accounts ?? []).map((row) => [row.id, row]));
+    const mapped: LiveSettingRequest[] = (rows ?? []).map((row) => ({
+      id: row.id,
+      userId: row.user_id,
+      accountId: row.game_account_id,
+      customer: profileMap.get(row.user_id)?.full_name ?? "Customer",
+      customerCode: profileMap.get(row.user_id)?.customer_code ?? undefined,
+      account: accountMap.get(row.game_account_id)?.display_name ?? "Game account",
+      accountReference: accountMap.get(row.game_account_id)?.account_reference ?? undefined,
+      submitted: new Date(row.created_at).toLocaleString("en-IN"),
+      createdAt: row.created_at,
+      settings: row.requested_settings ?? {},
+      status: row.status,
+      adminNote: row.admin_note ?? undefined,
+    }));
+    setRequests(mapped);
+    setNotes(Object.fromEntries(mapped.map((row) => [row.id, row.adminNote ?? ""])));
+    setSelectedId((current) => current || mapped[0]?.id || "");
+    setLoading(false);
+  }
+
+  useEffect(() => { loadRequests(); }, []);
+
+  async function updateRequest(request: LiveSettingRequest, status: "pending" | "approved" | "rejected" | "applied", customMessage?: string) {
+    const supabase = getSupabaseBrowserClient();
+    setSaving(request.id); setMessage("");
+    if (!supabase) { setRequests((rows) => rows.map((row) => row.id === request.id ? { ...row, status, adminNote: notes[request.id] } : row)); setSaving(""); return; }
+    const { data: auth } = await supabase.auth.getUser();
+    const adminNote = customMessage ?? notes[request.id] ?? "";
+    const payload = { status, admin_note: adminNote || null, reviewed_by: auth.user?.id ?? null, reviewed_at: new Date().toISOString(), applied_at: status === "applied" ? new Date().toISOString() : null };
+    const { error: updateError } = await supabase.from("bot_setting_requests").update(payload).eq("id", request.id);
+    if (updateError) { setMessage(updateError.message); setSaving(""); return; }
+    if (auth.user) await supabase.from("audit_log").insert({ actor_id: auth.user.id, action: `settings_request_${status}`, entity_type: "bot_setting_request", entity_id: request.id, details: { account_id: request.accountId, category: request.settings.settings_category } });
+    setRequests((rows) => rows.map((row) => row.id === request.id ? { ...row, status, adminNote } : row));
+    setSaving("");
+  }
+
+  const filtered = filter === "all" ? requests : requests.filter((row) => row.status === filter);
+  const selected = filtered.find((row) => row.id === selectedId) ?? filtered[0];
+  const previousApplied = selected ? requests.filter((row) => row.accountId === selected.accountId && row.status === "applied" && row.createdAt < selected.createdAt && row.settings.settings_category === selected.settings.settings_category).sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0] : undefined;
+  const settingEntries = selected ? Object.entries(selected.settings).filter(([key]) => key !== "account") : [];
+
+  function copySummary() {
+    if (!selected) return;
+    const lines = [`LordsCare settings request`, `Customer: ${selected.customer}`, `Account: ${selected.account}${selected.accountReference ? ` (${selected.accountReference})` : ""}`, `Category: ${readableValue(selected.settings.settings_category)}`, "", ...settingEntries.filter(([key]) => key !== "settings_category").map(([key, value]) => `${readableSetting(key)}: ${readableValue(value)}`), "", `Admin note: ${notes[selected.id] || "None"}`];
+    navigator.clipboard?.writeText(lines.join("\n"));
+    setMessage("Settings summary copied.");
+  }
+
+  return <section className="panel full-panel request-console">
+    <div className="panel-head"><div><p className="eyebrow">Live Supabase queue</p><h3>Bot setting requests</h3><p className="muted">Review, document and track every customer change before it is applied.</p></div><button className="secondary-button" onClick={loadRequests}><RefreshCw size={16} />Refresh</button></div>
+    <div className="request-filters">{["pending", "approved", "applied", "rejected", "all"].map((value) => <button key={value} className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{readableSetting(value)}<span>{value === "all" ? requests.length : requests.filter((row) => row.status === value).length}</span></button>)}</div>
+    {message && <p className="form-message request-message">{message}</p>}
+    {loading ? <div className="empty-state"><RefreshCw /><h3>Loading requests…</h3></div> : requests.length === 0 ? <div className="empty-state"><Settings2 /><h3>No setting requests yet</h3><p>Customer submissions will appear here automatically.</p></div> : <div className="request-workspace">
+      <div className="request-queue">{filtered.length === 0 ? <p className="empty-copy">No requests in this status.</p> : filtered.map((request) => <button key={request.id} className={selected?.id === request.id ? "selected" : ""} onClick={() => setSelectedId(request.id)}><div><strong>{request.customer}</strong><small>{request.account} · {readableValue(request.settings.settings_category)}</small><span>{request.submitted}</span></div><Status>{request.status}</Status></button>)}</div>
+      {selected && <div className="request-detail"><div className="review-top"><div><span>{selected.id} · {selected.submitted}</span><h2>{selected.customer}</h2><p>{selected.account}{selected.accountReference ? ` · ${selected.accountReference}` : ""}</p></div><Status>{selected.status}</Status></div>
+        <div className="request-meta"><div><small>Category</small><strong>{readableValue(selected.settings.settings_category)}</strong></div><div><small>Customer ID</small><strong>{selected.customerCode || "Not assigned"}</strong></div><div><small>Previous applied request</small><strong>{previousApplied ? previousApplied.submitted : "None recorded"}</strong></div></div>
+        <div className="comparison-head"><div><p className="eyebrow">Settings comparison</p><h3>Requested changes</h3></div><button className="secondary-button" onClick={copySummary}><Copy size={15} />Copy summary</button></div>
+        <div className="comparison-table"><div className="comparison-row heading"><span>Setting</span><span>Previously applied</span><span>Requested</span></div>{settingEntries.filter(([key]) => key !== "settings_category").map(([key, value]) => <div className="comparison-row" key={key}><strong>{readableSetting(key)}</strong><span>{previousApplied && key in previousApplied.settings ? readableValue(previousApplied.settings[key]) : "Not recorded"}</span><b>{readableValue(value)}</b></div>)}</div>
+        <label className="admin-note-field">Admin note visible to customer<textarea rows={3} value={notes[selected.id] ?? ""} onChange={(event) => setNotes((current) => ({ ...current, [selected.id]: event.target.value }))} placeholder="Explain approval, rejection, clarification needed or what was applied." /></label>
+        <div className="review-actions workflow-actions"><button className="secondary-button danger" disabled={saving === selected.id} onClick={() => updateRequest(selected, "rejected")}>Reject</button><button className="secondary-button" disabled={saving === selected.id} onClick={() => updateRequest(selected, "pending", notes[selected.id] || "Please provide more information about this request.")}>Ask clarification</button>{selected.status !== "approved" && selected.status !== "applied" && <button className="primary-button compact" disabled={saving === selected.id} onClick={() => updateRequest(selected, "approved")}><Check size={16} />Approve</button>}{selected.status === "approved" && <button className="primary-button compact" disabled={saving === selected.id} onClick={() => updateRequest(selected, "applied")}><Check size={16} />Mark applied</button>}{selected.status === "applied" && <button className="secondary-button" disabled={saving === selected.id} onClick={() => updateRequest(selected, "approved")}>Reopen</button>}</div>
+      </div>}
+    </div>}
+  </section>;
+}
 
 function PlansView() { return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">Published customer pricing</p><h3>Plans and prices</h3><p className="muted">Amounts are kept exactly as approved.</p></div><button className="secondary-button">Edit plans</button></div><div className="plan-table"><div className="plan-row plan-head"><span>Accounts</span><span>Monthly</span><span>3 months</span><span>Yearly</span></div>{planPrices.map((plan) => <div className="plan-row" key={plan.accounts}><strong>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"}</strong><span>₹{plan.monthly.toLocaleString("en-IN")}</span><span>₹{plan.quarterly.toLocaleString("en-IN")}</span><span>₹{plan.yearly.toLocaleString("en-IN")}</span></div>)}</div><div className="plan-note"><ShieldCheck /><span><strong>Plan control</strong><p>Existing subscriptions keep their recorded amount and dates when published prices change.</p></span></div></section>; }
