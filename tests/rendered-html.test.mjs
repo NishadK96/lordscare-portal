@@ -38,11 +38,18 @@ test("customer settings retain applied state and serialize disabled switches", a
 
 test("customer bank commands use the administrator-configured prefix", async () => {
   const source = await readFile(new URL("../app/PortalShell.tsx", import.meta.url), "utf8");
+  const commandSource = await readFile(new URL("../app/data.ts", import.meta.url), "utf8");
   const migration = await readFile(new URL("../supabase/migrations/002_customer_command_prefix.sql", import.meta.url), "utf8");
   assert.match(source, /commandPrefix: profile\?\.command_prefix \|\| "!"/);
   assert.match(source, /<CommandsView prefix=\{snapshot\?\.commandPrefix \|\| "!"\}/);
-  assert.match(source, /Guild Bank prefix: \{prefix\}/);
+  assert.match(source, /Commands for prefix <code>\{prefix\}<\/code>/);
+  assert.match(source, /command\.replaceAll\("!", prefix\)/);
   assert.match(source, /customer_command_prefix_updated/);
+  assert.equal((commandSource.match(/^  \{ command:/gm) ?? []).length, 67);
+  assert.match(commandSource, /!relocatekvk \[K\]/);
+  assert.match(commandSource, /!findnestlocal \[level\]/);
+  assert.match(commandSource, /!adminrss \[F\] \[S\] \[W\] \[O\] \[G\] \[player\]/);
+  assert.doesNotMatch(commandSource, /relocator/);
   assert.match(migration, /default '!'/);
   assert.match(migration, /between 1 and 3/);
 });
