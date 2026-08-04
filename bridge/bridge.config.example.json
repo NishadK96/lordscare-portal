@@ -5,14 +5,13 @@
   "DryRunOutputDirectory": "dry-run",
   "RequireLordsBotStopped": true,
   "BlockedProcessNames": ["LordsMobileBot"],
+  "SettingsFileName": "settings.json",
+  "AccountRoots": [
+    "C:\\LordsBot\\accounts"
+  ],
   "ShelterEnums": {
     "Behavior": { "off": 0, "always": 1, "under_attack": 2 },
     "Troops": { "hero_one": 0, "best_troops": 1 }
   },
-  "Accounts": {
-    "ACC0001": {
-      "SettingsPath": "C:\\LordsBot\\accounts\\NishadV6\\settings.json"
-    }
-  }
+  "Accounts": {}
 }
-

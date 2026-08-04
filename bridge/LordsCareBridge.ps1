@@ -106,14 +106,44 @@ function Invoke-Supabase([string]$Method, [string]$Path, $Body = $null) {
     return Invoke-RestMethod @arguments
 }
 
+function Add-AccountIndexEntry($Index, [string]$Key, [string]$SettingsPath) {
+    if ([string]::IsNullOrWhiteSpace($Key)) { return }
+    $normalized = $Key.Replace('\', '/').Trim('/').ToLowerInvariant()
+    if (-not $Index.ContainsKey($normalized)) { $Index[$normalized] = [System.Collections.ArrayList]::new() }
+    if (-not $Index[$normalized].Contains($SettingsPath)) { $Index[$normalized].Add($SettingsPath) | Out-Null }
+}
+
+function Get-AccountIndex($Config) {
+    $index = @{}
+    $fileName = if ([string]::IsNullOrWhiteSpace($Config.SettingsFileName)) { "settings.json" } else { [string]$Config.SettingsFileName }
+    foreach ($root in @($Config.AccountRoots)) {
+        if (-not (Test-Path -LiteralPath $root -PathType Container)) {
+            Write-BridgeLog "Account root was not found: $root"
+            continue
+        }
+        $rootPath = (Resolve-Path -LiteralPath $root).Path.TrimEnd('\', '/')
+        foreach ($file in Get-ChildItem -LiteralPath $rootPath -Filter $fileName -File -Recurse -ErrorAction SilentlyContinue) {
+            $relativeDirectory = $file.Directory.FullName.Substring($rootPath.Length).TrimStart('\', '/')
+            Add-AccountIndexEntry $index $file.Directory.Name $file.FullName
+            Add-AccountIndexEntry $index $relativeDirectory $file.FullName
+        }
+    }
+    Write-BridgeLog "Discovered $(@($index.Values | ForEach-Object { $_ } | Select-Object -Unique).Count) Lords Bot settings files."
+    return $index
+}
+
 function Resolve-SettingsPath($Request, $Config) {
     $account = $Request.game_accounts
     $references = @($account.bot_slot_reference, $account.account_reference) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     foreach ($reference in $references) {
-        $entry = $Config.Accounts.PSObject.Properties[[string]$reference]
+        $entry = if ($null -ne $Config.Accounts) { $Config.Accounts.PSObject.Properties[[string]$reference] } else { $null }
         if ($null -ne $entry) { return [string]$entry.Value.SettingsPath }
+        $key = ([string]$reference).Replace('\', '/').Trim('/').ToLowerInvariant()
+        $matches = @($script:AccountIndex[$key])
+        if ($matches.Count -eq 1) { return [string]$matches[0] }
+        if ($matches.Count -gt 1) { throw "Multiple local account folders match '$reference'. Add an explicit Accounts override." }
     }
-    throw "No bridge account mapping exists for $($account.display_name)."
+    throw "No local account folder matches $($account.display_name). Set its bot slot reference to the folder name or relative folder path."
 }
 
 function Assert-LordsBotStopped($Config) {
@@ -172,6 +202,7 @@ $script:SupabaseUrl = Get-RequiredEnvironment "LORDSCARE_SUPABASE_URL"
 $script:ApiKey = [Environment]::GetEnvironmentVariable("LORDSCARE_SUPABASE_SECRET_KEY")
 if ([string]::IsNullOrWhiteSpace($script:ApiKey)) { $script:ApiKey = [Environment]::GetEnvironmentVariable("LORDSCARE_SUPABASE_SERVICE_ROLE_KEY") }
 if ([string]::IsNullOrWhiteSpace($script:ApiKey)) { throw "LORDSCARE_SUPABASE_SECRET_KEY is not configured." }
+$script:AccountIndex = Get-AccountIndex $config
 
 do {
     try {
