@@ -1,7 +1,8 @@
 [CmdletBinding()]
-param([string]$ConfigPath = (Join-Path $PSScriptRoot "bridge.config.json"))
+param([string]$ConfigPath = "")
 
 $ErrorActionPreference = "Stop"
+if ([string]::IsNullOrWhiteSpace($ConfigPath)) { $ConfigPath = Join-Path $PSScriptRoot "bridge.config.json" }
 
 function Write-BridgeLog([string]$Message) {
     Write-Host "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $Message"
