@@ -27,8 +27,8 @@ type LiveSettingRequest = {
   status: string;
   adminNote?: string;
 };
-type CustomerSnapshot = { name: string; email: string; plan: string; amount: string; renewal: string; renewalShort: string; daysLeft: number; status: string; accounts: PortalAccount[]; openRequests: number };
-type AdminCustomerRow = { id: string; userId: string; subscriptionId?: string; planId?: string; accountLimit: number; name: string; accounts: number; plan: string; renewal: string; status: string; amount: string; amountValue: number; startedAt?: string; renewsAt?: string };
+type CustomerSnapshot = { name: string; email: string; commandPrefix: string; plan: string; amount: string; renewal: string; renewalShort: string; daysLeft: number; status: string; accounts: PortalAccount[]; openRequests: number };
+type AdminCustomerRow = { id: string; userId: string; subscriptionId?: string; planId?: string; accountLimit: number; commandPrefix: string; name: string; accounts: number; plan: string; renewal: string; status: string; amount: string; amountValue: number; startedAt?: string; renewsAt?: string };
 type ManagedGameAccount = { id: string; display_name: string; account_reference: string; kingdom: string | null; bot_slot_reference: string | null; status: string };
 
 const customerNav: NavItem[] = [
@@ -129,13 +129,13 @@ export function CustomerPortal() {
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient();
-    if (!supabase) { setSnapshot({ name: "Customer", email: "", plan: "No active plan", amount: "—", renewal: "Not scheduled", renewalShort: "—", daysLeft: 0, status: "inactive", accounts: [], openRequests: 0 }); return; }
+    if (!supabase) { setSnapshot({ name: "Customer", email: "", commandPrefix: "!", plan: "No active plan", amount: "—", renewal: "Not scheduled", renewalShort: "—", daysLeft: 0, status: "inactive", accounts: [], openRequests: 0 }); return; }
     let mounted = true;
     (async () => {
       const { data: auth } = await supabase.auth.getUser();
       if (!auth.user || !mounted) return;
       const [{ data: profile }, { data: subscription }, { data: accountRows }, { count: requestCount }] = await Promise.all([
-        supabase.from("profiles").select("full_name").eq("id", auth.user.id).single(),
+        supabase.from("profiles").select("full_name, command_prefix").eq("id", auth.user.id).single(),
         supabase.from("subscriptions").select("status, amount_paid_inr, renews_at, plan_id").eq("user_id", auth.user.id).order("created_at", { ascending: false }).limit(1).maybeSingle(),
         supabase.from("game_accounts").select("id, display_name, account_reference, kingdom, status, last_sync_at").eq("user_id", auth.user.id).order("created_at"),
         supabase.from("bot_setting_requests").select("id", { count: "exact", head: true }).eq("user_id", auth.user.id).in("status", ["pending", "approved"]),
@@ -151,6 +151,7 @@ export function CustomerPortal() {
       setSnapshot({
         name: profile?.full_name || "Customer",
         email: auth.user.email || "",
+        commandPrefix: profile?.command_prefix || "!",
         plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "Account" : "Accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 Months" : "Yearly"}` : "No active plan",
         amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—",
         renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "Not scheduled",
@@ -167,7 +168,7 @@ export function CustomerPortal() {
   return <PortalFrame role="customer" active={active} setActive={setActive}>
     {active === "overview" && <CustomerOverview setActive={setActive} snapshot={snapshot} />}
     {active === "accounts" && <AccountsView setActive={setActive} snapshot={snapshot} />}
-    {active === "commands" && <CommandsView />}
+    {active === "commands" && <CommandsView prefix={snapshot?.commandPrefix || "!"} />}
     {active === "settings" && <BotSettings />}
     {active === "support" && <SupportView />}
   </PortalFrame>;
@@ -188,7 +189,7 @@ function CustomerOverview({ setActive, snapshot }: { setActive: (id: string) => 
     </section>
     <div className="content-grid">
       <section className="panel"><div className="panel-head"><div><p className="eyebrow">Live status</p><h3>Your accounts</h3></div><button className="text-button" onClick={() => setActive("accounts")}>View all</button></div><div className="account-list">{snapshot.accounts.length ? snapshot.accounts.map((account) => <div key={account.id}><span className="game-avatar"><Gamepad2 /></span><div><strong>{account.name}</strong><small>{account.kingdom} · {account.sync}</small></div><Status>{account.status}</Status></div>) : <div className="empty-inline"><Gamepad2 /><span><strong>No connected accounts</strong><small>Your accounts will appear after the administrator adds them.</small></span></div>}</div></section>
-      <section className="panel action-panel"><div className="panel-head"><div><p className="eyebrow">Quick actions</p><h3>What would you like to do?</h3></div></div><button onClick={() => setActive("settings")}><Settings2 /><span><strong>Change bot settings</strong><small>Send a controlled request</small></span></button><button onClick={() => setActive("commands")}><Command /><span><strong>Find a command</strong><small>Browse important t commands</small></span></button><button onClick={() => setActive("support")}><Headphones /><span><strong>Ask for support</strong><small>Get help with your service</small></span></button></section>
+      <section className="panel action-panel"><div className="panel-head"><div><p className="eyebrow">Quick actions</p><h3>What would you like to do?</h3></div></div><button onClick={() => setActive("settings")}><Settings2 /><span><strong>Change bot settings</strong><small>Send a controlled request</small></span></button><button onClick={() => setActive("commands")}><Command /><span><strong>Find a command</strong><small>Browse important {snapshot.commandPrefix} commands</small></span></button><button onClick={() => setActive("support")}><Headphones /><span><strong>Ask for support</strong><small>Get help with your service</small></span></button></section>
     </div>
   </>;
 }
@@ -197,13 +198,14 @@ function AccountsView({ setActive, snapshot }: { setActive: (id: string) => void
   return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">{snapshot ? `${snapshot.accounts.length} connected` : "Loading"}</p><h3>Connected game accounts</h3><p className="muted">Account passwords are never displayed or collected here.</p></div><button className="primary-button compact" onClick={() => setActive("settings")}><Settings2 size={17} />Bot settings</button></div>{!snapshot ? <div className="empty-state"><RefreshCw /><h3>Loading accounts…</h3></div> : snapshot.accounts.length ? <div className="account-card-grid">{snapshot.accounts.map((account) => <article key={account.id}><div className="account-card-top"><span className="game-avatar large"><Gamepad2 /></span><Status>{account.status}</Status></div><h3>{account.name}</h3><p>{account.kingdom}</p><dl><div><dt>Account reference</dt><dd>{account.reference || "Not assigned"}</dd></div><div><dt>Last sync</dt><dd>{account.sync}</dd></div></dl><button className="secondary-button" onClick={() => setActive("settings")}>Manage settings</button></article>)}</div> : <div className="empty-state"><Gamepad2 /><h3>No connected game accounts</h3><p>The administrator has not added any account records to your profile.</p></div>}</section>;
 }
 
-function CommandsView() {
+function CommandsView({ prefix }: { prefix: string }) {
   const [query, setQuery] = useState("");
   const [admin, setAdmin] = useState(false);
-  const filtered = useMemo(() => commands.filter((item) => item.admin === admin && `${item.command} ${item.description}`.toLowerCase().includes(query.toLowerCase())), [query, admin]);
+  const displayCommand = (command: string) => `${prefix}${command.slice(1)}`;
+  const filtered = useMemo(() => commands.filter((item) => item.admin === admin && `${displayCommand(item.command)} ${item.description}`.toLowerCase().includes(query.toLowerCase())), [query, admin, prefix]);
   const [copied, setCopied] = useState("");
   function copy(value: string) { navigator.clipboard?.writeText(value); setCopied(value); setTimeout(() => setCopied(""), 1200); }
-  return <section className="panel full-panel"><div className="panel-head commands-head"><div><p className="eyebrow">Guild Bank prefix: t</p><h3>Important commands</h3><p className="muted">Copy a command, then replace example values where needed.</p></div><div className="segmented"><button className={!admin ? "active" : ""} onClick={() => setAdmin(false)}>Member</button><button className={admin ? "active" : ""} onClick={() => setAdmin(true)}>Admin</button></div></div><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search commands…" /></div><div className="command-list">{filtered.map((item) => <article key={item.command}><div><code>{item.command}</code><span>{item.group}</span></div><p>{item.description}</p><button onClick={() => copy(item.command)} aria-label={`Copy ${item.command}`}>{copied === item.command ? <Check size={18} /> : <Copy size={18} />}</button></article>)}</div></section>;
+  return <section className="panel full-panel"><div className="panel-head commands-head"><div><p className="eyebrow">Guild Bank prefix: {prefix}</p><h3>Important commands</h3><p className="muted">Copy a command, then replace example values where needed.</p></div><div className="segmented"><button className={!admin ? "active" : ""} onClick={() => setAdmin(false)}>Member</button><button className={admin ? "active" : ""} onClick={() => setAdmin(true)}>Admin</button></div></div><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search commands…" /></div><div className="command-list">{filtered.map((item) => { const command = displayCommand(item.command); return <article key={item.command}><div><code>{command}</code><span>{item.group}</span></div><p>{item.description}</p><button onClick={() => copy(command)} aria-label={`Copy ${command}`}>{copied === command ? <Check size={18} /> : <Copy size={18} />}</button></article>; })}</div></section>;
 }
 
 function SettingToggle({ name, title, help, defaultChecked = false, warning }: { name: string; title: string; help: string; defaultChecked?: boolean; warning?: string }) {
@@ -333,12 +335,13 @@ export function AdminPortal() {
   const [loading, setLoading] = useState(true);
   const [managingPlan, setManagingPlan] = useState<AdminCustomerRow | null>(null);
   const [managingAccounts, setManagingAccounts] = useState<AdminCustomerRow | null>(null);
+  const [managingPrefix, setManagingPrefix] = useState<AdminCustomerRow | null>(null);
 
   async function loadAdminData() {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) { setCustomers([]); setManagedAccounts(0); setPendingRequests(0); setLoading(false); return; }
     const [{ data: profiles }, { data: subscriptions }, { data: plans }, { data: accounts }, { count: requestCount }] = await Promise.all([
-      supabase.from("profiles").select("id, full_name, customer_code").eq("role", "customer").order("created_at", { ascending: false }),
+      supabase.from("profiles").select("id, full_name, customer_code, command_prefix").eq("role", "customer").order("created_at", { ascending: false }),
       supabase.from("subscriptions").select("id, user_id, plan_id, status, amount_paid_inr, started_at, renews_at, created_at").order("created_at", { ascending: false }),
       supabase.from("plans").select("id, account_limit, term_months"),
       supabase.from("game_accounts").select("id, user_id"),
@@ -355,7 +358,7 @@ export function AdminPortal() {
       const renewalDate = subscription?.renews_at ? new Date(subscription.renews_at) : null;
       const days = renewalDate ? Math.ceil((renewalDate.getTime() - Date.now()) / 86400000) : null;
       const status = subscription ? (subscription.status === "active" && days !== null && days <= 7 ? "due soon" : subscription.status.replaceAll("_", " ")) : "no subscription";
-      return { id: profile.customer_code || profile.id.slice(0, 8), userId: profile.id, subscriptionId: subscription?.id, planId: subscription?.plan_id, accountLimit: plan?.account_limit ?? 0, name: profile.full_name, accounts: accountCounts.get(profile.id) ?? 0, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "Not scheduled", status, amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—", amountValue: subscription ? Number(subscription.amount_paid_inr) : 0, startedAt: subscription?.started_at, renewsAt: subscription?.renews_at };
+      return { id: profile.customer_code || profile.id.slice(0, 8), userId: profile.id, subscriptionId: subscription?.id, planId: subscription?.plan_id, accountLimit: plan?.account_limit ?? 0, commandPrefix: profile.command_prefix || "!", name: profile.full_name, accounts: accountCounts.get(profile.id) ?? 0, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "Not scheduled", status, amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—", amountValue: subscription ? Number(subscription.amount_paid_inr) : 0, startedAt: subscription?.started_at, renewsAt: subscription?.renews_at };
     });
     setCustomers(rows); setManagedAccounts((accounts ?? []).length); setPendingRequests(requestCount ?? 0); setLoading(false);
   }
@@ -366,13 +369,14 @@ export function AdminPortal() {
   const activeValue = activeCustomers.reduce((sum, row) => sum + row.amountValue, 0);
   return <PortalFrame role="admin" active={active} setActive={setActive}>
     {active === "overview" && <AdminOverview setActive={setActive} onAdd={() => setAdding(true)} customers={customers} managedAccounts={managedAccounts} pendingRequests={pendingRequests} renewalsDue={renewalsDue} activeValue={activeValue} loading={loading} />}
-    {active === "customers" && <CustomersView onAdd={() => setAdding(true)} onManagePlan={setManagingPlan} onManageAccounts={setManagingAccounts} rows={customers} loading={loading} />}
+    {active === "customers" && <CustomersView onAdd={() => setAdding(true)} onManagePlan={setManagingPlan} onManageAccounts={setManagingAccounts} onManagePrefix={setManagingPrefix} rows={customers} loading={loading} />}
     {active === "renewals" && <RenewalsView rows={customers} loading={loading} />}
     {active === "requests" && <RequestsView />}
     {active === "plans" && <PlansView />}
     {adding && <AddCustomerDialog onClose={() => setAdding(false)} />}
     {managingPlan && <ManagePlanDialog customer={managingPlan} onClose={() => setManagingPlan(null)} onSaved={() => { setManagingPlan(null); setLoading(true); loadAdminData(); }} />}
     {managingAccounts && <ManageAccountsDialog customer={managingAccounts} onClose={() => setManagingAccounts(null)} onChanged={loadAdminData} />}
+    {managingPrefix && <ManageCommandPrefixDialog customer={managingPrefix} onClose={() => setManagingPrefix(null)} onSaved={() => { setManagingPrefix(null); setLoading(true); loadAdminData(); }} />}
   </PortalFrame>;
 }
 
@@ -381,14 +385,36 @@ function AdminOverview({ setActive, onAdd, customers, managedAccounts, pendingRe
   return <><section className="admin-welcome"><div><p className="eyebrow">Live business records</p><h2>Admin overview</h2><p>All figures below come directly from Supabase.</p></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></section><section className="stat-grid four"><article><span className="metric-icon blue"><Users /></span><div><small>Active customers</small><strong>{loading ? "—" : activeCount}</strong><p>Recorded subscriptions</p></div></article><article><span className="metric-icon green"><Gamepad2 /></span><div><small>Managed accounts</small><strong>{loading ? "—" : managedAccounts}</strong><p>Connected account records</p></div></article><article><span className="metric-icon amber"><CreditCard /></span><div><small>Active plan value</small><strong>{loading ? "—" : `₹${activeValue.toLocaleString("en-IN")}`}</strong><p>Amounts recorded on active plans</p></div></article><article><span className="metric-icon violet"><RefreshCw /></span><div><small>Renewals due</small><strong>{loading ? "—" : renewalsDue.length}</strong><p>Due soon, past due or expired</p></div></article></section><div className="content-grid admin-grid"><section className="panel"><div className="panel-head"><div><p className="eyebrow">Action queue</p><h3>Setting requests</h3></div><button className="text-button" onClick={() => setActive("requests")}>View all</button></div>{loading ? <p className="empty-copy">Loading requests…</p> : pendingRequests ? <div className="empty-inline"><Settings2 /><span><strong>{pendingRequests} pending {pendingRequests === 1 ? "request" : "requests"}</strong><small>Open the request queue to review the submitted settings.</small></span></div> : <div className="empty-inline"><Settings2 /><span><strong>No pending requests</strong><small>New customer submissions will appear here.</small></span></div>}</section><section className="panel"><div className="panel-head"><div><p className="eyebrow">Renewal queue</p><h3>Renewals</h3></div><button className="text-button" onClick={() => setActive("renewals")}>View all</button></div><div className="renewal-list">{loading ? <p className="empty-copy">Loading renewals…</p> : renewalsDue.length ? renewalsDue.slice(0, 3).map((item) => <div key={item.id}><div className="date-box"><CalendarDays size={18} /></div><div><strong>{item.name}</strong><small>{item.renewal} · {item.amount}</small></div><Status>{item.status}</Status></div>) : <div className="empty-inline"><CalendarDays /><span><strong>No renewals due</strong><small>Upcoming and overdue subscriptions will appear here.</small></span></div>}</div></section></div><section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">Live customers</p><h3>Customers</h3></div><button className="text-button" onClick={() => setActive("customers")}>Manage customers</button></div><CustomerTable rows={customers.slice(0, 5)} loading={loading} /></section></>;
 }
 
-function CustomerTable({ rows, loading = false, onManagePlan, onManageAccounts }: { rows: AdminCustomerRow[]; loading?: boolean; onManagePlan?: (customer: AdminCustomerRow) => void; onManageAccounts?: (customer: AdminCustomerRow) => void }) {
+function CustomerTable({ rows, loading = false, onManagePlan, onManageAccounts, onManagePrefix }: { rows: AdminCustomerRow[]; loading?: boolean; onManagePlan?: (customer: AdminCustomerRow) => void; onManageAccounts?: (customer: AdminCustomerRow) => void; onManagePrefix?: (customer: AdminCustomerRow) => void }) {
   if (loading) return <div className="empty-state compact-empty"><RefreshCw /><h3>Loading customers…</h3></div>;
   if (!rows.length) return <div className="empty-state compact-empty"><Users /><h3>No customers yet</h3><p>Real customer records will appear after they are created.</p></div>;
-  const hasActions = onManagePlan || onManageAccounts;
-  return <div className="table-wrap"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Renewal</th><th>Amount</th><th>Status</th>{hasActions && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><small>{item.id}</small></td><td>{item.plan}</td><td>{item.accounts}{item.accountLimit ? ` / ${item.accountLimit}` : ""}</td><td>{item.renewal}</td><td><strong>{item.amount}</strong></td><td><Status>{item.status}</Status></td>{hasActions && <td><div className="table-actions">{onManageAccounts && <button className="secondary-button table-action" onClick={() => onManageAccounts(item)}>Accounts</button>}{onManagePlan && <button className="secondary-button table-action" onClick={() => onManagePlan(item)}>Plan</button>}</div></td>}</tr>)}</tbody></table></div>;
+  const hasActions = onManagePlan || onManageAccounts || onManagePrefix;
+  return <div className="table-wrap"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Prefix</th><th>Renewal</th><th>Amount</th><th>Status</th>{hasActions && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><small>{item.id}</small></td><td>{item.plan}</td><td>{item.accounts}{item.accountLimit ? ` / ${item.accountLimit}` : ""}</td><td><code>{item.commandPrefix}</code></td><td>{item.renewal}</td><td><strong>{item.amount}</strong></td><td><Status>{item.status}</Status></td>{hasActions && <td><div className="table-actions">{onManageAccounts && <button className="secondary-button table-action" onClick={() => onManageAccounts(item)}>Accounts</button>}{onManagePlan && <button className="secondary-button table-action" onClick={() => onManagePlan(item)}>Plan</button>}{onManagePrefix && <button className="secondary-button table-action" onClick={() => onManagePrefix(item)}>Prefix</button>}</div></td>}</tr>)}</tbody></table></div>;
 }
 
-function CustomersView({ onAdd, onManagePlan, onManageAccounts, rows, loading }: { onAdd: () => void; onManagePlan: (customer: AdminCustomerRow) => void; onManageAccounts: (customer: AdminCustomerRow) => void; rows: AdminCustomerRow[]; loading: boolean }) { const [query, setQuery] = useState(""); const filtered = rows.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())); return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">{loading ? "Loading" : `${rows.length} customer records`}</p><h3>Customer management</h3></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></div><div className="table-tools"><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search customers…" /></div><button className="secondary-button"><SlidersHorizontal size={16} />Filter</button></div><CustomerTable rows={filtered} loading={loading} onManagePlan={onManagePlan} onManageAccounts={onManageAccounts} /></section>; }
+function CustomersView({ onAdd, onManagePlan, onManageAccounts, onManagePrefix, rows, loading }: { onAdd: () => void; onManagePlan: (customer: AdminCustomerRow) => void; onManageAccounts: (customer: AdminCustomerRow) => void; onManagePrefix: (customer: AdminCustomerRow) => void; rows: AdminCustomerRow[]; loading: boolean }) { const [query, setQuery] = useState(""); const filtered = rows.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())); return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">{loading ? "Loading" : `${rows.length} customer records`}</p><h3>Customer management</h3></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></div><div className="table-tools"><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search customers…" /></div><button className="secondary-button"><SlidersHorizontal size={16} />Filter</button></div><CustomerTable rows={filtered} loading={loading} onManagePlan={onManagePlan} onManageAccounts={onManageAccounts} onManagePrefix={onManagePrefix} /></section>; }
+
+function ManageCommandPrefixDialog({ customer, onClose, onSaved }: { customer: AdminCustomerRow; onClose: () => void; onSaved: () => void }) {
+  const [prefix, setPrefix] = useState(customer.commandPrefix || "!");
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function save(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const value = prefix.trim();
+    if (!value || /\s/.test(value) || [...value].length > 3) { setMessage("Use 1 to 3 characters with no spaces."); return; }
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    setBusy(true); setMessage("");
+    const { error } = await supabase.from("profiles").update({ command_prefix: value, updated_at: new Date().toISOString() }).eq("id", customer.userId);
+    if (error) { setBusy(false); setMessage(error.message); return; }
+    const { data: auth } = await supabase.auth.getUser();
+    if (auth.user) await supabase.from("audit_log").insert({ actor_id: auth.user.id, action: "customer_command_prefix_updated", entity_type: "profile", entity_id: customer.userId, details: { command_prefix: value } });
+    setBusy(false); onSaved();
+  }
+
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="manage-prefix-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Guild Bank commands</p><h2 id="manage-prefix-title">Set prefix for {customer.name}</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">The customer’s Commands page will display and copy every bank command with this prefix.</p><form className="support-form" onSubmit={save}><label>Command prefix<input value={prefix} onChange={(event) => setPrefix(event.target.value)} maxLength={3} placeholder="!" autoFocus required /></label><p className="credential-warning"><Command size={15} />Example: {prefix || "!"}bal</p><button className="primary-button" disabled={busy}>{busy ? "Saving…" : "Save command prefix"}</button></form>{message && <p className="form-message">{message}</p>}</section></div>;
+}
 
 const emptyAccountForm = { display_name: "", account_reference: "", kingdom: "", bot_slot_reference: "", status: "setup_pending" };
 

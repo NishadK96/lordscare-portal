@@ -35,3 +35,14 @@ test("customer settings retain applied state and serialize disabled switches", a
   assert.match(source, /appliedChecked\("always_shielded"/);
   assert.match(source, /appliedValue\("shield_redeploy_minutes"/);
 });
+
+test("customer bank commands use the administrator-configured prefix", async () => {
+  const source = await readFile(new URL("../app/PortalShell.tsx", import.meta.url), "utf8");
+  const migration = await readFile(new URL("../supabase/migrations/002_customer_command_prefix.sql", import.meta.url), "utf8");
+  assert.match(source, /commandPrefix: profile\?\.command_prefix \|\| "!"/);
+  assert.match(source, /<CommandsView prefix=\{snapshot\?\.commandPrefix \|\| "!"\}/);
+  assert.match(source, /Guild Bank prefix: \{prefix\}/);
+  assert.match(source, /customer_command_prefix_updated/);
+  assert.match(migration, /default '!'/);
+  assert.match(migration, /between 1 and 3/);
+});

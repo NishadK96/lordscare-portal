@@ -14,6 +14,7 @@ create table public.profiles (
   role public.user_role not null default 'customer',
   customer_code text unique,
   assigned_sales_helper text,
+  command_prefix text not null default '!' check (char_length(command_prefix) between 1 and 3 and command_prefix !~ '[[:space:]]'),
   active boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()

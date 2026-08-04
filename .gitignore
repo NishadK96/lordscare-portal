@@ -42,3 +42,4 @@ next-env.d.ts
 /work/
 bridge/bridge.config.json
 bridge/dry-run/
+supabase/.temp/
