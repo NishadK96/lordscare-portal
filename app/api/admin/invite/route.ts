@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 export async function POST(request: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const serviceKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   const bearer = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   if (!url || !serviceKey) return Response.json({ error: "Server connection is not configured." }, { status: 503 });
   if (!bearer) return Response.json({ error: "Sign in is required." }, { status: 401 });

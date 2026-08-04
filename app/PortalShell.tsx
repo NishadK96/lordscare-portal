@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Bell, CalendarDays, Check, ChevronDown, CircleUserRound, Clock3, Command,
   Copy, CreditCard, Gauge, Gamepad2, Headphones, LayoutDashboard, LogOut,
@@ -8,7 +8,7 @@ import {
   SlidersHorizontal, Sparkles, Users, WalletCards, X,
 } from "lucide-react";
 import { adminCustomers, commands, customer, gameAccounts, planPrices, settingsRequests } from "./data";
-import { getSupabaseBrowserClient } from "@/lib/supabase";
+import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 
 type Role = "customer" | "admin";
 type NavItem = { id: string; label: string; icon: React.ComponentType<{ size?: number }> };
@@ -36,13 +36,46 @@ function Status({ children }: { children: React.ReactNode }) {
 
 function PortalFrame({ role, active, setActive, children }: { role: Role; active: string; setActive: (id: string) => void; children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [accessReady, setAccessReady] = useState(!isSupabaseConfigured);
   const items = role === "admin" ? adminNav : customerNav;
   const displayName = role === "admin" ? "Nishad" : customer.name;
+
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    let activeCheck = true;
+    supabase.auth.getUser().then(async ({ data }) => {
+      if (!activeCheck) return;
+      if (!data.user) {
+        window.location.replace("/");
+        return;
+      }
+      const { data: profile } = await supabase.from("profiles").select("role, active").eq("id", data.user.id).single();
+      if (!profile?.active) {
+        await supabase.auth.signOut();
+        window.location.replace("/");
+        return;
+      }
+      if (role === "admin" && profile.role !== "admin") {
+        window.location.replace("/customer");
+        return;
+      }
+      if (role === "customer" && profile.role === "admin") {
+        window.location.replace("/admin");
+        return;
+      }
+      setAccessReady(true);
+    });
+    return () => { activeCheck = false; };
+  }, [role]);
 
   async function signOut() {
     await getSupabaseBrowserClient()?.auth.signOut();
     window.location.href = "/";
   }
+
+  if (!accessReady) return <main className="auth-loading"><div className="brand-mark">LC</div><p>Checking your secure session…</p></main>;
 
   return (
     <main className="portal-app">
