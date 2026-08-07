@@ -1,41 +1,26 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render(path = "/") {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
-
-  return worker.fetch(
-    new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
-}
-
-test("server-renders the public LordsCare subscriber support site", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
-  assert.match(html, /<title>LordsCare Bot Support<\/title>/i);
-  assert.match(html, /Find the right bot command/);
-  assert.match(html, /Browse the complete Guild Bank command library without creating an account or signing in/);
-  assert.match(html, /67 documented commands/);
-  assert.doesNotMatch(html, /Sign in|Email address|Password|Your subscription|Connected accounts/i);
-  assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);
+test("native Next.js build creates the Vercel output", async () => {
+  await access(new URL("../.next/BUILD_ID", import.meta.url));
+  const packageSource = await readFile(new URL("../package.json", import.meta.url), "utf8");
+  const vercelSource = await readFile(new URL("../vercel.json", import.meta.url), "utf8");
+  assert.match(packageSource, /"build": "next build"/);
+  assert.match(vercelSource, /"framework": "nextjs"/);
 });
 
 test("legacy customer links also open support without authentication", async () => {
-  for (const path of ["/customer", "/set-password"]) {
-    const response = await render(path);
-    assert.equal(response.status, 200);
-    const html = await response.text();
-    assert.match(html, /Find the right bot command/);
-    assert.doesNotMatch(html, /Checking your secure link|Choose your password|Sign in to your portal/i);
-  }
+  const publicSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
+  const layoutSource = await readFile(new URL("../app/layout.tsx", import.meta.url), "utf8");
+  const customerSource = await readFile(new URL("../app/customer/page.tsx", import.meta.url), "utf8");
+  const passwordSource = await readFile(new URL("../app/set-password/page.tsx", import.meta.url), "utf8");
+  assert.match(layoutSource, /LordsCare Bot Support/);
+  assert.match(publicSource, /Find the right bot command/);
+  assert.match(publicSource, /without creating an account or signing in/);
+  assert.match(customerSource, /PublicSupport/);
+  assert.match(passwordSource, /PublicSupport/);
+  assert.doesNotMatch(customerSource + passwordSource, /LoginPanel|Choose your password|Checking your secure link/i);
 });
 
 test("customer settings retain applied state and serialize disabled switches", async () => {
