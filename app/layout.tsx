@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "LordsCare Customer Portal",
+    default: "LordsCare Bot Support",
     template: "%s · LordsCare",
   },
-  description: "Manage LordsCare subscriptions, connected accounts, renewal dates, commands and bot-setting requests.",
+  description: "Browse LordsCare Guild Bank commands, examples and subscriber support information without signing in.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

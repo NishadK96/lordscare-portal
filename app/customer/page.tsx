@@ -1,5 +1,5 @@
-import { CustomerPortal } from "../PortalShell";
+import { PublicSupport } from "../PublicSupport";
 
 export default function CustomerPage() {
-  return <CustomerPortal />;
+  return <PublicSupport />;
 }
