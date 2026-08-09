@@ -54,3 +54,18 @@ test("customer bank commands use the administrator-configured prefix", async () 
   assert.match(migration, /default '!'/);
   assert.match(migration, /between 1 and 3/);
 });
+
+test("public guided setup request covers the core bot configuration", async () => {
+  const publicSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
+  const routeSource = await readFile(new URL("../app/setup-request/page.tsx", import.meta.url), "utf8");
+  const builderSource = await readFile(new URL("../app/SetupRequestBuilder.tsx", import.meta.url), "utf8");
+  assert.match(publicSource, /\/setup-request/);
+  assert.match(routeSource, /SetupRequestBuilder/);
+  assert.match(builderSource, /Building settings/);
+  assert.match(builderSource, /Research settings/);
+  assert.match(builderSource, /Familiar settings/);
+  assert.match(builderSource, /Army training/);
+  assert.match(builderSource, /navigator\.clipboard\.writeText/);
+  assert.match(builderSource, /navigator\.share/);
+  assert.match(builderSource, /Never enter a game password, OTP, login token, or access key/);
+});
