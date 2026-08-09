@@ -91,6 +91,8 @@ a { color: inherit; text-decoration: none; }
 .setup-progress .active button > span { border-color: #245f47; color: white; background: #245f47; }
 .setup-progress .done button { color: #2d7457; }
 .setup-progress .done button > span { border-color: #c9eadb; color: #247052; background: #dff4e9; }
+.setup-progress.full { display: flex; overflow-x: auto; scrollbar-width: thin; }
+.setup-progress.full li { min-width: 104px; flex: 1 0 104px; }
 .setup-card { margin-top: 24px; padding: clamp(25px, 4vw, 44px); border: 1px solid #e0e7e3; border-radius: 20px; background: white; box-shadow: 0 14px 44px rgba(19,53,40,.07); }
 .setup-step-heading { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 30px; padding-bottom: 23px; border-bottom: 1px solid #e9eeeb; }
 .setup-step-heading > span { width: 42px; height: 42px; flex: 0 0 42px; display: grid; place-items: center; border-radius: 12px; color: #25634b; background: #e5f5ed; font-size: 11px; font-weight: 850; }
@@ -107,6 +109,7 @@ a { color: inherit; text-decoration: none; }
 .setup-switch > span { display: grid; gap: 4px; }
 .setup-switch strong { color: #31453b; font-size: 11px; }
 .setup-switch small { color: #89948f; font-size: 9px; line-height: 1.4; }
+.setup-switch em, .setup-field-warning { color: #a56622; font-size: 8px; font-style: normal; font-weight: 750; }
 .setup-switch input { position: absolute; opacity: 0; pointer-events: none; }
 .setup-switch i { width: 42px; height: 23px; flex: 0 0 42px; position: relative; border-radius: 99px; background: #cbd4cf; transition: .2s; }
 .setup-switch i:after { content: ""; width: 17px; height: 17px; position: absolute; left: 3px; top: 3px; border-radius: 50%; background: white; box-shadow: 0 2px 5px rgba(0,0,0,.2); transition: .2s; }
@@ -134,9 +137,9 @@ a { color: inherit; text-decoration: none; }
   .setup-promo > a { grid-column: 1 / -1; }
   .support-footer > div { padding-top: 30px; padding-bottom: 30px; flex-direction: column; align-items: flex-start; }
   .support-footer p { text-align: left; }
-  .setup-progress { grid-template-columns: repeat(3, 1fr); }
-  .setup-progress li:nth-child(4) { border-left: 0; }
-  .setup-progress li:nth-child(n+4) { border-top: 1px solid #edf1ef; }
+  .setup-progress:not(.full) { grid-template-columns: repeat(3, 1fr); }
+  .setup-progress:not(.full) li:nth-child(4) { border-left: 0; }
+  .setup-progress:not(.full) li:nth-child(n+4) { border-top: 1px solid #edf1ef; }
   .setup-progress button { min-height: 52px; font-size: 9px; }
   .setup-form-grid { grid-template-columns: 1fr; }
   .setup-field.wide, .setup-checkbox-group { grid-column: auto; }
