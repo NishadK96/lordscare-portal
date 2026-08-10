@@ -96,3 +96,20 @@ test("public events section includes the Guild Duel guide", async () => {
   assert.match(eventSource, /Use 1 Army Star Scroll/);
   assert.doesNotMatch(eventSource, /guild-duel-day-1\.jpg|from "next\/image"/);
 });
+
+test("responsive layout covers phones, tablets, drawers, tables, and dialogs", async () => {
+  const publicSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
+  const portalSource = await readFile(new URL("../app/PortalShell.tsx", import.meta.url), "utf8");
+  const cssSource = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.match(publicSource, /id="commands"/);
+  assert.match(portalSource, /mobile-nav-backdrop/);
+  assert.match(portalSource, /aria-expanded=\{mobileOpen\}/);
+  assert.match(portalSource, /data-label="Customer"/);
+  assert.match(portalSource, /data-label="Actions"/);
+  assert.match(cssSource, /@media \(max-width: 1023px\)/);
+  assert.match(cssSource, /@media \(max-width: 767px\)/);
+  assert.match(cssSource, /@media \(max-width: 479px\)/);
+  assert.match(cssSource, /env\(safe-area-inset-bottom\)/);
+  assert.match(cssSource, /\.customer-table td::before/);
+  assert.match(cssSource, /\.modal-card, \.plan-modal, \.accounts-modal \{[^}]*border-radius: 20px 20px 0 0/s);
+});

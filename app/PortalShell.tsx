@@ -91,6 +91,15 @@ function PortalFrame({ role, active, setActive, children }: { role: Role; active
     return () => { activeCheck = false; };
   }, [role]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") setMobileOpen(false); };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+    return () => { document.body.style.overflow = previousOverflow; window.removeEventListener("keydown", closeOnEscape); };
+  }, [mobileOpen]);
+
   async function signOut() {
     await getSupabaseBrowserClient()?.auth.signOut();
     window.location.href = "/";
@@ -112,9 +121,10 @@ function PortalFrame({ role, active, setActive, children }: { role: Role; active
           <button className="signout-button" onClick={signOut}><LogOut size={17} />Sign out</button>
         </div>
       </aside>
+      {mobileOpen && <button className="mobile-nav-backdrop" onClick={() => setMobileOpen(false)} aria-label="Close navigation menu" />}
       <section className="portal-main">
         <header className="topbar">
-          <button className="menu-button" onClick={() => setMobileOpen(true)} aria-label="Open menu"><Menu /></button>
+          <button className="menu-button" onClick={() => setMobileOpen(true)} aria-label="Open menu" aria-expanded={mobileOpen}><Menu /></button>
           <div><p className="eyebrow">{role === "admin" ? "Business control centre" : `Hello, ${displayName}`}</p><h1>{items.find((item) => item.id === active)?.label}</h1></div>
           <div className="topbar-actions"><button aria-label="Notifications"><Bell size={19} /><i /></button><div className="avatar">{displayName[0]}</div></div>
         </header>
@@ -380,7 +390,7 @@ function CustomerTable({ rows, loading = false, onManagePlan, onManageAccounts, 
   if (loading) return <div className="empty-state compact-empty"><RefreshCw /><h3>Loading customers…</h3></div>;
   if (!rows.length) return <div className="empty-state compact-empty"><Users /><h3>No customers yet</h3><p>Real customer records will appear after they are created.</p></div>;
   const hasActions = onManagePlan || onManageAccounts || onManagePrefix;
-  return <div className="table-wrap"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Prefix</th><th>Renewal</th><th>Amount</th><th>Status</th>{hasActions && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><small>{item.id}</small></td><td>{item.plan}</td><td>{item.accounts}{item.accountLimit ? ` / ${item.accountLimit}` : ""}</td><td><code>{item.commandPrefix}</code></td><td>{item.renewal}</td><td><strong>{item.amount}</strong></td><td><Status>{item.status}</Status></td>{hasActions && <td><div className="table-actions">{onManageAccounts && <button className="secondary-button table-action" onClick={() => onManageAccounts(item)}>Accounts</button>}{onManagePlan && <button className="secondary-button table-action" onClick={() => onManagePlan(item)}>Plan</button>}{onManagePrefix && <button className="secondary-button table-action" onClick={() => onManagePrefix(item)}>Prefix</button>}</div></td>}</tr>)}</tbody></table></div>;
+  return <div className="table-wrap customer-table"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Prefix</th><th>Renewal</th><th>Amount</th><th>Status</th>{hasActions && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td data-label="Customer"><strong>{item.name}</strong><small>{item.id}</small></td><td data-label="Plan">{item.plan}</td><td data-label="Accounts">{item.accounts}{item.accountLimit ? ` / ${item.accountLimit}` : ""}</td><td data-label="Prefix"><code>{item.commandPrefix}</code></td><td data-label="Renewal">{item.renewal}</td><td data-label="Amount"><strong>{item.amount}</strong></td><td data-label="Status"><Status>{item.status}</Status></td>{hasActions && <td data-label="Actions"><div className="table-actions">{onManageAccounts && <button className="secondary-button table-action" onClick={() => onManageAccounts(item)}>Accounts</button>}{onManagePlan && <button className="secondary-button table-action" onClick={() => onManagePlan(item)}>Plan</button>}{onManagePrefix && <button className="secondary-button table-action" onClick={() => onManagePrefix(item)}>Prefix</button>}</div></td>}</tr>)}</tbody></table></div>;
 }
 
 function CustomersView({ onAdd, onManagePlan, onManageAccounts, onManagePrefix, rows, loading }: { onAdd: () => void; onManagePlan: (customer: AdminCustomerRow) => void; onManageAccounts: (customer: AdminCustomerRow) => void; onManagePrefix: (customer: AdminCustomerRow) => void; rows: AdminCustomerRow[]; loading: boolean }) { const [query, setQuery] = useState(""); const filtered = rows.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())); return <section className="panel full-panel"><div className="panel-head"><div><p className="eyebrow">{loading ? "Loading" : `${rows.length} customer records`}</p><h3>Customer management</h3></div><button className="primary-button compact" onClick={onAdd}><Plus size={17} />Add customer</button></div><div className="table-tools"><div className="search-box"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search customers…" /></div><button className="secondary-button"><SlidersHorizontal size={16} />Filter</button></div><CustomerTable rows={filtered} loading={loading} onManagePlan={onManagePlan} onManageAccounts={onManageAccounts} onManagePrefix={onManagePrefix} /></section>; }
@@ -404,7 +414,7 @@ function ManageCommandPrefixDialog({ customer, onClose, onSaved }: { customer: A
     setBusy(false); onSaved();
   }
 
-  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="manage-prefix-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Guild Bank commands</p><h2 id="manage-prefix-title">Set prefix for {customer.name}</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">The customer’s Commands page will display and copy every bank command with this prefix.</p><form className="support-form" onSubmit={save}><label>Command prefix<input value={prefix} onChange={(event) => setPrefix(event.target.value)} maxLength={3} placeholder="!" autoFocus required /></label><p className="credential-warning"><Command size={15} />Example: {prefix || "!"}bal</p><button className="primary-button" disabled={busy}>{busy ? "Saving…" : "Save command prefix"}</button></form>{message && <p className="form-message">{message}</p>}</section></div>;
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="manage-prefix-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Guild Bank commands</p><h2 id="manage-prefix-title">Set prefix for {customer.name}</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close dialog"><X /></button></div><p className="muted">The customer’s Commands page will display and copy every bank command with this prefix.</p><form className="support-form" onSubmit={save}><label>Command prefix<input value={prefix} onChange={(event) => setPrefix(event.target.value)} maxLength={3} placeholder="!" autoFocus required /></label><p className="credential-warning"><Command size={15} />Example: {prefix || "!"}bal</p><button className="primary-button" disabled={busy}>{busy ? "Saving…" : "Save command prefix"}</button></form>{message && <p className="form-message">{message}</p>}</section></div>;
 }
 
 const emptyAccountForm = { display_name: "", account_reference: "", kingdom: "", bot_slot_reference: "", status: "setup_pending" };
