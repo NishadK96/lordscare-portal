@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 test("native Next.js build creates the Vercel output", async () => {
@@ -100,7 +100,7 @@ test("public events section includes the Guild Duel guide", async () => {
 test("events section includes the Guild Showdown rank tactic", async () => {
   const eventSource = await readFile(new URL("../app/events/page.tsx", import.meta.url), "utf8");
   assert.match(eventSource, /id="guild-showdown"/);
-  assert.match(eventSource, /href="#guild-showdown">Showdown/);
+  assert.match(eventSource, /href="#guild-showdown"/);
   assert.match(eventSource, /Guild Board → Might Ranking → Your Rank/);
   assert.match(eventSource, /cavalry: \[1, 4, 7, 10/);
   assert.match(eventSource, /ranged: \[2, 5, 8, 11/);
@@ -115,11 +115,11 @@ test("events section includes the Guild Showdown rank tactic", async () => {
 test("responsive layout covers phones, tablets, drawers, tables, and dialogs", async () => {
   const publicSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
   const portalSource = await readFile(new URL("../app/PortalShell.tsx", import.meta.url), "utf8");
-  const eventSource = await readFile(new URL("../app/events/page.tsx", import.meta.url), "utf8");
+  const headerSource = await readFile(new URL("../app/SupportHeader.tsx", import.meta.url), "utf8");
   const cssSource = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(publicSource, /id="commands"/);
-  assert.match(publicSource, /mobile-primary-link[^>]+href="\/events"/);
-  assert.match(eventSource, /mobile-primary-link[^>]+href="\/"/);
+  assert.match(headerSource, /label: "Events", href: "\/events"/);
+  assert.match(headerSource, /label: "Monsters", href: "\/monsters"/);
   assert.match(portalSource, /mobile-nav-backdrop/);
   assert.match(portalSource, /aria-expanded=\{mobileOpen\}/);
   assert.match(portalSource, /data-label="Customer"/);
@@ -132,4 +132,32 @@ test("responsive layout covers phones, tablets, drawers, tables, and dialogs", a
   assert.match(cssSource, /\.support-nav nav a\.nav-external-link \{ display: none; \}/);
   assert.match(cssSource, /\.customer-table td::before/);
   assert.match(cssSource, /\.modal-card, \.plan-modal, \.accounts-modal \{[^}]*border-radius: 20px 20px 0 0/s);
+});
+
+test("monster guide ships a complete local catalog and companion-tool architecture", async () => {
+  const monsters = JSON.parse(await readFile(new URL("../app/monsters/monsters.json", import.meta.url), "utf8"));
+  const heroes = JSON.parse(await readFile(new URL("../app/monsters/heroes.json", import.meta.url), "utf8"));
+  const repositorySource = await readFile(new URL("../app/monsters/repository.ts", import.meta.url), "utf8");
+  const explorerSource = await readFile(new URL("../app/monsters/MonstersExplorer.tsx", import.meta.url), "utf8");
+  const detailSource = await readFile(new URL("../app/monsters/[slug]/page.tsx", import.meta.url), "utf8");
+  const homeSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
+  const monsterAssets = await readdir(new URL("../public/monsters/", import.meta.url));
+  assert.equal(monsters.length, 43);
+  assert.equal(monsterAssets.length, 43);
+  assert.ok(heroes.length >= 30);
+  assert.ok(monsters.every((monster) => monster.image?.startsWith("/monsters/") && monster.sourceUrl.includes("lordsmobile.fandom.com/wiki/")));
+  assert.ok(monsters.filter((monster) => monster.category === "Normal").every((monster) => monster.recommendedAttackType && monster.heroLineups.length));
+  assert.equal(monsters.some((monster) => ["Monster", "Monster Hunting"].includes(monster.name)), false);
+  assert.equal(monsters.find((monster) => monster.name === "Gargantua")?.recommendedAttackType, "Magic");
+  assert.equal(monsters.find((monster) => monster.name === "Queen Bee")?.recommendedAttackType, "Physical");
+  assert.match(repositorySource, /getMonsterBySlug/);
+  assert.match(repositorySource, /searchMonsters/);
+  assert.match(repositorySource, /getRelatedMonsters/);
+  assert.match(explorerSource, /No monsters found/);
+  assert.match(explorerSource, /Clear monster search/);
+  assert.match(explorerSource, /Favorite monsters/);
+  assert.match(detailSource, /generateStaticParams/);
+  assert.match(detailSource, /MonsterHeroLineup/);
+  assert.match(detailSource, /MonsterMobileActions/);
+  assert.match(homeSource, /href="\/monsters"/);
 });

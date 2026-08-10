@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, Clipboard, Download, Home, RotateCcw, Share2, ShieldCheck } from "lucide-react";
 import { defaultSetupValues, setupCategories, type SetupField } from "./setupSettings";
 
@@ -48,7 +49,7 @@ export function SetupRequestBuilder() {
   };
 
   return <main className="setup-page">
-    <header className="support-site-header"><div className="support-shell support-nav"><a href="/" className="site-brand"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>Complete bot setup</span></div></a><nav><a href="/"><Home size={14} />Commands</a></nav></div></header>
+    <header className="support-site-header"><div className="support-shell support-nav"><Link href="/" className="site-brand"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>Complete bot setup</span></div></Link><nav><Link href="/"><Home size={14} />Commands</Link></nav></div></header>
     <section className="setup-hero"><div className="setup-shell"><p className="eyebrow light">Complete bot setup</p><h1>Configure the entire bot in one guided request.</h1><p>Work through every available settings category. Your choices are turned into one clear setup summary to send to your LordsCare representative.</p><div className="security-note"><ShieldCheck size={18} /><span><strong>Keep your account safe.</strong> Never enter a game password, OTP, login token, or access key here.</span></div></div></section>
     <div className="setup-shell setup-workspace">
       <ol className="setup-progress full" aria-label="Setup progress">{steps.map((label, index) => <li key={label} className={index === step ? "active" : index < step ? "done" : ""}><button type="button" onClick={() => index <= step && setStep(index)}><span>{index < step ? <Check size={14} /> : index + 1}</span>{label}</button></li>)}</ol>

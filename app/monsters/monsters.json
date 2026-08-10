@@ -1,0 +1,3510 @@
+[
+  {
+    "id": "5021",
+    "slug": "animare",
+    "name": "Animare",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/animare.webp",
+    "thumbnail": "/monsters/animare.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/9/95/Animare.png/revision/latest/scale-to-width-down/600?cb=20200308174100",
+    "description": "The Animare spawns during Special Events like Code 66, and is categorized as a One Hit Monster. == Monster Manual == DMG Type: Direct DMG",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "This buoyant critter has an unquenchable thirst for Anima! Saddle up and knock the wind out of its sails to reclaim that Anima!"
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [
+      "This buoyant critter has an unquenchable thirst for Anima! Saddle up and knock the wind out of its sails to reclaim that Anima!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Animare"
+  },
+  {
+    "id": "5217",
+    "slug": "arctic-flipper",
+    "name": "Arctic Flipper",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal",
+      "Event"
+    ],
+    "image": "/monsters/arctic-flipper.webp",
+    "thumbnail": "/monsters/arctic-flipper.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/c/c9/Arctic_Flipper.png/revision/latest?cb=20200308174116",
+    "description": "The Arctic Flipper is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Child of Light",
+      "Prima Donna",
+      "Incinerator",
+      "Elementalist",
+      "Sage of Storms"
+    ],
+    "alternativeHeroes": [
+      "Necroduke",
+      "Storm Fox",
+      "Petite Devil",
+      "Incinerator",
+      "Dark Magister"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Normal",
+        "level": "1 - 2",
+        "free": [
+          "Incinerator",
+          "Bombin' Goblin",
+          "Elementalist",
+          "Sage of Storms"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Petite Devil",
+          "Elementalist",
+          "Incinerator",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Normal",
+        "level": "3",
+        "free": [
+          "Prima Donna",
+          "Incinerator",
+          "Bombin' Goblin",
+          "Elementalist",
+          "Sage of Storms"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Petite Devil",
+          "Elementalist",
+          "Incinerator",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Normal",
+        "level": "4 - 5",
+        "free": [
+          "Child of Light",
+          "Prima Donna",
+          "Incinerator",
+          "Elementalist",
+          "Sage of Storms"
+        ],
+        "paid": [
+          "Necroduke",
+          "Storm Fox",
+          "Petite Devil",
+          "Incinerator",
+          "Dark Magister"
+        ]
+      },
+      {
+        "mode": "Guild Bash",
+        "level": "1 - 5",
+        "free": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Petite Devil",
+          "Tracker"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Frozen Conch",
+      "Ambergris Crystal",
+      "Lustrous Crystal",
+      "Blubber Oil"
+    ],
+    "gearRelated": [
+      {
+        "name": "Arctic Flipper Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Arctic_Flipper"
+  },
+  {
+    "id": "11130",
+    "slug": "armored-soul",
+    "name": "Armored Soul",
+    "category": "Event",
+    "monsterType": "Event Monster",
+    "categories": [],
+    "image": "/monsters/armored-soul.webp",
+    "thumbnail": "/monsters/armored-soul.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/2e/Armored_Soul.png/revision/latest/scale-to-width-down/600?cb=20240509084714",
+    "description": "The Armored Soul is a special monster that was released as part of a collaboration between Lords Mobile and Armored Combat Worldwide in September 2023.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Armored Soul is in search of a worthy opponent. Its robust armor and shield allow it to withstand any attacks, while swinging its blunt weapon to burst through enemy defenses. Get your best heroes to bring him down!"
+    ],
+    "recommendedHeroes": [
+      "Incinerator",
+      "Bombin' Goblin",
+      "Child of Light",
+      "Elementalist",
+      "Snow Queen"
+    ],
+    "alternativeHeroes": [
+      "Elementalist",
+      "Storm Fox",
+      "Twilight Priestess",
+      "Petite Devil",
+      "Incinerator"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1-3",
+        "free": [
+          "Incinerator",
+          "Bombin' Goblin",
+          "Child of Light",
+          "Elementalist",
+          "Snow Queen"
+        ],
+        "paid": [
+          "Elementalist",
+          "Storm Fox",
+          "Twilight Priestess",
+          "Petite Devil",
+          "Incinerator"
+        ]
+      }
+    ],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "Event Monster",
+    "tips": [
+      "The Armored Soul is in search of a worthy opponent. Its robust armor and shield allow it to withstand any attacks, while swinging its blunt weapon to burst through enemy defenses. Get your best heroes to bring him down!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Armored_Soul"
+  },
+  {
+    "id": "1583",
+    "slug": "blackwing",
+    "name": "Blackwing",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/blackwing.webp",
+    "thumbnail": "/monsters/blackwing.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/c/ce/Blackwing.png/revision/latest?cb=20200308051807",
+    "description": "The Blackwing is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "The Blackwing constantly hungers for blood, and will always lock onto the healthiest target in sight! Its venomous fangs nullifies all Life Leech effects, and its thick hide protects it from the strongest magical attacks. Take it down with brute physical force!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Death Knight",
+      "Prima Donna",
+      "Death Archer"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Steambot",
+      "Lore Weaver",
+      "Ethereal Guide"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Tracker"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Rose Knight",
+          "Death Archer"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Death Knight",
+          "Prima Donna",
+          "Death Archer"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Steambot",
+          "Lore Weaver",
+          "Ethereal Guide"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Crusty Horn",
+      "Fossilized Egg",
+      "Glowing Eye",
+      "Slimy Scale"
+    ],
+    "gearRelated": [
+      {
+        "name": "Blackwing Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Blackwing constantly hungers for blood, and will always lock onto the healthiest target in sight! Its venomous fangs nullifies all Life Leech effects, and its thick hide protects it from the strongest magical attacks. Take it down with brute physical force!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Blackwing"
+  },
+  {
+    "id": "1921",
+    "slug": "bon-appeti",
+    "name": "Bon Appeti",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/bon-appeti.webp",
+    "thumbnail": "/monsters/bon-appeti.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/b/bf/Bon_Appeti.png/revision/latest/scale-to-width-down/600?cb=20200308174130",
+    "description": "The Bon Appeti is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical and Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "This fallen angel is immune to all ailments, strikes at long range, and possesses the strange power to turn her nearby opponents into food. Take her down with physical attacks before your heroes become her next meal!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Scarlet Bolt",
+      "Death Knight",
+      "Trickster"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Vengeful Centaur",
+      "Scarlet Bolt",
+      "Mastercook"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Shade"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Tracker"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Death Knight",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Vengeful Centaur",
+          "Scarlet Bolt",
+          "Mastercook"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Angelic Plume",
+      "Glowing Halo",
+      "Holy Silk",
+      "Lux Bracers"
+    ],
+    "gearRelated": [
+      {
+        "name": "Bon Appeti Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "This fallen angel is immune to all ailments, strikes at long range, and possesses the strange power to turn her nearby opponents into food. Take her down with physical attacks before your heroes become her next meal!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Bon_Appeti"
+  },
+  {
+    "id": "5064",
+    "slug": "bon-viveur",
+    "name": "Bon Viveur",
+    "category": "Multiple Hit",
+    "monsterType": "Multiple Hit Monster",
+    "categories": [
+      "Multiple Hit"
+    ],
+    "image": "/monsters/bon-viveur.webp",
+    "thumbnail": "/monsters/bon-viveur.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/b/bf/Bon_Appeti.png/revision/latest/scale-to-width-down/600?cb=20200308174130",
+    "description": "This Monster was appeared during special events such as Monster Alert!",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "Beware! The Bon Vivuer will eat absolutely anything and everything! Take down this gluttonous monster before she devours us all!"
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "Multiple Hit Monster",
+    "tips": [
+      "Beware! The Bon Vivuer will eat absolutely anything and everything! Take down this gluttonous monster before she devours us all!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Bon_Viveur"
+  },
+  {
+    "id": "1653",
+    "slug": "bouldur",
+    "name": "Bouldur",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/bouldur.webp",
+    "thumbnail": "/monsters/bouldur.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/0/08/Bouldur.png/revision/latest?cb=20200308052928",
+    "description": "The Bouldur spawns during Special Events like Code 66, and is categorized as a One Hit Monster. Killing Boulders will not give Guild Gifts, but they do drop large amounts of Stone when hit.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "Bouldurs are skilled masons that build forts wherever they go. They're also territorial and prone to throwing heavy stones at their enemies."
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [
+      "Bouldurs are skilled masons that build forts wherever they go. They're also territorial and prone to throwing heavy stones at their enemies."
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Bouldur"
+  },
+  {
+    "id": "9580",
+    "slug": "cottageroar",
+    "name": "Cottageroar",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/cottageroar.webp",
+    "thumbnail": "/monsters/cottageroar.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/0/07/Cottageroar.png/revision/latest/scale-to-width-down/600?cb=20201227112618",
+    "description": "The Cottageroar or Cotroar is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "The Cottageroar will deal massive damage to its target and nearby Heroes. Bring healers and Heroes with high MDEF to help keep your party alive, then use physical attacks to demolish this monster!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Death Knight",
+      "Demon Slayer",
+      "Boommeister",
+      "Scarlet Bolt"
+    ],
+    "alternativeHeroes": [],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 2",
+        "free": [
+          "Black Crow",
+          "Shade",
+          "Demon Slayer",
+          "Tracker",
+          "Scarlet Bolt"
+        ],
+        "paid": []
+      },
+      {
+        "mode": "Standard",
+        "level": "1 - 4",
+        "free": [
+          "Black Crow",
+          "Tracker",
+          "Demon Slayer",
+          "Trickster",
+          "Scarlet Bolt"
+        ],
+        "paid": []
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Death Knight",
+          "Demon Slayer",
+          "Boommeister",
+          "Scarlet Bolt"
+        ],
+        "paid": []
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Forbidden Tome",
+      "Fright Fabric",
+      "Soul Candle",
+      "Cursed Slab"
+    ],
+    "gearRelated": [
+      {
+        "name": "Cottageroar Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Cottageroar will deal massive damage to its target and nearby Heroes. Bring healers and Heroes with high MDEF to help keep your party alive, then use physical attacks to demolish this monster!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Cottageroar"
+  },
+  {
+    "id": "5180",
+    "slug": "evil-weevil",
+    "name": "Evil Weevil",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/evil-weevil.webp",
+    "thumbnail": "/monsters/evil-weevil.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/f/fc/Evil_Weevil.png/revision/latest?cb=20200308174150",
+    "description": "The Evil Weevil spawns during Special Events like Code 66, and is categorized as a One Hit Monster. Killing Evil Weevils will not give Guild Gifts, but they do drop large amounts of Food when hit.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "The Evil Weevil carries a store of food on its back, like a miniature food cart! Defeat it to take its food!"
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [
+      "The Evil Weevil carries a store of food on its back, like a miniature food cart! Defeat it to take its food!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Evil_Weevil"
+  },
+  {
+    "id": "1646",
+    "slug": "frostwing",
+    "name": "Frostwing",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/frostwing.webp",
+    "thumbnail": "/monsters/frostwing.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/d/da/Frostwing.png/revision/latest?cb=20200308174158",
+    "description": "The Frostwing is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "Frostwing always aims for the Hero with the highest Max HP. Its icy attacks cover a large area, causing any Hero standing behind the target to take huge damage. Use Heroes will skills that allow them to take cover behind the Frostwing!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Scarlet Bolt",
+      "Death Archer",
+      "Trickster"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Femme Fatale",
+      "Scarlet Bolt",
+      "Death Archer"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Death Archer"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Death Archer",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Death Archer"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Frostwing Heart",
+      "Frostwing Horn",
+      "Frostwing Scale",
+      "Frostwing Claw"
+    ],
+    "gearRelated": [
+      {
+        "name": "Frostwing Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "Frostwing always aims for the Hero with the highest Max HP. Its icy attacks cover a large area, causing any Hero standing behind the target to take huge damage. Use Heroes will skills that allow them to take cover behind the Frostwing!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Frostwing"
+  },
+  {
+    "id": "2135",
+    "slug": "gargantua",
+    "name": "Gargantua",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/gargantua.webp",
+    "thumbnail": "/monsters/gargantua.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/21/Gargantua.png/revision/latest/scale-to-width-down/600?cb=20200308174204",
+    "description": "The Gargantua is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "Gargantua's skill can deal massive damage to its target and the Heroes nearby. You may need more Heroes that can recover HP to survive. It also has very high PDEF, so bring your Heroes with skills that deal Magic DMG to tackle this one!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Child of Light",
+      "Lore Weaver",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "alternativeHeroes": [
+      "Child of Light",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Incinerator",
+          "Sea Squire",
+          "Sage of Storms",
+          "Bombin' Goblin",
+          "Snow Queen"
+        ],
+        "paid": [
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch",
+          "Bombin' Goblin"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Child of Light",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Prima Donna"
+        ],
+        "paid": [
+          "Child of Light",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Child of Light",
+          "Lore Weaver",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ],
+        "paid": []
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Gargantua Jewel",
+      "Gargantuan Eye",
+      "Gargantuan Fang",
+      "Gargantuan Locks",
+      "Iron Bolts",
+      "Tattooed Skin"
+    ],
+    "gearRelated": [
+      {
+        "name": "Gargantua Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "Gargantua's skill can deal massive damage to its target and the Heroes nearby. You may need more Heroes that can recover HP to survive. It also has very high PDEF, so bring your Heroes with skills that deal Magic DMG to tackle this one!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Gargantua"
+  },
+  {
+    "id": "9662",
+    "slug": "gawrilla",
+    "name": "Gawrilla",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/gawrilla.webp",
+    "thumbnail": "/monsters/gawrilla.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/22/Gawrilla.png/revision/latest/scale-to-width-down/600?cb=20210405131837",
+    "description": "The Gawrilla, formerly the Tusker, is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Gawrilla will focus on the Hero with the highest Max HP, and bash all Heroes in a large area. Get out of its line of sight or you'll get Stunned! Use magic to crush this massive beast!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Child of Light",
+      "Prima Donna",
+      "Incinerator",
+      "Elementalist",
+      "Sage of Storms"
+    ],
+    "alternativeHeroes": [
+      "Storm Fox",
+      "Twilight Priestess",
+      "Petite Devil",
+      "Dream Witch",
+      "Witch Doll"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1",
+        "free": [
+          "Incinerator",
+          "Bombin' Goblin",
+          "Elementalist",
+          "Snow Queen",
+          "Sage of Storms"
+        ],
+        "paid": [
+          "Incinerator",
+          "Elementalist",
+          "Storm Fox",
+          "Petite Devil",
+          "Twilight Priestess"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "2",
+        "free": [
+          "Incinerator",
+          "Bombin' Goblin",
+          "Elementalist",
+          "Snow Queen",
+          "Sage of Storms"
+        ],
+        "paid": [
+          "Elementalist",
+          "Storm Fox",
+          "Twilight Priestess",
+          "Petite Devil",
+          "Incinerator"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "3",
+        "free": [
+          "Prima Donna",
+          "Incinerator",
+          "Bombin' Goblin",
+          "Elementalist",
+          "Sage of Storms"
+        ],
+        "paid": []
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Child of Light",
+          "Prima Donna",
+          "Incinerator",
+          "Elementalist",
+          "Sage of Storms"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Twilight Priestess",
+          "Petite Devil",
+          "Dream Witch",
+          "Witch Doll"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Child of Light",
+          "Prima Donna",
+          "Incinerator",
+          "Elementalist",
+          "Sage of Storms"
+        ],
+        "paid": []
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Gawrilla's Rage",
+      "Brass Ring",
+      "Mark of Fury",
+      "Brass Spike"
+    ],
+    "gearRelated": [
+      {
+        "name": "Gawrilla Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Gawrilla will focus on the Hero with the highest Max HP, and bash all Heroes in a large area. Get out of its line of sight or you'll get Stunned! Use magic to crush this massive beast!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Gawrilla"
+  },
+  {
+    "id": "5224",
+    "slug": "gemming-gremlin",
+    "name": "Gemming Gremlin",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/gemming-gremlin.webp",
+    "thumbnail": "/monsters/gemming-gremlin.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/d/d0/Gemming_Gremlin.png/revision/latest?cb=20200308041908",
+    "description": "The Gemming Gremlin spawns during Special Events, and is categorized as a One Hit Monster. It can be killed with 1 hero, 1 hit and 1 energy, and will drop 1 gem item in loot.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Gemming_Gremlin"
+  },
+  {
+    "id": "8213",
+    "slug": "goal-bandit",
+    "name": "Goal Bandit",
+    "category": "Event",
+    "monsterType": "Guild Event Monster",
+    "categories": [
+      "Event",
+      "Special"
+    ],
+    "image": "/monsters/goal-bandit.webp",
+    "thumbnail": "/monsters/goal-bandit.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/f/fc/Goal_Bandit.png/revision/latest?cb=20200927070225",
+    "description": "The Goal Bandit has most recently appeared as a monster summonable during Guild Bash, when enough points have been scored collectively by the guild, to reach the Monster Crests. *The Goal Bandit has high HP. *The energy cost to hunt the Goal Bandit is 1. *The damage multiplier can't be used. *Consecutive hunting damage boost still applies. *The Level of the monster depends on the current Guild Bash Level of the summoning Guild",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Death Archer",
+      "Incinerator",
+      "Tracker",
+      "Trickster"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Death Archer",
+      "Incinerator",
+      "Petite Devil",
+      "Tracker"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 5",
+        "free": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Petite Devil",
+          "Tracker"
+        ]
+      }
+    ],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "Guild Event Monster",
+    "tips": [],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Goal_Bandit"
+  },
+  {
+    "id": "1650",
+    "slug": "goblin",
+    "name": "Goblin",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/goblin.webp",
+    "thumbnail": "/monsters/goblin.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/d/d2/Goblin.png/revision/latest?cb=20190608133249",
+    "description": "The Goblin spawns during Special Events like Code 66, and is categorized as a One Hit Monster. Killing Goblins will not give Guild Gifts, but they do drop large amounts of Gold when hit.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "These naughty Goblins are stealing all the gold! Take them down and retrieve the gold!"
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [
+      "These naughty Goblins are stealing all the gold! Take them down and retrieve the gold!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Goblin"
+  },
+  {
+    "id": "1366",
+    "slug": "grim-reaper",
+    "name": "Grim Reaper",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/grim-reaper.webp",
+    "thumbnail": "/monsters/grim-reaper.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/7/74/Grim_Reaper.png/revision/latest?cb=20260316164110",
+    "description": "The Grim Reaper is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "The Grim Reaper will harvest the soul of the Hero with the highest Max HP. Use your skills to deal Physical DMG to it before it can claim more victims!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Death Knight",
+      "Prima Donna",
+      "Death Archer"
+    ],
+    "alternativeHeroes": [
+      "Ethereal Guide",
+      "Demon Slayer",
+      "Vengeful Centaur",
+      "Femme Fatale",
+      "Black Crow"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1-3",
+        "free": [
+          "Trickster",
+          "Scarlet Bolt",
+          "Demon Slayer",
+          "Tracker",
+          "Black Crow"
+        ],
+        "paid": [
+          "Black Crow",
+          "Scarlet Bolt",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Death Archer"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Trickster",
+          "Demon Slayer",
+          "Death Knight",
+          "Scarlet Bolt",
+          "Black Crow"
+        ],
+        "paid": [
+          "Ethereal Guide",
+          "Demon Slayer",
+          "Vengeful Centaur",
+          "Femme Fatale",
+          "Black Crow"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Death Knight",
+          "Prima Donna",
+          "Death Archer"
+        ],
+        "paid": []
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Grim Jewel",
+      "Corrupted Soul",
+      "Cursed Skull",
+      "Ghostly Shroud",
+      "Terrorwing"
+    ],
+    "gearRelated": [
+      {
+        "name": "Grim Reaper Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Grim Reaper will harvest the soul of the Hero with the highest Max HP. Use your skills to deal Physical DMG to it before it can claim more victims!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Grim_Reaper"
+  },
+  {
+    "id": "1647",
+    "slug": "gryphon",
+    "name": "Gryphon",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/gryphon.webp",
+    "thumbnail": "/monsters/gryphon.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/2f/Gryphon.png/revision/latest/scale-to-width-down/600?cb=20200308174233",
+    "description": "The Gryphon is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Magic",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "Gryphon's ultimate skill targets all Heroes on the field, so beware. However its attack can be disrupted if it is inflicted with conditions. Disrupt Gryphon's attack and prevent annihilation!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Scarlet Bolt",
+      "Tracker",
+      "Incinerator"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Scarlet Bolt",
+      "Mastercook",
+      "Femme Fatale"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Incinerator"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Femme Fatale"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Incinerator"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Grove Guardian",
+          "Femme Fatale"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Incinerator"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Mastercook",
+          "Femme Fatale"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Gryphon Jewel",
+      "Gryphon Core",
+      "Gryphon Egg",
+      "Gryphon Quill"
+    ],
+    "gearRelated": [
+      {
+        "name": "Gryphon Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "Gryphon's ultimate skill targets all Heroes on the field, so beware. However its attack can be disrupted if it is inflicted with conditions. Disrupt Gryphon's attack and prevent annihilation!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Gryphon"
+  },
+  {
+    "id": "4042",
+    "slug": "hardrox",
+    "name": "Hardrox",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/hardrox.webp",
+    "thumbnail": "/monsters/hardrox.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/d/d6/Hardrox.png/revision/latest?cb=20200308052437",
+    "description": "The Hardrox is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical and Magic",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Prima Donna",
+      "Incinerator",
+      "Elementalist",
+      "Snow Queen",
+      "Child of Light"
+    ],
+    "alternativeHeroes": [
+      "Twilight Priestess",
+      "Incinerator",
+      "Storm Fox",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Twilight Priestess",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Prima Donna",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Twilight Priestess",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Prima Donna",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Child of Light"
+        ],
+        "paid": [
+          "Twilight Priestess",
+          "Incinerator",
+          "Storm Fox",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Aged Dragonglass",
+      "Golden Tooth",
+      "Keystone"
+    ],
+    "gearRelated": [
+      {
+        "name": "Hardrox Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Hardrox"
+  },
+  {
+    "id": "1463",
+    "slug": "hell-drider",
+    "name": "Hell Drider",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/hell-drider.webp",
+    "thumbnail": "/monsters/hell-drider.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/f/fd/Hell_Drider.png/revision/latest/scale-to-width-down/600?cb=20200308051632",
+    "description": "The Hell Drider is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "The ruthless Hell Drider will attack the Hero with the highest max HP, dealing damage to other Heroes near its target as well. It is also protected by an energy shield, so send your strongest Heroes to destroy it!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Death Knight",
+      "Death Archer",
+      "Tracker"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Grove Guardian",
+      "Vengeful Centaur",
+      "Scarlet Bolt",
+      "Death Archer"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Tracker"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Death Archer",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Death Archer"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Death Knight",
+          "Death Archer",
+          "Tracker"
+        ],
+        "paid": [
+          "Black Crow",
+          "Grove Guardian",
+          "Vengeful Centaur",
+          "Scarlet Bolt",
+          "Death Archer"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Devil Horn",
+      "Metal Scraps",
+      "Mutated Brain",
+      "Smoldering Core"
+    ],
+    "gearRelated": [
+      {
+        "name": "Hell Drider Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The ruthless Hell Drider will attack the Hero with the highest max HP, dealing damage to other Heroes near its target as well. It is also protected by an energy shield, so send your strongest Heroes to destroy it!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Hell_Drider"
+  },
+  {
+    "id": "2193",
+    "slug": "hoarder",
+    "name": "Hoarder",
+    "category": "Event",
+    "monsterType": "Guild Event Monster",
+    "categories": [
+      "Event"
+    ],
+    "image": "/monsters/hoarder.webp",
+    "thumbnail": "/monsters/hoarder.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/f/fe/Hoarder.png/revision/latest/scale-to-width-down/600?cb=20200308174249",
+    "description": "The Hoarder is summoned by guilds during events like Guild Bash, when enough points have been scored collectively by the guild, to reach the Monster Crests.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "The Hoarder greedily devours anything that glitters. Defeat this monstrosity before it swallows every last gem!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Death Archer",
+      "Incinerator",
+      "Tracker",
+      "Trickster"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Death Archer",
+      "Incinerator",
+      "Petite Devil",
+      "Tracker"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 5",
+        "free": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Petite Devil",
+          "Tracker"
+        ]
+      }
+    ],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "Guild Event Monster",
+    "tips": [
+      "The Hoarder greedily devours anything that glitters. Defeat this monstrosity before it swallows every last gem!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Hoarder"
+  },
+  {
+    "id": "9397",
+    "slug": "hootclaw",
+    "name": "Hootclaw",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/hootclaw.webp",
+    "thumbnail": "/monsters/hootclaw.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/c/cb/Hootclaw.png/revision/latest/scale-to-width-down/600?cb=20201017213820",
+    "description": "The Hootclaw is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Hootclaw is a horrifying beast that targets the hero with the most HP remaining. Its massive wingspan lets it attack from long range. Bring healers and magic-users to ruffle its feathers!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Prima Donna",
+      "Incinerator",
+      "Elementalist",
+      "Snow Queen",
+      "Child of Light"
+    ],
+    "alternativeHeroes": [
+      "Storm Fox",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Twilight Priestess"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 2",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Twilight Priestess"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "3",
+        "free": [
+          "Prima Donna",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Twilight Priestess"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "The Big Guy",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Storm Fox"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Twilight Priestess"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Prima Donna",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Child of Light"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Twilight Priestess"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Lunar Crest",
+      "Scarlet Feather",
+      "Weeping Wood",
+      "Wild Fruit"
+    ],
+    "gearRelated": [
+      {
+        "name": "Hootclaw Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Hootclaw is a horrifying beast that targets the hero with the most HP remaining. Its massive wingspan lets it attack from long range. Bring healers and magic-users to ruffle its feathers!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Hootclaw"
+  },
+  {
+    "id": "2034",
+    "slug": "huey-hops",
+    "name": "Huey Hops",
+    "category": "Event",
+    "monsterType": "Guild Event Monster",
+    "categories": [
+      "Event"
+    ],
+    "image": "/monsters/huey-hops.webp",
+    "thumbnail": "/monsters/huey-hops.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/8/86/Huey_Hops.png/revision/latest?cb=20200308174828",
+    "description": "The Huey Hops is summoned by guilds during events like Guild Bash, when enough points have been scored collectively by the guild, to reach the Monster Crests. *Huey Hops have high HP. *The energy cost to hunt a Huey Hops is 1. *The damage multiplier can't be used. *Consecutive hunting damage boost still applies. *The Level of the monster depends on the current Guild Bash Level of the summoning Guild",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "This rascally rabbit refuses to share! Huey Hops is determined to keep the basket of goodies all to itself. Chase this bunny down, and show 'em sharing is caring!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Tracker",
+      "Trickstar",
+      "Demon Slayer",
+      "Sage of Storms",
+      "Scarlet Bolt"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Death Archer",
+      "Incinerator",
+      "Petite Devil",
+      "Tracker"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 5",
+        "free": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Petite Devil",
+          "Tracker"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "1 - 5",
+        "free": [
+          "Tracker",
+          "Trickstar",
+          "Demon Slayer",
+          "Sage of Storms",
+          "Scarlet Bolt"
+        ],
+        "paid": []
+      }
+    ],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "Guild Event Monster",
+    "tips": [
+      "This rascally rabbit refuses to share! Huey Hops is determined to keep the basket of goodies all to itself. Chase this bunny down, and show 'em sharing is caring!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Huey_Hops"
+  },
+  {
+    "id": "1648",
+    "slug": "jade-wyrm",
+    "name": "Jade Wyrm",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/jade-wyrm.webp",
+    "thumbnail": "/monsters/jade-wyrm.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/5/51/Jade_Wyrm.png/revision/latest?cb=20200308052257",
+    "description": "The Jade Wyrm is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Sage of Storms",
+      "Incinerator",
+      "Elementalist",
+      "Prima Donna",
+      "Child of Light"
+    ],
+    "alternativeHeroes": [
+      "Vengeful Centaur",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Child of Light"
+        ],
+        "paid": [
+          "Vengeful Centaur",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Wyrm Jewel",
+      "Jade Orb",
+      "Wyrm Gut",
+      "Wyrm Scales",
+      "Wyrm Spine",
+      "Wyrm Horn"
+    ],
+    "gearRelated": [
+      {
+        "name": "Jade Wyrm Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Jade_Wyrm"
+  },
+  {
+    "id": "1652",
+    "slug": "krabby",
+    "name": "Krabby",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/krabby.webp",
+    "thumbnail": "/monsters/krabby.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/d/da/Krabby.png/revision/latest?cb=20200308174304",
+    "description": "The Krabby spawns during Special Events like Code 66, and is categorized as a One Hit Monster. Killing Krabbies will not give Guild Gifts, but they do drop large amounts of Ore when hit.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Krabby"
+  },
+  {
+    "id": "1692",
+    "slug": "mecha-trojan",
+    "name": "Mecha Trojan",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/mecha-trojan.webp",
+    "thumbnail": "/monsters/mecha-trojan.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/3/3a/Mecha_Trojan.png/revision/latest/scale-to-width-down/600?cb=20200308174627",
+    "description": "The Mecha Trojan is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. This monster was known to kill armies. This monster will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Mecha Trojan will not leave your Heroes alone! Watch out for its relentless attacks that also stun its targets. Keep your heroes alive and chop it down with magical power!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Sage of Storms",
+      "Incinerator",
+      "Elementalist",
+      "Child of Light",
+      "Prima Donna"
+    ],
+    "alternativeHeroes": [
+      "Storm Fox",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Child of Light",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Child of Light",
+          "Prima Donna"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Trojan Jewel",
+      "Ancient Blueprints",
+      "Oily Spring",
+      "Refined Gunpowder",
+      "Rusty Horseshoe"
+    ],
+    "gearRelated": [
+      {
+        "name": "Mecha Trojan Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Mecha Trojan will not leave your Heroes alone! Watch out for its relentless attacks that also stun its targets. Keep your heroes alive and chop it down with magical power!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Mecha_Trojan"
+  },
+  {
+    "id": "1465",
+    "slug": "mega-maggot",
+    "name": "Mega Maggot",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/mega-maggot.webp",
+    "thumbnail": "/monsters/mega-maggot.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/5/55/Mega_Maggot.png/revision/latest/scale-to-width-down/600?cb=20200308174634",
+    "description": "The Mega Maggot is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Mega Maggot's mighty tail packs a massive sting! Its venom deals continuous damage, so remember to heal your heroes."
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Sage of Storms",
+      "Incinerator",
+      "Elementalist",
+      "Prima Donna",
+      "Child of Light"
+    ],
+    "alternativeHeroes": [
+      "Vengeful Centaur",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Twilight Priestess",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Child of Light"
+        ],
+        "paid": [
+          "Vengeful Centaur",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Corrosive Toxin",
+      "Maggot Tail",
+      "Maggot Teeth",
+      "Mega Barb",
+      "Mega Egg-sac"
+    ],
+    "gearRelated": [
+      {
+        "name": "Mega Maggot Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Mega Maggot's mighty tail packs a massive sting! Its venom deals continuous damage, so remember to heal your heroes."
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Mega_Maggot"
+  },
+  {
+    "id": "10332",
+    "slug": "necrosis",
+    "name": "Necrosis",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/necrosis.webp",
+    "thumbnail": "/monsters/necrosis.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/4/49/Undead_Ogre.png/revision/latest/scale-to-width-down/600?cb=20190621232609",
+    "description": "The Necrosis is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Necrosis deals massive damage to its targets and summons underlings to attack heroes. It can easily shrug off physical blows, so use magic to send it back to its grave!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Sage of Storms",
+      "Incinerator",
+      "Elementalist",
+      "Prima Donna",
+      "Child of Light"
+    ],
+    "alternativeHeroes": [
+      "Twilight Priestess",
+      "Storm Fox",
+      "Petite Devil",
+      "Incinerator",
+      "Elementalist"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 2",
+        "free": [
+          "Bombin' Goblin",
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "3",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Twilight Priestess",
+          "Storm Fox",
+          "Petite Devil",
+          "Incinerator",
+          "Elementalist"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Incinerator",
+          "Elementalist",
+          "Bombin' Goblin",
+          "Prima Donna",
+          "Child of Light"
+        ],
+        "paid": [
+          "Twilight Priestess",
+          "Storm Fox",
+          "Petite Devil",
+          "Incinerator",
+          "Elementalist"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Child of Light"
+        ],
+        "paid": [
+          "Twilight Priestess",
+          "Storm Fox",
+          "Petite Devil",
+          "Incinerator",
+          "Elementalist"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Rotten Blood",
+      "Decaying Bones",
+      "Armor Fragment",
+      "Mutant Fungi"
+    ],
+    "gearRelated": [
+      {
+        "name": "Necrosis Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Necrosis deals massive damage to its targets and summons underlings to attack heroes. It can easily shrug off physical blows, so use magic to send it back to its grave!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Necrosis"
+  },
+  {
+    "id": "1369",
+    "slug": "noceros",
+    "name": "Noceros",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/noceros.webp",
+    "thumbnail": "/monsters/noceros.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/c/c8/Noceros.png/revision/latest?cb=20200308052704",
+    "description": "The Noceros is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Noceros is a tough creature! Its thick hide can withstand Physical DMG and its crystal horns have the ability to lower your Heroes' Healing Focus. Use skills that deal Magic DMG to defeat it!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Sage of Storms",
+      "Incinerator",
+      "Elementalist",
+      "Prima Donna",
+      "Child of Light"
+    ],
+    "alternativeHeroes": [
+      "Vengeful Centaur",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Witch Doll",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Twilight Priestess",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Child of Light"
+        ],
+        "paid": [
+          "Vengeful Centaur",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Noceros Jewel",
+      "Lightning Vial",
+      "Chipped Horn",
+      "Crackling Hide",
+      "Electric Horn"
+    ],
+    "gearRelated": [
+      {
+        "name": "Noceros Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Noceros is a tough creature! Its thick hide can withstand Physical DMG and its crystal horns have the ability to lower your Heroes' Healing Focus. Use skills that deal Magic DMG to defeat it!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Noceros"
+  },
+  {
+    "id": "2565",
+    "slug": "phantom-knight",
+    "name": "Phantom Knight",
+    "category": "Multiple Hit",
+    "monsterType": "Multiple Hit Monster",
+    "categories": [
+      "Multiple Hit"
+    ],
+    "image": "/monsters/phantom-knight.webp",
+    "thumbnail": "/monsters/phantom-knight.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/5/56/Phantom_Knight.png/revision/latest/scale-to-width-down/600?cb=20190606212439",
+    "description": "This Monster appears during the event Phantom Pains.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "A creature born from the depths of darkness, the Phantom Knight does not listen to reason. Defeat it before it unleashes its wrath upon the Kingdoms!"
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "Multiple Hit Monster",
+    "tips": [
+      "A creature born from the depths of darkness, the Phantom Knight does not listen to reason. Defeat it before it unleashes its wrath upon the Kingdoms!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Phantom_Knight"
+  },
+  {
+    "id": "8212",
+    "slug": "pumpkinator",
+    "name": "Pumpkinator",
+    "category": "Event",
+    "monsterType": "Guild Event Monster",
+    "categories": [
+      "Event",
+      "Special"
+    ],
+    "image": "/monsters/pumpkinator.webp",
+    "thumbnail": "/monsters/pumpkinator.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/5/5d/Pumpkinator.png/revision/latest?cb=20200927070225",
+    "description": "The Pumpkinator has most recently appeared as a monster summonable during Guild Bash, when enough points have been scored collectively by the guild, to reach the Monster Crests. *The Pumpkinator has high HP. *The energy cost to hunt the Pumpkinator is 1. *The damage multiplier can't be used. *Consecutive hunting damage boost still applies. *The Level of the monster depends on the current Guild Bash Level of the summoning Guild",
+    "damageType": "Physical and Magic",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "A fearsome phantom that escaped from the depths of the netherworld. Kill it and take its candy!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Death Archer",
+      "Incinerator",
+      "Tracker",
+      "Trickster"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Death Archer",
+      "Incinerator",
+      "Petite Devil",
+      "Tracker"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 5",
+        "free": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Death Archer",
+          "Incinerator",
+          "Petite Devil",
+          "Tracker"
+        ]
+      }
+    ],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "Guild Event Monster",
+    "tips": [
+      "A fearsome phantom that escaped from the depths of the netherworld. Kill it and take its candy!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Pumpkinator"
+  },
+  {
+    "id": "1840",
+    "slug": "queen-bee",
+    "name": "Queen Bee",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/queen-bee.webp",
+    "thumbnail": "/monsters/queen-bee.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/f/f0/Queen_Bee.png/revision/latest?cb=20200308174659",
+    "description": "The Queen Bee is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby. The amount of damage you do to the monster DOES NOT affect the reward.",
+    "damageType": "Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "If provoked, the Queen Bee will jab the first target she sees! This matriarch also summons a horde of buzzing bees to drive off invaders. Bring her down with Physical Attacks before you get overwhelmed!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Scarlet Bolt",
+      "Death Archer",
+      "Trickster"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Femme Fatale",
+      "Scarlet Bolt",
+      "Ethereal Guide"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Tracker"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Death Archer",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Ethereal Guide"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Bee Chrysalis",
+      "Buzzing Husk",
+      "Royal Stinger",
+      "Queen Venom"
+    ],
+    "gearRelated": [
+      {
+        "name": "Queen Bee Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "If provoked, the Queen Bee will jab the first target she sees! This matriarch also summons a horde of buzzing bees to drive off invaders. Bring her down with Physical Attacks before you get overwhelmed!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Queen_Bee"
+  },
+  {
+    "id": "1459",
+    "slug": "saberfang",
+    "name": "Saberfang",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/saberfang.webp",
+    "thumbnail": "/monsters/saberfang.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/9/91/Saberfang.png/revision/latest?cb=20200308174712",
+    "description": "The Saberfang is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "Powerful and unpredictable, the Saberfang will wreak havoc among your ranks. Use magic to bring it down before it decimates your troops!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Sage of Storms",
+      "Incinerator",
+      "Elementalist",
+      "Prima Donna",
+      "Child of Light"
+    ],
+    "alternativeHeroes": [
+      "Storm Fox",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Bombin' Goblin",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Prima Donna"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Prima Donna",
+          "Child of Light"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Saber Jewel",
+      "Blood Sucker",
+      "Saber Tooth",
+      "Savage Claw",
+      "Prehistoric Hide"
+    ],
+    "gearRelated": [
+      {
+        "name": "Saberfang Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "Powerful and unpredictable, the Saberfang will wreak havoc among your ranks. Use magic to bring it down before it decimates your troops!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Saberfang"
+  },
+  {
+    "id": "10436",
+    "slug": "serpent-gladiator",
+    "name": "Serpent Gladiator",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/serpent-gladiator.webp",
+    "thumbnail": "/monsters/serpent-gladiator.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/0/0b/Serpent_Vizier.png/revision/latest?cb=20200927070226",
+    "description": "The Serpent Gladiator is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Serpent Gladiator will deal massive damage to its target and nearby Heroes. Keep your party alive with constant healing, and use magic-users to overcome this warrior!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Incinerator",
+      "Elementalist",
+      "Snow Queen",
+      "Bombin' Goblin",
+      "Sage of Storms"
+    ],
+    "alternativeHeroes": [
+      "Storm Fox",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 5",
+        "free": [
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin",
+          "Sage of Storms"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Dune Core (Rare)",
+      "Tough Scales",
+      "Blade Tip",
+      "Toxic Fang"
+    ],
+    "gearRelated": [
+      {
+        "name": "Serpent Gladiator Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Serpent Gladiator will deal massive damage to its target and nearby Heroes. Keep your party alive with constant healing, and use magic-users to overcome this warrior!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Serpent_Gladiator"
+  },
+  {
+    "id": "8216",
+    "slug": "serpent-vizier",
+    "name": "Serpent Vizier",
+    "category": "Multiple Hit",
+    "monsterType": "Multiple Hit Monster",
+    "categories": [
+      "Multiple Hit"
+    ],
+    "image": "/monsters/serpent-vizier.webp",
+    "thumbnail": "/monsters/serpent-vizier.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/0/0b/Serpent_Vizier.png/revision/latest?cb=20200927070226",
+    "description": "This Monster was appeared during special events.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "These ancient horrors have emerged from their tombs to reconquer the world. Slay them and keep our lands safe!"
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "Multiple Hit Monster",
+    "tips": [
+      "These ancient horrors have emerged from their tombs to reconquer the world. Slay them and keep our lands safe!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Serpent_Vizier"
+  },
+  {
+    "id": "1464",
+    "slug": "snow-beast",
+    "name": "Snow Beast",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/snow-beast.webp",
+    "thumbnail": "/monsters/snow-beast.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/28/Snow_Beast.png/revision/latest?cb=20200308174719",
+    "description": "The Snow Beast is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "The Snow Beast always targets the Hero furthest from itself. It charges at the target with its enormous body and also causes all Heroes hit to take damage over time. Use Heroes that can deal high damage against this fearsome beast!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Scarlet Bolt",
+      "Death Archer",
+      "Trickster"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Femme Fatale",
+      "Scarlet Bolt",
+      "Grove Guardian"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Grove Guardian"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Death Archer",
+          "Trickster"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Grove Guardian"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Beast Antlers",
+      "Beast Blood",
+      "Beast Paw",
+      "Festive Bell"
+    ],
+    "gearRelated": [
+      {
+        "name": "Snow Beast Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Snow Beast always targets the Hero furthest from itself. It charges at the target with its enormous body and also causes all Heroes hit to take damage over time. Use Heroes that can deal high damage against this fearsome beast!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Snow_Beast"
+  },
+  {
+    "id": "1462",
+    "slug": "terrorthorn",
+    "name": "Terrorthorn",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/terrorthorn.webp",
+    "thumbnail": "/monsters/terrorthorn.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/6/6a/Terrorthorn.png/revision/latest/scale-to-width-down/600?cb=20200123195313",
+    "description": "The Terrorthorn is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "Terrorthorn lashes its vine whips at Heroes, rendering them immobilized. It also blasts nearby Heroes with seeds, knocking them back. Survive its onslaught to kill this fearsome monster!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Scarlet Bolt",
+      "Trickster",
+      "Shade"
+    ],
+    "alternativeHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Femme Fatale",
+      "Scarlet Bolt",
+      "Shade"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Tracker",
+          "Shade"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Shade"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Death Archer",
+          "Shade"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Shade"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Scarlet Bolt",
+          "Trickster",
+          "Shade"
+        ],
+        "paid": [
+          "Black Crow",
+          "Demon Slayer",
+          "Femme Fatale",
+          "Scarlet Bolt",
+          "Shade"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Terror Jewel",
+      "Terrorthorn Seed",
+      "Honey Jar",
+      "Terrorteeth",
+      "Terrorvine",
+      "Terror Pollen"
+    ],
+    "gearRelated": [
+      {
+        "name": "Terrorthorn Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "Terrorthorn lashes its vine whips at Heroes, rendering them immobilized. It also blasts nearby Heroes with seeds, knocking them back. Survive its onslaught to kill this fearsome monster!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Terrorthorn"
+  },
+  {
+    "id": "2015",
+    "slug": "tidal-titan",
+    "name": "Tidal Titan",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/tidal-titan.webp",
+    "thumbnail": "/monsters/tidal-titan.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/c/c0/Tidal_Titan.png/revision/latest/scale-to-width-down/600?cb=20200308174757",
+    "description": "The Tidal Titan is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55mutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Physical",
+    "defensiveType": "High PDEF",
+    "strongAgainst": [
+      "High PDEF"
+    ],
+    "weakAgainst": [
+      "The Tidal Titan brings wrath of the sea down on an enemy hero, dealing massive damage. Its thick skin also allows it to shrug off physical attacks. Bring healers and heroes with powerful magic to take it down!"
+    ],
+    "recommendedAttackType": "Magic",
+    "recommendedHeroes": [
+      "Child of Light",
+      "Incinerator",
+      "Elementalist",
+      "Snow Queen",
+      "Prima Donna"
+    ],
+    "alternativeHeroes": [
+      "Storm Fox",
+      "Incinerator",
+      "Elementalist",
+      "Petite Devil",
+      "Dream Witch"
+    ],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 3",
+        "free": [
+          "Sage of Storms",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Bombin' Goblin"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      },
+      {
+        "mode": "Standard",
+        "level": "4 - 5",
+        "free": [
+          "Child of Light",
+          "Incinerator",
+          "Elementalist",
+          "Snow Queen",
+          "Prima Donna"
+        ],
+        "paid": [
+          "Storm Fox",
+          "Incinerator",
+          "Elementalist",
+          "Petite Devil",
+          "Dream Witch"
+        ]
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Glistening Pearl",
+      "Drowned Echo",
+      "Ocean Breeze",
+      "Submerged Alloy"
+    ],
+    "gearRelated": [
+      {
+        "name": "Tidal Titan Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Tidal Titan brings wrath of the sea down on an enemy hero, dealing massive damage. Its thick skin also allows it to shrug off physical attacks. Bring healers and heroes with powerful magic to take it down!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Tidal_Titan"
+  },
+  {
+    "id": "10526",
+    "slug": "tinythorn",
+    "name": "Tinythorn",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/tinythorn.webp",
+    "thumbnail": "/monsters/tinythorn.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/6/6a/Terrorthorn.png/revision/latest/scale-to-width-down/600?cb=20200123195313",
+    "description": "The Tinythorn is a smaller variant of Terrorthorn which sometimes spawns in Dark Crevices after a seed has been planted. Killing it is required to complete the Adventure Quest. It is a level 1 monster that is only visible to the player who planted the seed, and can only be hunted by that player. It will remain on the Kingdom Map until it is killed, or until Adventure Quests reset.",
+    "damageType": "Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "Uproot this tiny Terrorthorn before it grows to full strength!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [
+      "Uproot this tiny Terrorthorn before it grows to full strength!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Tinythorn"
+  },
+  {
+    "id": "1654",
+    "slug": "totempest",
+    "name": "Totempest",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/totempest.webp",
+    "thumbnail": "/monsters/totempest.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/6/6f/Totempest.png/revision/latest?cb=20200308052040",
+    "description": "The Totempest spawns during Special Events like Code 66, and is categorized as a One Hit Monster. Killing Totempests will not give Guild Gifts, but they do drop large amounts of Timber when hit.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "The Totempest is a totem brought to life by a mysterious enchantment. It spits Timber at all who dare approach it."
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [
+      "The Totempest is a totem brought to life by a mysterious enchantment. It spits Timber at all who dare approach it."
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Totempest"
+  },
+  {
+    "id": "5216",
+    "slug": "trickstar",
+    "name": "Trickstar",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/trickstar.webp",
+    "thumbnail": "/monsters/trickstar.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/0/01/Trickstar.png/revision/latest/scale-to-width-down/600?cb=20200308174807",
+    "description": "The Trickstar spawns during Special Events, and is categorized as a One Hit Monster. It can be killed with 1 hero, 1 hit and 1 energy, and will drop 1 holy star item in loot.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Trickstar"
+  },
+  {
+    "id": "8215",
+    "slug": "troubledough",
+    "name": "Troubledough",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/troubledough.webp",
+    "thumbnail": "/monsters/troubledough.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/b/bf/Troubledough.png/revision/latest?cb=20200927070226",
+    "description": "The Troubledough spawned during the \"Song of Champions\" special Event, and is categorized as a One Hit Monster. It can be killed with 1 hero, 1 hit and 1 energy, and will drop 1 chest item in loot.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [
+      "The Troubledough plays a song that is strangely stirring and hypnotic! Its musical notes are floating all over the Kingdom, track it down to get a chest full of wonders!"
+    ],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [
+      "The Troubledough plays a song that is strangely stirring and hypnotic! Its musical notes are floating all over the Kingdom, track it down to get a chest full of wonders!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Troubledough"
+  },
+  {
+    "id": "2869",
+    "slug": "undead-ogre",
+    "name": "Undead Ogre",
+    "category": "Special",
+    "monsterType": "One Hit Monster",
+    "categories": [
+      "Special"
+    ],
+    "image": "/monsters/undead-ogre.webp",
+    "thumbnail": "/monsters/undead-ogre.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/4/49/Undead_Ogre.png/revision/latest/scale-to-width-down/600?cb=20190621232609",
+    "description": "The Undead Ogre was appeared during Special Halloween Events, and is categorized as a One Hit Monster.",
+    "damageType": "Direct DMG",
+    "defensiveType": "Physical and Magic",
+    "strongAgainst": [
+      "Physical and Magic"
+    ],
+    "weakAgainst": [],
+    "recommendedHeroes": [],
+    "alternativeHeroes": [],
+    "heroLineups": [],
+    "levels": [],
+    "drops": [],
+    "materials": [],
+    "gearRelated": [],
+    "eventInformation": "One Hit Monster",
+    "tips": [],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Undead_Ogre"
+  },
+  {
+    "id": "3240",
+    "slug": "voodoo-shaman",
+    "name": "Voodoo Shaman",
+    "category": "Normal",
+    "monsterType": "Normal Monster",
+    "categories": [
+      "Normal"
+    ],
+    "image": "/monsters/voodoo-shaman.webp",
+    "thumbnail": "/monsters/voodoo-shaman.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/2e/Voodoo_Shaman.png/revision/latest/scale-to-width-down/600?cb=20200308174814",
+    "description": "The Voodoo Shaman is a normal Monster which spawns for two consecutive days in the course of one Monster cycle. It will remain on the Kingdom Map for 2 hours and 55 minutes, or until it is killed. When these monsters are killed, a new monster of the same type will spawn nearby.",
+    "damageType": "Magic",
+    "defensiveType": "High MDEF",
+    "strongAgainst": [
+      "High MDEF"
+    ],
+    "weakAgainst": [
+      "The Voodoo Shaman is full of tricks! This rogue exudes a debilitating aura, and has the ability to petrify foes with its strange magic. Take it down with physical attacks before your heroes succumb to its sinister spells!"
+    ],
+    "recommendedAttackType": "Physical",
+    "recommendedHeroes": [
+      "Black Crow",
+      "Demon Slayer",
+      "Rose Knight",
+      "Tracker",
+      "Trickster"
+    ],
+    "alternativeHeroes": [],
+    "heroLineups": [
+      {
+        "mode": "Standard",
+        "level": "1 - 4",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Mastercook",
+          "Ethereal Guide",
+          "Rose Knight"
+        ],
+        "paid": []
+      },
+      {
+        "mode": "Standard",
+        "level": "5",
+        "free": [
+          "Black Crow",
+          "Demon Slayer",
+          "Rose Knight",
+          "Tracker",
+          "Trickster"
+        ],
+        "paid": []
+      }
+    ],
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "drops": [],
+    "materials": [
+      "Ritual Mask",
+      "Sacred Gem",
+      "Stuffed Doll",
+      "Tribal Drum"
+    ],
+    "gearRelated": [
+      {
+        "name": "Voodoo Shaman Set",
+        "slot": "Equipment set"
+      }
+    ],
+    "spawnInformation": "Appears in the normal Kingdom Map monster rotation.",
+    "tips": [
+      "The Voodoo Shaman is full of tricks! This rogue exudes a debilitating aura, and has the ability to petrify foes with its strange magic. Take it down with physical attacks before your heroes succumb to its sinister spells!"
+    ],
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Voodoo_Shaman"
+  }
+]

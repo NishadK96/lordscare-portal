@@ -1,15 +1,17 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useEffect, useMemo, useState } from "react";
 import {
-  Bell, CalendarDays, Check, ChevronDown, CircleUserRound, Clock3, Command,
+  Bell, CalendarDays, Check, ChevronDown, Clock3, Command,
   Copy, CreditCard, Gauge, Gamepad2, Headphones, LayoutDashboard, LogOut,
-  Menu, MoreHorizontal, Pencil, Plus, RefreshCw, Search, Settings2, ShieldCheck,
+  Menu, Pencil, Plus, RefreshCw, Search, Settings2, ShieldCheck,
   SlidersHorizontal, Sparkles, Trash2, Users, WalletCards, X,
 } from "lucide-react";
 import { planPrices } from "./data";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 import { CommandLibrary } from "./CommandLibrary";
+import Link from "next/link";
 
 type Role = "customer" | "admin";
 type NavItem = { id: string; label: string; icon: React.ComponentType<{ size?: number }> };
@@ -111,7 +113,7 @@ function PortalFrame({ role, active, setActive, children }: { role: Role; active
     <main className="portal-app">
       <aside className={`sidebar ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="sidebar-head">
-          <a href="/" className="site-brand"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>{role === "admin" ? "Admin console" : "Customer portal"}</span></div></a>
+          <Link href="/" className="site-brand"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>{role === "admin" ? "Admin console" : "Customer portal"}</span></div></Link>
           <button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Close menu"><X /></button>
         </div>
         <nav>{items.map((item) => <button key={item.id} className={active === item.id ? "active" : ""} onClick={() => { setActive(item.id); setMobileOpen(false); }}><item.icon size={19} />{item.label}</button>)}</nav>
@@ -436,6 +438,8 @@ function ManageAccountsDialog({ customer, onClose, onChanged }: { customer: Admi
     setAccounts((data ?? []) as ManagedGameAccount[]);
   }
 
+  // Account ownership is the only trigger; loadAccounts intentionally reads the latest dialog state.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { loadAccounts(); }, [customer.userId]);
 
   function edit(account: ManagedGameAccount) {

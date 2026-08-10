@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ArrowLeft, CalendarDays, CheckCircle2, Crown, ExternalLink, Flag, Gift, Info, Shield, Sparkles, Swords, Target, Trophy, Users, Zap } from "lucide-react";
+import { CalendarDays, CheckCircle2, Crown, ExternalLink, Flag, Gift, Info, Shield, Sparkles, Swords, Target, Trophy, Users, Zap } from "lucide-react";
+import { SupportHeader } from "../SupportHeader";
 
 export const metadata: Metadata = {
   title: "Lords Mobile Event Guides",
@@ -110,7 +111,8 @@ const showdownRanks = {
 
 export default function EventsPage() {
   return <main className="events-page">
-    <header className="support-site-header"><div className="support-shell support-nav"><a href="/" className="site-brand" aria-label="LordsCare support home"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>Event Guides</span></div></a><nav aria-label="Support sections"><a className="mobile-primary-link" href="/"><ArrowLeft size={14} />Commands</a><a className="mobile-primary-link" href="#guild-duel">Duel</a><a className="mobile-primary-link" href="#guild-showdown">Showdown</a></nav></div></header>
+    <SupportHeader active="events" subtitle="Event Guides" />
+    <nav className="support-shell event-jump-nav" aria-label="Event guides"><a href="#guild-duel">Guild Duel</a><a href="#guild-showdown">Guild Showdown</a></nav>
 
     <section className="events-hero"><div className="support-shell events-hero-grid"><div><p className="eyebrow light">Lords Mobile event desk</p><h1>Smarter preparation. <em>Better rewards.</em></h1><p>Use these practical guides to understand each event, save the right items, and complete the best point sources at the right time.</p></div><div className="events-hero-mark"><Trophy /><strong>02</strong><span>Event guides available</span></div></div></section>
 

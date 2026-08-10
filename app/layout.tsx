@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     default: "LordsCare Bot Support",
     template: "%s · LordsCare",
   },
-  description: "Browse LordsCare Guild Bank commands, examples and subscriber support information without signing in.",
+  description: "Browse LordsCare Guild Bank commands, event strategies, and Lords Mobile monster hunt guides without signing in.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

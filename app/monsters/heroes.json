@@ -1,0 +1,206 @@
+[
+  {
+    "name": "Black Crow",
+    "image": "/heroes/black-crow.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/24/Black_Crow.png/revision/latest/scale-to-width-down/240?cb=20200308042542",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Black_Crow"
+  },
+  {
+    "name": "Bombin' Goblin",
+    "image": "/heroes/bombin-goblin.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/b/b1/Bombin%27_Goblin.png/revision/latest/scale-to-width-down/240?cb=20200308045025",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Bombin'_Goblin"
+  },
+  {
+    "name": "Boommeister",
+    "image": "/heroes/boommeister.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/a/a2/Boommeister.png/revision/latest/scale-to-width-down/211?cb=20260316191109",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Boommeister"
+  },
+  {
+    "name": "Child of Light",
+    "image": "/heroes/child-of-light.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/e/e2/Child_of_Light.png/revision/latest/scale-to-width-down/240?cb=20250930060122",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Child_of_Light"
+  },
+  {
+    "name": "Dark Magister",
+    "image": "/heroes/dark-magister.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/d/d2/Dark_Magister.png/revision/latest/scale-to-width-down/240?cb=20191023164953",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Dark_Magister"
+  },
+  {
+    "name": "Death Archer",
+    "image": "/heroes/death-archer.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/0/0c/Death_Archer.png/revision/latest/scale-to-width-down/169?cb=20260316164039",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Death_Archer"
+  },
+  {
+    "name": "Death Knight",
+    "image": "/heroes/death-knight.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/3/32/Death_Knight.png/revision/latest/scale-to-width-down/211?cb=20260316163351",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Death_Knight"
+  },
+  {
+    "name": "Demon Slayer",
+    "image": "/heroes/demon-slayer.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/a/ac/Demon_Slayer.png/revision/latest/scale-to-width-down/206?cb=20260316163153",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Demon_Slayer"
+  },
+  {
+    "name": "Dream Witch",
+    "image": "/heroes/dream-witch.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/26/Dream_Witch.png/revision/latest/scale-to-width-down/240?cb=20200308045618",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Dream_Witch"
+  },
+  {
+    "name": "Elementalist",
+    "image": "/heroes/elementalist.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/a/a6/Elementalist.png/revision/latest/scale-to-width-down/192?cb=20260316164011",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Elementalist"
+  },
+  {
+    "name": "Ethereal Guide",
+    "image": "/heroes/ethereal-guide.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/4/44/Ethereal_Guide.png/revision/latest/scale-to-width-down/217?cb=20260316163225",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Ethereal_Guide"
+  },
+  {
+    "name": "Femme Fatale",
+    "image": "/heroes/femme-fatale.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/3/33/Femme_Fatale.png/revision/latest/scale-to-width-down/169?cb=20250930170039",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Femme_Fatale"
+  },
+  {
+    "name": "Grove Guardian",
+    "image": "/heroes/grove-guardian.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/d/d2/Grove_Guardian.png/revision/latest/scale-to-width-down/240?cb=20250930165941",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Grove_Guardian"
+  },
+  {
+    "name": "Incinerator",
+    "image": "/heroes/incinerator.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/5/5b/Incinerator.png/revision/latest/scale-to-width-down/240?cb=20200308045353",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Incinerator"
+  },
+  {
+    "name": "Lore Weaver",
+    "image": "/heroes/lore-weaver.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/1/12/Lore_Weaver.png/revision/latest/scale-to-width-down/240?cb=20200308165835",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Lore_Weaver"
+  },
+  {
+    "name": "Mastercook",
+    "image": "/heroes/mastercook.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/6/66/Mastercook.png/revision/latest/scale-to-width-down/240?cb=20200308165842",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Mastercook"
+  },
+  {
+    "name": "Necroduke",
+    "image": "/heroes/necroduke.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/1/1a/Necroduke.png/revision/latest/scale-to-width-down/211?cb=20260316191029",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Necroduke"
+  },
+  {
+    "name": "Petite Devil",
+    "image": "/heroes/petite-devil.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/9/9e/Petite_Devil.png/revision/latest/scale-to-width-down/232?cb=20260316163321",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Petite_Devil"
+  },
+  {
+    "name": "Prima Donna",
+    "image": "/heroes/prima-donna.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/f/fa/Prima_Donna.png/revision/latest/scale-to-width-down/226?cb=20260316163707",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Prima_Donna"
+  },
+  {
+    "name": "Rose Knight",
+    "image": "/heroes/rose-knight.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/5/54/Rose_Knight.png/revision/latest/scale-to-width-down/240?cb=20200308171157",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Rose_Knight"
+  },
+  {
+    "name": "Sage of Storms",
+    "image": "/heroes/sage-of-storms.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/3/31/Sage_of_Storms.png/revision/latest/scale-to-width-down/240?cb=20200308171207",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Sage_of_Storms"
+  },
+  {
+    "name": "Scarlet Bolt",
+    "image": "/heroes/scarlet-bolt.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/c/c1/Scarlet_Bolt.png/revision/latest/scale-to-width-down/240?cb=20200308044835",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Scarlet_Bolt"
+  },
+  {
+    "name": "Sea Squire",
+    "image": "/heroes/sea-squire.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/1/1e/Sea_Squire.png/revision/latest/scale-to-width-down/240?cb=20200308051128",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Sea_Squire"
+  },
+  {
+    "name": "Shade",
+    "image": "/heroes/shade.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/d/dc/Shade.png/revision/latest/scale-to-width-down/216?cb=20260316163758",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Shade"
+  },
+  {
+    "name": "Snow Queen",
+    "image": "/heroes/snow-queen.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/7/7a/Snow_Queen.png/revision/latest/scale-to-width-down/167?cb=20260316163913",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Snow_Queen"
+  },
+  {
+    "name": "Steambot",
+    "image": "/heroes/steambot.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/2/2c/Steambot.png/revision/latest/scale-to-width-down/240?cb=20200308171249",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Steambot"
+  },
+  {
+    "name": "Storm Fox",
+    "image": "/heroes/storm-fox.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/c/ca/Storm_Fox.png/revision/latest/scale-to-width-down/240?cb=20200308171254",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Storm_Fox"
+  },
+  {
+    "name": "The Big Guy",
+    "image": "/heroes/the-big-guy.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/b/b4/The_Big_Guy.png/revision/latest/scale-to-width-down/240?cb=20200308171300",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/The_Big_Guy"
+  },
+  {
+    "name": "Tracker",
+    "image": "/heroes/tracker.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/c/c5/Tracker.png/revision/latest/scale-to-width-down/240?cb=20200308044508",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Tracker"
+  },
+  {
+    "name": "Trickstar",
+    "image": "/heroes/trickstar.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/0/01/Trickstar.png/revision/latest/scale-to-width-down/240?cb=20200308174807",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Trickstar"
+  },
+  {
+    "name": "Trickster",
+    "image": "/heroes/trickster.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/b/bd/Trickster.png/revision/latest/scale-to-width-down/240?cb=20200308051433",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Trickster"
+  },
+  {
+    "name": "Twilight Priestess",
+    "image": "/heroes/twilight-priestess.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/8/88/Twilight_Priestess.png/revision/latest/scale-to-width-down/240?cb=20200308171309",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Twilight_Priestess"
+  },
+  {
+    "name": "Vengeful Centaur",
+    "image": "/heroes/vengeful-centaur.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/3/31/Vengeful_Centaur.png/revision/latest/scale-to-width-down/222?cb=20260316163445",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Vengeful_Centaur"
+  },
+  {
+    "name": "Witch Doll",
+    "image": "/heroes/witch-doll.webp",
+    "imageSource": "https://static.wikia.nocookie.net/lordsmobile/images/7/7a/Witch_Doll.png/revision/latest/scale-to-width-down/146?cb=20260316163614",
+    "sourceUrl": "https://lordsmobile.fandom.com/wiki/Witch_Doll"
+  }
+]
