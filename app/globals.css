@@ -50,6 +50,25 @@ a { color: inherit; text-decoration: none; }
 .support-plan-cta { min-height: 47px; display: inline-flex; align-items: center; gap: 8px; padding: 0 16px; border: 1px solid rgba(255,255,255,.28); border-radius: 10px; color: white; font-size: 12px; font-weight: 800; }
 .support-plan-cta:hover { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.09); }
 .support-plan-cta svg { width: 16px; color: #efc979; }
+.hero-whatsapp-cta svg { color: white; }
+.hero-guide-link { width: max-content; display: inline-flex; align-items: center; gap: 7px; margin-top: 19px; color: #bcd1c8; font-size: 10px; font-weight: 750; }
+.hero-guide-link:hover { color: white; }
+.hero-guide-link svg { width: 15px; }
+.home-plans-card { padding: 30px; border: 1px solid rgba(255,255,255,.18); border-radius: 22px; background: linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.07)); backdrop-filter: blur(16px); box-shadow: 0 25px 55px rgba(3,23,16,.24); }
+.home-plan-badge { display: inline-flex; align-items: center; gap: 7px; padding: 7px 9px; border-radius: 999px; color: #174a38; background: #e9f5ef; font-size: 8px; font-weight: 850; text-transform: uppercase; letter-spacing: .065em; }
+.home-plan-badge svg { width: 14px; }
+.home-plans-card > p { margin: 27px 0 4px; color: #b9cec5; font-size: 11px; font-weight: 750; }
+.home-plan-price { display: flex; align-items: baseline; }
+.home-plan-price small { color: #efc979; font-size: 25px; font-weight: 850; }
+.home-plan-price strong { margin-left: 4px; font-size: 68px; line-height: 1; letter-spacing: -.075em; }
+.home-plan-price span { margin-left: 8px; color: #b7cbc2; font-size: 10px; }
+.home-plan-options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-top: 23px; }
+.home-plan-options > span { display: grid; gap: 4px; padding: 13px; border: 1px solid rgba(255,255,255,.13); border-radius: 11px; background: rgba(7,34,24,.18); }
+.home-plan-options strong { color: #efc979; font-size: 15px; }
+.home-plan-options small { color: #b1c7bd; font-size: 8px; line-height: 1.35; }
+.home-plans-card > a { min-height: 46px; display: flex; align-items: center; justify-content: center; margin-top: 18px; border-radius: 10px; color: #183a2e; background: #efc979; font-size: 10px; font-weight: 850; }
+.plan-highlights { border-bottom-color: #dfe7e3; background: #fff; }
+.plan-highlights > div > div:first-child svg { color: #b48a37; }
 .prefix-card { padding: 27px; border: 1px solid rgba(255,255,255,.14); border-radius: 21px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 24px 65px rgba(4,25,18,.24); }
 .prefix-card .eyebrow { margin: 17px 0 5px; }
 .prefix-card h2 { margin: 0; font-size: 23px; letter-spacing: -.04em; }
@@ -202,12 +221,16 @@ a { color: inherit; text-decoration: none; }
   .plan-enquiry-grid { grid-template-columns: 1fr; }
   .plan-enquiry-copy { max-width: 680px; }
   .plan-enquiry-form { max-width: 680px; }
+  .home-plans-card { max-width: 560px; }
 }
 
 @media (max-width: 767px) {
   .support-nav nav a.nav-whatsapp-link { display: none; }
   .support-hero-actions { align-items: stretch; flex-direction: column; }
   .support-plan-cta { width: 100%; min-height: 50px; justify-content: center; }
+  .hero-guide-link { width: 100%; justify-content: center; margin-top: 16px; text-align: center; }
+  .home-plans-card { padding: 24px 20px; border-radius: 18px; }
+  .home-plan-price strong { font-size: 58px; }
   .home-conversion-card { width: calc(100% - 20px); min-height: 0; margin: 18px 10px; padding: 28px 21px; border-radius: 17px; }
   .home-conversion-card > div:last-child { width: 100%; flex-direction: column; }
   .conversion-plans-link, .conversion-whatsapp-link { width: 100%; }

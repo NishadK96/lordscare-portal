@@ -16,8 +16,8 @@ test("legacy customer links also open support without authentication", async () 
   const customerSource = await readFile(new URL("../app/customer/page.tsx", import.meta.url), "utf8");
   const passwordSource = await readFile(new URL("../app/set-password/page.tsx", import.meta.url), "utf8");
   assert.match(layoutSource, /LordsCare Bot Support/);
-  assert.match(publicSource, /Find the right bot command/);
-  assert.match(publicSource, /without creating an account or signing in/);
+  assert.match(publicSource, /Simple plans\. Direct support/);
+  assert.match(publicSource, /Already subscribed\? Browse the command guide/);
   assert.match(customerSource, /PublicSupport/);
   assert.match(passwordSource, /PublicSupport/);
   assert.doesNotMatch(customerSource + passwordSource, /LoginPanel|Choose your password|Checking your secure link/i);
@@ -180,6 +180,8 @@ test("public plans turn approved prices into a direct WhatsApp enquiry", async (
   assert.match(contactSource, /https:\/\/wa\.me\//);
   assert.match(headerSource, /label: "Plans", href: "\/plans"/);
   assert.match(homeSource, /Plans from ₹150/);
+  assert.doesNotMatch(homeSource, /What is your command prefix|aria-label="Command prefix"|prefix-card/);
+  assert.match(homeSource, /<CommandLibrary prefix="!"/);
   assert.match(dataSource, /monthly: 150, quarterly: 400, yearly: 1500/);
   assert.match(layoutSource, /\/og\.png/);
 });
