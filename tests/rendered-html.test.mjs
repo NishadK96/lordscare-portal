@@ -77,3 +77,18 @@ test("public guided setup request covers the core bot configuration", async () =
   assert.match(builderSource, /navigator\.share/);
   assert.match(builderSource, /Never enter a game password, OTP, login token, or access key/);
 });
+
+test("public events section includes the Guild Duel guide", async () => {
+  const publicSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
+  const eventSource = await readFile(new URL("../app/events/page.tsx", import.meta.url), "utf8");
+  await access(new URL("../public/events/guild-duel-day-1.jpg", import.meta.url));
+  assert.match(publicSource, /href="\/events"/);
+  assert.match(eventSource, /Guild Duel/);
+  assert.match(eventSource, /Familiar Growth/);
+  assert.match(eventSource, /Research Racer/);
+  assert.match(eventSource, /Hero Coach/);
+  assert.match(eventSource, /Artifact Resurgence/);
+  assert.match(eventSource, /Comprehensive Development/);
+  assert.match(eventSource, /240K/);
+  assert.match(eventSource, /guild-duel-day-1\.jpg/);
+});
