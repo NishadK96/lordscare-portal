@@ -1,5 +1,5 @@
-import { SetupRequestBuilder } from "../SetupRequestBuilder";
+import { redirect } from "next/navigation";
 
 export default function SetupRequestPage() {
-  return <SetupRequestBuilder />;
+  redirect("/");
 }

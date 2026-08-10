@@ -60,8 +60,8 @@ test("public guided setup request covers the core bot configuration", async () =
   const routeSource = await readFile(new URL("../app/setup-request/page.tsx", import.meta.url), "utf8");
   const builderSource = await readFile(new URL("../app/SetupRequestBuilder.tsx", import.meta.url), "utf8");
   const settingsSource = await readFile(new URL("../app/setupSettings.ts", import.meta.url), "utf8");
-  assert.match(publicSource, /\/setup-request/);
-  assert.match(routeSource, /SetupRequestBuilder/);
+  assert.doesNotMatch(publicSource, /\/setup-request|Create full setup|Configure every part of your bot/);
+  assert.match(routeSource, /redirect\("\/"\)/);
   assert.equal((settingsSource.match(/id: "/g) ?? []).length, 8);
   assert.match(settingsSource, /Daily tasks and guild activity/);
   assert.match(settingsSource, /Protection preferences/);

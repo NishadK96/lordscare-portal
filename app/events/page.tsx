@@ -104,7 +104,7 @@ const rewardTiers = [
 
 export default function EventsPage() {
   return <main className="events-page">
-    <header className="support-site-header"><div className="support-shell support-nav"><a href="/" className="site-brand" aria-label="LordsCare support home"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>Event Guides</span></div></a><nav><a href="/"><ArrowLeft size={14} />Commands</a><a href="/setup-request">Bot setup</a></nav></div></header>
+    <header className="support-site-header"><div className="support-shell support-nav"><a href="/" className="site-brand" aria-label="LordsCare support home"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>Event Guides</span></div></a><nav><a href="/"><ArrowLeft size={14} />Commands</a><a href="#guild-duel">Guild Duel</a></nav></div></header>
 
     <section className="events-hero"><div className="support-shell events-hero-grid"><div><p className="eyebrow light">Lords Mobile event desk</p><h1>Smarter preparation. <em>Better rewards.</em></h1><p>Use these practical guides to understand each event, save the right items, and complete the best point sources at the right time.</p></div><div className="events-hero-mark"><Trophy /><strong>01</strong><span>Event guide available</span></div></div></section>
 
