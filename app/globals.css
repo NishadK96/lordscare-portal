@@ -761,3 +761,88 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
   .managed-account-list article { flex-wrap: wrap; }
   .managed-account-list article > div:nth-child(2) { min-width: 150px; }
 }
+
+/* Readability scale: public support, setup wizard, event guides, and command library. */
+.public-support, .setup-page, .events-page { font-size: 16px; }
+.public-support .eyebrow, .setup-page .eyebrow, .events-page .eyebrow { font-size: 12px; }
+.support-nav nav a { font-size: 13px; }
+.site-brand span { font-size: 12px; }
+.primary-button, .secondary-button, .light-button, .ghost-button { min-height: 46px; font-size: 14px; }
+.support-intro > p:not(.eyebrow) { font-size: 17px; }
+.prefix-card > p:not(.eyebrow) { font-size: 14px; }
+.prefix-card label { font-size: 13px; }
+.prefix-preview small { font-size: 11px; }
+.prefix-preview code { font-size: 14px; }
+.support-highlights strong { font-size: 14px; }
+.support-highlights small { font-size: 12px; }
+.setup-promo p:not(.eyebrow), .events-promo > div > p:not(.eyebrow) { font-size: 15px; }
+.featured-event-card > span { font-size: 11px; }
+.featured-event-card small { font-size: 13px; }
+.support-footer p { font-size: 13px; }
+
+.commands-hero h2 { font-size: 29px; }
+.commands-hero p:not(.eyebrow) { font-size: 14px; }
+.command-count span { font-size: 10px; }
+.command-notes strong { font-size: 14px; }
+.command-notes span, .search-tip span { font-size: 13px; }
+.command-notes code, .search-tip code { font-size: 12px; }
+.command-access-tabs button { font-size: 13px; }
+.command-access-tabs button span, .command-category-tabs button span { min-width: 22px; height: 22px; font-size: 10px; }
+.search-box { height: 47px; }
+.search-box input { font-size: 14px; }
+.command-category-tabs button { padding: 9px 13px; font-size: 12px; }
+.command-list article { gap: 12px; padding: 18px; }
+.command-card-top > span { font-size: 10px; }
+.command-card-top button { padding: 7px 9px; font-size: 11px; }
+.command-syntax { padding: 9px 11px; font-size: 14px; }
+.command-list article > p { min-height: 42px; font-size: 13px; line-height: 1.6; }
+.command-example small { font-size: 10px; }
+.command-example code { font-size: 13px; }
+.command-source-note { font-size: 11px; line-height: 1.55; }
+
+.setup-hero > div > p:not(.eyebrow) { font-size: 16px; }
+.security-note { font-size: 13px; line-height: 1.5; }
+.setup-progress button { font-size: 12px; }
+.setup-progress.full li { min-width: 122px; flex-basis: 122px; }
+.setup-step-heading p { font-size: 14px; }
+.setup-field { font-size: 14px; }
+.setup-field input, .setup-field select, .setup-field textarea { font-size: 14px; }
+.setup-switch strong { font-size: 14px; }
+.setup-switch small { font-size: 12px; }
+.setup-switch em, .setup-field-warning { font-size: 11px; }
+.setup-checkbox-group legend { font-size: 14px; }
+.setup-checkbox-group label { font-size: 13px; }
+.setup-summary { font-size: 13px; }
+.setup-message { font-size: 13px; }
+
+.events-hero p:not(.eyebrow) { font-size: 17px; }
+.section-heading > span { font-size: 12px; }
+.event-library-card small { font-size: 11px; }
+.event-library-card strong { font-size: 24px; }
+.event-library-card p { font-size: 14px; }
+.event-library-card > span { font-size: 13px; }
+.guild-duel-title p:not(.eyebrow) { font-size: 15px; }
+.guild-duel-title > a { font-size: 12px; }
+.event-shot > span { font-size: 11px; }
+.event-facts strong { font-size: 13px; }
+.event-facts small { font-size: 12px; }
+.event-requirements strong { font-size: 13px; }
+.event-requirements small, .event-requirements p { font-size: 12px; }
+.theme-timeline small { font-size: 10px; }
+.theme-timeline strong { font-size: 17px; }
+.theme-timeline p { font-size: 13px; }
+.point-row { min-height: 58px; font-size: 14px; }
+.point-row.heading { font-size: 11px; }
+.event-checklist li { font-size: 13px; }
+.reward-tier-grid article span { font-size: 12px; }
+.event-source-note { font-size: 11px; }
+.event-strategy li p { font-size: 13px; }
+.event-strategy li strong { font-size: 14px; }
+
+@media (max-width: 520px) {
+  .support-nav nav a { font-size: 12px; }
+  .support-intro > p:not(.eyebrow) { font-size: 16px; }
+  .commands-hero h2 { font-size: 24px; }
+  .command-list article > p { min-height: 0; }
+  .setup-progress button { font-size: 11px; }
+}
