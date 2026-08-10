@@ -81,7 +81,6 @@ test("public guided setup request covers the core bot configuration", async () =
 test("public events section includes the Guild Duel guide", async () => {
   const publicSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
   const eventSource = await readFile(new URL("../app/events/page.tsx", import.meta.url), "utf8");
-  await access(new URL("../public/events/guild-duel-day-1.jpg", import.meta.url));
   assert.match(publicSource, /href="\/events"/);
   assert.match(eventSource, /Guild Duel/);
   assert.match(eventSource, /Familiar Growth/);
@@ -90,5 +89,10 @@ test("public events section includes the Guild Duel guide", async () => {
   assert.match(eventSource, /Artifact Resurgence/);
   assert.match(eventSource, /Comprehensive Development/);
   assert.match(eventSource, /240K/);
-  assert.match(eventSource, /guild-duel-day-1\.jpg/);
+  assert.equal((eventSource.match(/day: \d/g) ?? []).length, 5);
+  assert.match(eventSource, /Use 1 Gold Blazing Ember/);
+  assert.match(eventSource, /Win 1 Hero Colosseum battle/);
+  assert.match(eventSource, /Use 1 Legendary Record/);
+  assert.match(eventSource, /Use 1 Army Star Scroll/);
+  assert.doesNotMatch(eventSource, /guild-duel-day-1\.jpg|from "next\/image"/);
 });

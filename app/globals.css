@@ -126,6 +126,56 @@ a { color: inherit; text-decoration: none; }
 .event-requirements strong { font-size: 10px; }
 .event-requirements small, .event-requirements p { color: #856f51; font-size: 9px; line-height: 1.5; }
 .event-requirements p { max-width: 420px; margin: 0; text-align: right; }
+.event-facts-wide { display: grid; grid-template-columns: 1.25fr repeat(4, 1fr); align-items: stretch; gap: 1px; margin-top: 26px; overflow: hidden; border: 1px solid #dfe7e3; border-radius: 17px; background: #dfe7e3; }
+.event-facts-wide > div { min-height: 145px; display: flex; align-items: flex-start; gap: 11px; padding: 23px 18px; background: white; }
+.event-facts-wide > div:first-child { display: block; color: white; background: linear-gradient(135deg, #173f32, #27664f); }
+.event-facts-wide h3 { max-width: 220px; margin: 6px 0 0; font-size: 24px; line-height: 1.1; letter-spacing: -.045em; }
+.event-facts-wide svg { width: 19px; flex: 0 0 auto; color: #2b7055; }
+.event-facts-wide span { display: grid; gap: 6px; }
+.event-facts-wide strong { font-size: 13px; line-height: 1.35; }
+.event-facts-wide small { color: #77857e; font-size: 12px; line-height: 1.55; }
+.duel-day-nav { display: flex; gap: 8px; margin-top: 42px; padding: 7px; overflow-x: auto; border: 1px solid #dde6e1; border-radius: 14px; background: white; box-shadow: 0 8px 28px rgba(20,51,39,.05); }
+.duel-day-nav a { min-width: 145px; flex: 1 0 145px; display: grid; gap: 3px; padding: 11px 13px; border-radius: 9px; color: #68766f; transition: .2s; }
+.duel-day-nav a:hover { color: #174d39; background: #edf6f1; }
+.duel-day-nav span { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.duel-day-nav strong { font-size: 13px; }
+.duel-day-stack { display: grid; gap: 34px; padding-top: 26px; }
+.duel-day-screen { --duel-accent: #55d5ae; --duel-deep: #0c4960; scroll-margin-top: 90px; overflow: hidden; border: 1px solid #cadad4; border-radius: 20px; background: #e8eef0; box-shadow: 0 18px 48px rgba(19,47,37,.1); }
+.duel-day-screen.research { --duel-accent: #79c8ff; --duel-deep: #174f78; }
+.duel-day-screen.hero { --duel-accent: #f2c86f; --duel-deep: #5b3e72; }
+.duel-day-screen.artifact { --duel-accent: #d7a2ff; --duel-deep: #493f86; }
+.duel-day-screen.development { --duel-accent: #ffb078; --duel-deep: #704240; }
+.duel-screen-header { min-height: 150px; display: grid; grid-template-columns: 135px 1fr 115px; align-items: center; gap: 22px; padding: 24px 28px; color: white; background: radial-gradient(circle at 82% 0%, color-mix(in srgb, var(--duel-accent) 28%, transparent), transparent 30%), linear-gradient(105deg, #08749b 0%, var(--duel-deep) 50%, #8e2b35 100%); border-bottom: 4px solid var(--duel-accent); }
+.duel-screen-header > div:first-child { min-height: 88px; display: grid; place-content: center; justify-items: center; border-right: 1px solid rgba(255,255,255,.18); }
+.duel-screen-header > div:first-child span { width: 62px; height: 62px; display: grid; place-items: center; border: 3px solid rgba(255,255,255,.7); border-radius: 50%; color: #173f32; background: var(--duel-accent); box-shadow: 0 0 0 6px rgba(255,255,255,.08); font-size: 14px; font-weight: 900; }
+.duel-screen-header > div:first-child p { margin: 10px 0 0; color: #d4e7e2; font-size: 10px; font-weight: 750; }
+.duel-screen-header > div:nth-child(2) small { color: var(--duel-accent); font-size: 11px; font-weight: 850; text-transform: uppercase; letter-spacing: .12em; }
+.duel-screen-header h2 { margin: 5px 0 7px; font-size: 31px; letter-spacing: -.045em; }
+.duel-screen-header > div:nth-child(2) p { max-width: 680px; margin: 0; color: #d0e1dd; font-size: 13px; line-height: 1.55; }
+.duel-task-count { display: grid; place-content: center; justify-items: center; min-height: 92px; border: 1px solid rgba(255,255,255,.17); border-radius: 14px; background: rgba(255,255,255,.07); }
+.duel-task-count strong { font-size: 34px; line-height: 1; }
+.duel-task-count span { margin-top: 5px; color: #c5d9d3; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+.duel-screen-body { display: grid; grid-template-columns: minmax(0, 1.42fr) minmax(270px, .58fr); gap: 14px; padding: 16px; background: linear-gradient(135deg, #e8f1f3, #e9e4e8); }
+.duel-task-list { overflow: hidden; border: 1px solid #cad8d6; border-radius: 13px; background: rgba(255,255,255,.94); }
+.duel-task-heading, .duel-task-row { display: grid; grid-template-columns: 1fr 130px; align-items: center; gap: 16px; }
+.duel-task-heading { min-height: 48px; padding: 0 18px; color: white; background: #08739b; border-bottom: 1px solid #08698e; text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
+.duel-task-heading strong { text-align: right; }
+.duel-task-row { min-height: 61px; padding: 10px 18px; border-top: 1px solid #e6ecea; }
+.duel-task-row:first-of-type { border-top: 0; }
+.duel-task-row > span { display: grid; gap: 4px; }
+.duel-task-row strong { color: #293f48; font-size: 14px; }
+.duel-task-row small { color: #7d8c8b; font-size: 11px; line-height: 1.4; }
+.duel-task-row b { padding: 8px 10px; border-radius: 8px; color: #14663e; background: #dcf5e6; font-size: 14px; text-align: right; }
+.duel-day-plan { align-self: start; padding: 24px; border: 1px solid rgba(255,255,255,.65); border-radius: 13px; color: white; background: linear-gradient(145deg, var(--duel-deep), #173f32); box-shadow: 0 10px 26px rgba(20,47,40,.12); }
+.duel-day-plan > svg { color: var(--duel-accent); }
+.duel-day-plan .eyebrow { margin-top: 14px; color: var(--duel-accent); }
+.duel-day-plan h3 { margin: 4px 0 17px; font-size: 23px; letter-spacing: -.04em; }
+.duel-day-plan ul { display: grid; gap: 11px; margin: 0; padding: 0; list-style: none; }
+.duel-day-plan li { display: flex; align-items: flex-start; gap: 9px; color: #d1e1dc; font-size: 13px; line-height: 1.45; }
+.duel-day-plan li svg { width: 16px; flex: 0 0 auto; color: var(--duel-accent); }
+.duel-day-plan > div { display: flex; align-items: flex-start; gap: 9px; margin-top: 20px; padding: 13px; border: 1px solid rgba(255,255,255,.12); border-radius: 9px; background: rgba(255,255,255,.07); }
+.duel-day-plan > div svg { width: 16px; flex: 0 0 auto; color: #f0cc7c; }
+.duel-day-plan > div p { margin: 0; color: #c9d9d4; font-size: 12px; line-height: 1.55; }
 .event-section { padding-top: 56px; }
 .theme-timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 .theme-timeline article { min-height: 220px; display: flex; flex-direction: column; align-items: flex-start; padding: 20px 17px; border: 1px solid #dfe7e3; border-radius: 14px; background: white; }
@@ -233,6 +283,11 @@ a { color: inherit; text-decoration: none; }
   .guild-duel-title, .event-requirements { align-items: flex-start; flex-direction: column; }
   .event-requirements p { text-align: left; }
   .event-overview-grid, .day-one-grid, .event-strategy { grid-template-columns: 1fr; }
+  .event-facts-wide { grid-template-columns: 1fr 1fr; }
+  .event-facts-wide > div:first-child { grid-column: 1 / -1; }
+  .duel-screen-header { grid-template-columns: 95px 1fr; padding: 22px 18px; }
+  .duel-task-count { display: none; }
+  .duel-screen-body { grid-template-columns: 1fr; }
   .event-shot img { min-height: 280px; }
   .theme-timeline { grid-template-columns: 1fr 1fr; }
   .reward-tier-grid { grid-template-columns: 1fr; }
@@ -259,6 +314,17 @@ a { color: inherit; text-decoration: none; }
   .section-heading { align-items: flex-start; flex-direction: column; }
   .event-library-card { grid-template-columns: 1fr; }
   .event-library-card > span { grid-column: 1; }
+  .event-facts-wide { grid-template-columns: 1fr; }
+  .event-facts-wide > div:first-child { grid-column: auto; }
+  .duel-screen-header { grid-template-columns: 1fr; gap: 14px; }
+  .duel-screen-header > div:first-child { min-height: 0; display: flex; justify-content: flex-start; gap: 12px; border-right: 0; }
+  .duel-screen-header > div:first-child span { width: 52px; height: 52px; }
+  .duel-screen-header > div:first-child p { margin: 0; }
+  .duel-screen-header h2 { font-size: 27px; }
+  .duel-screen-body { padding: 9px; }
+  .duel-task-heading, .duel-task-row { grid-template-columns: 1fr 95px; gap: 8px; }
+  .duel-task-heading, .duel-task-row { padding-left: 12px; padding-right: 12px; }
+  .duel-task-row strong, .duel-task-row b { font-size: 12px; }
   .theme-timeline { grid-template-columns: 1fr; }
   .point-row { grid-template-columns: 1fr 80px; padding: 0 12px; }
   .event-strategy { padding: 25px 20px; }
