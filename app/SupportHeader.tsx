@@ -2,11 +2,12 @@ import { ExternalLink, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { generalWhatsAppUrl } from "./contact";
 
-type SupportSection = "commands" | "events" | "monsters" | "plans";
+type SupportSection = "commands" | "features" | "events" | "monsters" | "plans";
 
 export function SupportHeader({ active, subtitle }: { active: SupportSection; subtitle: string }) {
   const links: { id: SupportSection; label: string; href: string }[] = [
     { id: "commands", label: "Commands", href: "/#commands" },
+    { id: "features", label: "Features", href: "/features" },
     { id: "events", label: "Events", href: "/events" },
     { id: "monsters", label: "Monsters", href: "/monsters" },
     { id: "plans", label: "Plans", href: "/plans" },

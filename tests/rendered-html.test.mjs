@@ -185,3 +185,24 @@ test("public plans turn approved prices into a direct WhatsApp enquiry", async (
   assert.match(dataSource, /monthly: 150, quarterly: 400, yearly: 1500/);
   assert.match(layoutSource, /\/og\.png/);
 });
+
+test("public features explain the managed service without exposing infrastructure", async () => {
+  const homeSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
+  const pageSource = await readFile(new URL("../app/features/page.tsx", import.meta.url), "utf8");
+  const gridSource = await readFile(new URL("../app/FeatureGrid.tsx", import.meta.url), "utf8");
+  const dataSource = await readFile(new URL("../app/featureData.ts", import.meta.url), "utf8");
+  const headerSource = await readFile(new URL("../app/SupportHeader.tsx", import.meta.url), "utf8");
+  assert.match(headerSource, /label: "Features", href: "\/features"/);
+  assert.match(homeSource, /What LordsCare can handle/);
+  assert.match(homeSource, /Three steps to get started/);
+  assert.match(pageSource, /What LordsCare can configure/);
+  assert.match(pageSource, /From plan to configuration in three steps/);
+  assert.match(gridSource, /customer-feature-card/);
+  assert.equal((dataSource.match(/id: "/g) ?? []).length, 8);
+  assert.match(dataSource, /Vergeway daily collection/);
+  assert.match(dataSource, /Building upgrade priorities/);
+  assert.match(dataSource, /Infantry, Ranged, and Cavalry training/);
+  assert.match(dataSource, /Familiar development/);
+  assert.match(dataSource, /Guild Bank commands/);
+  assert.doesNotMatch(homeSource + pageSource + dataSource, /Windows|Windows Server|VPS|software installation|upstream|slot cost/i);
+});

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: "LordsCare Bot Support",
     template: "%s · LordsCare",
   },
-  description: "Browse LordsCare Guild Bank commands, event strategies, and Lords Mobile monster hunt guides without signing in.",
+  description: "Explore LordsCare automation features, subscription plans, Guild Bank commands, event strategies, and Monster Hunt guides.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     title: "LordsCare Bot Support & Subscription Plans",
-    description: "Commands, event strategies, Monster Hunt guides, and subscription plans with direct WhatsApp enquiry.",
+    description: "Automation features, commands, event strategies, Monster Hunt guides, and subscription plans with direct WhatsApp enquiry.",
     images: [{ url: "/og.png", width: 1731, height: 909, alt: "LordsCare subscription plans" }],
   },
   twitter: {
