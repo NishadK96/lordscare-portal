@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://lordscare-portal.free-swan-1490.chatgpt.site"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://lordscare-portal.vercel.app"),
   title: {
     default: "LordsCare Bot Support",
     template: "%s · LordsCare",
