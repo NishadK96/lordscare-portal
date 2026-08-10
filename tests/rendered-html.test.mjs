@@ -97,6 +97,21 @@ test("public events section includes the Guild Duel guide", async () => {
   assert.doesNotMatch(eventSource, /guild-duel-day-1\.jpg|from "next\/image"/);
 });
 
+test("events section includes the Guild Showdown rank tactic", async () => {
+  const eventSource = await readFile(new URL("../app/events/page.tsx", import.meta.url), "utf8");
+  assert.match(eventSource, /id="guild-showdown"/);
+  assert.match(eventSource, /href="#guild-showdown">Showdown/);
+  assert.match(eventSource, /Guild Board → Might Ranking → Your Rank/);
+  assert.match(eventSource, /cavalry: \[1, 4, 7, 10/);
+  assert.match(eventSource, /ranged: \[2, 5, 8, 11/);
+  assert.match(eventSource, /infantry: \[3, 6, 9, 12/);
+  assert.match(eventSource, /Do not send mixed troops unless you are the rally lead/);
+  assert.match(eventSource, /Fury, Prison, and Altar boosts/);
+  assert.match(eventSource, /50% Army ATK boost/);
+  assert.match(eventSource, /Guild Showdown actions do not activate Battle Fury by themselves/);
+  assert.match(eventSource, /lordsmobile\.fandom\.com\/wiki\/Guild_Showdown/);
+});
+
 test("responsive layout covers phones, tablets, drawers, tables, and dialogs", async () => {
   const publicSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
   const portalSource = await readFile(new URL("../app/PortalShell.tsx", import.meta.url), "utf8");

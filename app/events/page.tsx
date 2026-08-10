@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { ArrowLeft, CalendarDays, CheckCircle2, ExternalLink, Flag, Gift, Info, Sparkles, Swords, Trophy, Users } from "lucide-react";
+import { ArrowLeft, CalendarDays, CheckCircle2, Crown, ExternalLink, Flag, Gift, Info, Shield, Sparkles, Swords, Target, Trophy, Users, Zap } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Lords Mobile Event Guides",
-  description: "Practical Lords Mobile event guides, beginning with complete Guild Duel daily tasks, point sources, rewards, and preparation tips.",
+  description: "Practical Lords Mobile guides for Guild Duel and Guild Showdown, including daily tasks, rank-based troop assignments, and preparation tips.",
 };
 
 type DuelDay = {
@@ -102,13 +102,19 @@ const rewardTiers = [
   ["Tier 3", "1.5M", "2.5M", "5M"],
 ];
 
+const showdownRanks = {
+  cavalry: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64],
+  ranged: [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50, 53, 56, 59, 62, 65],
+  infantry: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60, 63],
+};
+
 export default function EventsPage() {
   return <main className="events-page">
-    <header className="support-site-header"><div className="support-shell support-nav"><a href="/" className="site-brand" aria-label="LordsCare support home"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>Event Guides</span></div></a><nav aria-label="Support sections"><a className="mobile-primary-link" href="/"><ArrowLeft size={14} />Commands</a><a className="mobile-primary-link" href="#guild-duel">Guild Duel</a></nav></div></header>
+    <header className="support-site-header"><div className="support-shell support-nav"><a href="/" className="site-brand" aria-label="LordsCare support home"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>Event Guides</span></div></a><nav aria-label="Support sections"><a className="mobile-primary-link" href="/"><ArrowLeft size={14} />Commands</a><a className="mobile-primary-link" href="#guild-duel">Duel</a><a className="mobile-primary-link" href="#guild-showdown">Showdown</a></nav></div></header>
 
-    <section className="events-hero"><div className="support-shell events-hero-grid"><div><p className="eyebrow light">Lords Mobile event desk</p><h1>Smarter preparation. <em>Better rewards.</em></h1><p>Use these practical guides to understand each event, save the right items, and complete the best point sources at the right time.</p></div><div className="events-hero-mark"><Trophy /><strong>01</strong><span>Event guide available</span></div></div></section>
+    <section className="events-hero"><div className="support-shell events-hero-grid"><div><p className="eyebrow light">Lords Mobile event desk</p><h1>Smarter preparation. <em>Better rewards.</em></h1><p>Use these practical guides to understand each event, save the right items, and complete the best point sources at the right time.</p></div><div className="events-hero-mark"><Trophy /><strong>02</strong><span>Event guides available</span></div></div></section>
 
-    <section className="support-shell event-directory"><div className="section-heading"><div><p className="eyebrow">Events library</p><h2>Current guides</h2></div><span>More events will be added here</span></div><a className="event-library-card" href="#guild-duel"><div className="event-library-icon"><Swords /></div><div><small>5-day guild competition</small><strong>Guild Duel</strong><p>Complete task screens for all five themes, point values, reward tiers, and preparation tips.</p></div><span>Open guide</span></a></section>
+    <section className="support-shell event-directory"><div className="section-heading"><div><p className="eyebrow">Events library</p><h2>Current guides</h2></div><span>More events will be added here</span></div><div className="event-library-grid"><a className="event-library-card" href="#guild-duel"><div className="event-library-icon"><Swords /></div><div><small>5-day guild competition</small><strong>Guild Duel</strong><p>Complete task screens for all five themes, point values, reward tiers, and preparation tips.</p></div><span>Open guide</span></a><a className="event-library-card showdown-library-card" href="#guild-showdown"><div className="event-library-icon"><Shield /></div><div><small>Rank-based battle lineup</small><strong>Guild Showdown</strong><p>Find your assigned troop type from your guild might rank and register with the correct battle setup.</p></div><span>Open guide</span></a></div></section>
 
     <article className="support-shell guild-duel-guide" id="guild-duel">
       <header className="guild-duel-title"><div><p className="eyebrow">Event 01</p><h2>Guild Duel</h2><p>A five-day, one-versus-one guild competition where every day has a different scoring theme.</p></div><a href="https://lordsmobile.fandom.com/wiki/Guild_Duel" target="_blank" rel="noreferrer">Community reference<ExternalLink size={14} /></a></header>
@@ -127,6 +133,16 @@ export default function EventsPage() {
       <section className="event-section"><div className="section-heading"><div><p className="eyebrow">Solo progress</p><h2>Tier milestones</h2></div><span>Community-reported thresholds</span></div><div className="reward-tier-grid">{rewardTiers.map(([tier, first, second, third]) => <article key={tier}><Trophy /><strong>{tier}</strong><div><span>{first}</span><span>{second}</span><span>{third}</span></div></article>)}</div><p className="event-source-note"><Info size={15} />The Day 1 screenshot supplied for reference showed Tier 2 milestones of 240K, 540K, and 1.2M. Check every threshold against the current in-game event.</p></section>
 
       <section className="event-strategy"><div><p className="eyebrow light">Simple strategy</p><h2>Save first. Score on the correct day.</h2></div><ol><li><span>01</span><p><strong>Review all five screens</strong>Know which items and completed queues should be saved.</p></li><li><span>02</span><p><strong>Prepare long queues early</strong>Time research, troop training, or other projects for the matching day.</p></li><li><span>03</span><p><strong>Claim only after checking</strong>Confirm the live task and point bonus before spending rare items.</p></li></ol></section>
+    </article>
+
+    <article className="support-shell guild-showdown-guide" id="guild-showdown">
+      <header className="guild-duel-title guild-showdown-title"><div><p className="eyebrow">Event 02</p><h2>Guild Showdown</h2><p>Register one coordinated army lineup, then face rival guild members in might order without losing troops.</p></div><a href="https://lordsmobile.fandom.com/wiki/Guild_Showdown" target="_blank" rel="noreferrer">Community reference<ExternalLink size={14} /></a></header>
+
+      <section className="event-facts-wide showdown-facts"><div><p className="eyebrow">How it works</p><h3>Register once. Fight as a guild.</h3></div><div><Target /><span><strong>Registration locks your setup</strong><small>Active talents, equipment, army lineup, turf boosts, and might are recorded.</small></span></div><div><Users /><span><strong>Might decides battle order</strong><small>Members fight from the weakest registered contestant to the strongest.</small></span></div><div><Shield /><span><strong>No troop losses</strong><small>Heroes and troops are not wounded, killed, or captured during Showdown.</small></span></div><div><Trophy /><span><strong>Every win matters</strong><small>Each battle victory adds one event point to the guild result.</small></span></div></section>
+
+      <section className="showdown-assignment"><header><div><p className="eyebrow light">Member registration tactic</p><h2>Use your Guild Board might rank</h2><p>Open <strong>Guild Board → Might Ranking → Your Rank</strong>, then register the single troop type assigned to your number. The repeating lineup helps the guild alternate formations against consecutive opponents.</p></div><div className="showdown-cycle"><span>Repeat every 3 ranks</span><strong>1 Cavalry · 2 Ranged · 3 Infantry</strong></div></header><div className="showdown-rank-grid"><article className="cavalry"><div><span>01</span><div><small>Ranks starting at 1</small><h3>Cavalry</h3></div></div><p>{showdownRanks.cavalry.join(", ")}</p></article><article className="ranged"><div><span>02</span><div><small>Ranks starting at 2</small><h3>Ranged</h3></div></div><p>{showdownRanks.ranged.join(", ")}</p></article><article className="infantry"><div><span>03</span><div><small>Ranks divisible by 3</small><h3>Infantry</h3></div></div><p>{showdownRanks.infantry.join(", ")}</p></article></div></section>
+
+      <section className="showdown-checklist"><div><p className="eyebrow light">Before you register</p><h2>Make the recorded setup count.</h2><p>These choices should be active when you register or update your lineup.</p></div><div className="showdown-tip-grid"><article><Swords /><span><strong>Use one troop type</strong><small>Do not send mixed troops unless you are the rally lead.</small></span></article><article><Zap /><span><strong>Activate combat boosts</strong><small>Prepare Fury, Prison, and Altar boosts before registration.</small></span></article><article><Target /><span><strong>Switch to war setup</strong><small>Equip war gear, select army talents, and activate the 50% Army ATK boost.</small></span></article><article><Crown /><span><strong>Send your leader</strong><small>Include your leader so the registered army receives the intended battle benefits.</small></span></article></div><p className="showdown-warning"><Info />Guild Showdown actions do not activate Battle Fury by themselves. If Fury is part of your plan, activate it before registering and confirm every boost on the live registration screen.</p></section>
     </article>
 
     <footer className="support-footer"><div className="support-shell"><div className="site-brand"><div className="brand-mark">LC</div><div><strong>LordsCare</strong><span>Bot subscriber support</span></div></div><p>Community-reported values may include research boosts and can change between event runs. The current in-game screen is the final reference.</p></div></footer>
