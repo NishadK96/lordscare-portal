@@ -943,7 +943,8 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
   .support-nav { min-height: 68px; gap: 10px; }
   .support-nav nav { gap: 2px; }
   .support-nav nav a { min-height: 44px; display: inline-flex; padding: 8px 10px; font-size: 12px; }
-  .support-nav nav a:last-child:nth-child(n+3) { display: none; }
+  .support-nav nav a.mobile-primary-link { display: inline-flex; }
+  .support-nav nav a.nav-external-link { display: none; }
   .support-hero-grid { min-height: auto; grid-template-columns: 1fr; gap: 26px; padding-top: 38px; padding-bottom: 40px; }
   .support-intro h1 { margin-bottom: 16px; font-size: clamp(38px, 12vw, 52px); line-height: 1.02; }
   .support-intro > p:not(.eyebrow) { font-size: 16px; line-height: 1.65; }
@@ -1116,7 +1117,8 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
 @media (max-width: 479px) {
   .support-nav .site-brand > div:last-child { display: none; }
   .support-nav nav a { padding: 7px 8px; }
-  .support-nav nav a:last-child { display: none; }
+  .support-nav nav a.mobile-primary-link { display: inline-flex; }
+  .support-nav nav a.nav-external-link { display: none; }
   .support-highlights > div > div { min-height: 82px; }
   .events-promo { padding: 21px 17px; }
   .event-library-card { grid-template-columns: 1fr; }

@@ -100,8 +100,11 @@ test("public events section includes the Guild Duel guide", async () => {
 test("responsive layout covers phones, tablets, drawers, tables, and dialogs", async () => {
   const publicSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
   const portalSource = await readFile(new URL("../app/PortalShell.tsx", import.meta.url), "utf8");
+  const eventSource = await readFile(new URL("../app/events/page.tsx", import.meta.url), "utf8");
   const cssSource = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(publicSource, /id="commands"/);
+  assert.match(publicSource, /mobile-primary-link[^>]+href="\/events"/);
+  assert.match(eventSource, /mobile-primary-link[^>]+href="\/"/);
   assert.match(portalSource, /mobile-nav-backdrop/);
   assert.match(portalSource, /aria-expanded=\{mobileOpen\}/);
   assert.match(portalSource, /data-label="Customer"/);
@@ -110,6 +113,8 @@ test("responsive layout covers phones, tablets, drawers, tables, and dialogs", a
   assert.match(cssSource, /@media \(max-width: 767px\)/);
   assert.match(cssSource, /@media \(max-width: 479px\)/);
   assert.match(cssSource, /env\(safe-area-inset-bottom\)/);
+  assert.match(cssSource, /\.support-nav nav a\.mobile-primary-link \{ display: inline-flex; \}/);
+  assert.match(cssSource, /\.support-nav nav a\.nav-external-link \{ display: none; \}/);
   assert.match(cssSource, /\.customer-table td::before/);
   assert.match(cssSource, /\.modal-card, \.plan-modal, \.accounts-modal \{[^}]*border-radius: 20px 20px 0 0/s);
 });
