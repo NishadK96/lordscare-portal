@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://lordscare-portal.free-swan-1490.chatgpt.site"),
   title: {
     default: "LordsCare Bot Support",
     template: "%s · LordsCare",
@@ -10,6 +11,18 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
+  },
+  openGraph: {
+    type: "website",
+    title: "LordsCare Bot Support & Subscription Plans",
+    description: "Commands, event strategies, Monster Hunt guides, and subscription plans with direct WhatsApp enquiry.",
+    images: [{ url: "/og.png", width: 1731, height: 909, alt: "LordsCare subscription plans" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LordsCare Bot Support & Subscription Plans",
+    description: "Compare plans and send a prepared enquiry directly through WhatsApp.",
+    images: ["/og.png"],
   },
 };
 

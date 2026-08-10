@@ -161,3 +161,25 @@ test("monster guide ships a complete local catalog and companion-tool architectu
   assert.match(detailSource, /MonsterMobileActions/);
   assert.match(homeSource, /href="\/monsters"/);
 });
+
+test("public plans turn approved prices into a direct WhatsApp enquiry", async () => {
+  const planSource = await readFile(new URL("../app/plans/page.tsx", import.meta.url), "utf8");
+  const conversionSource = await readFile(new URL("../app/PlanConversion.tsx", import.meta.url), "utf8");
+  const contactSource = await readFile(new URL("../app/contact.ts", import.meta.url), "utf8");
+  const headerSource = await readFile(new URL("../app/SupportHeader.tsx", import.meta.url), "utf8");
+  const homeSource = await readFile(new URL("../app/PublicSupport.tsx", import.meta.url), "utf8");
+  const dataSource = await readFile(new URL("../app/data.ts", import.meta.url), "utf8");
+  const layoutSource = await readFile(new URL("../app/layout.tsx", import.meta.url), "utf8");
+  await access(new URL("../public/og.png", import.meta.url));
+  assert.match(planSource, /Plans start from/);
+  assert.match(planSource, /Ask on WhatsApp/);
+  assert.match(conversionSource, /Send enquiry on WhatsApp/);
+  assert.match(conversionSource, /Never send a password, OTP, login token, or access key/);
+  assert.match(conversionSource, /window\.open\(createWhatsAppUrl\(enquiry\)/);
+  assert.match(contactSource, /916238196131/);
+  assert.match(contactSource, /https:\/\/wa\.me\//);
+  assert.match(headerSource, /label: "Plans", href: "\/plans"/);
+  assert.match(homeSource, /Plans from ₹150/);
+  assert.match(dataSource, /monthly: 150, quarterly: 400, yearly: 1500/);
+  assert.match(layoutSource, /\/og\.png/);
+});
