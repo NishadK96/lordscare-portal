@@ -31,7 +31,7 @@ type LiveSettingRequest = {
   adminNote?: string;
 };
 type CustomerSnapshot = { name: string; email: string; commandPrefix: string; plan: string; amount: string; renewal: string; renewalShort: string; daysLeft: number; status: string; accounts: PortalAccount[]; openRequests: number };
-type AdminCustomerRow = { id: string; userId: string; subscriptionId?: string; planId?: string; accountLimit: number; commandPrefix: string; name: string; accounts: number; plan: string; renewal: string; status: string; amount: string; amountValue: number; startedAt?: string; renewsAt?: string };
+type AdminCustomerRow = { id: string; recordKind: "portal" | "internal"; userId?: string; internalRecordId?: string; subscriptionId?: string; planId?: string; accountLimit: number; commandPrefix: string; name: string; phone?: string; accounts: number; plan: string; renewal: string; status: string; amount: string; amountValue: number; startedAt?: string; renewsAt?: string };
 type ManagedGameAccount = { id: string; display_name: string; account_reference: string; kingdom: string | null; bot_slot_reference: string | null; status: string };
 
 const customerNav: NavItem[] = [
@@ -371,15 +371,17 @@ export function AdminPortal() {
   const [managingPlan, setManagingPlan] = useState<AdminCustomerRow | null>(null);
   const [managingAccounts, setManagingAccounts] = useState<AdminCustomerRow | null>(null);
   const [managingPrefix, setManagingPrefix] = useState<AdminCustomerRow | null>(null);
+  const [managingInternal, setManagingInternal] = useState<AdminCustomerRow | null>(null);
 
   async function loadAdminData() {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) { setCustomers([]); setManagedAccounts(0); setPendingRequests(0); setLoading(false); return; }
-    const [{ data: profiles }, { data: subscriptions }, { data: plans }, { data: accounts }, { count: requestCount }] = await Promise.all([
+    const [{ data: profiles }, { data: subscriptions }, { data: plans }, { data: accounts }, { data: internalCustomers }, { count: requestCount }] = await Promise.all([
       supabase.from("profiles").select("id, full_name, customer_code, command_prefix").eq("role", "customer").order("created_at", { ascending: false }),
       supabase.from("subscriptions").select("id, user_id, plan_id, status, amount_paid_inr, started_at, renews_at, created_at").order("created_at", { ascending: false }),
       supabase.from("plans").select("id, account_limit, term_months"),
       supabase.from("game_accounts").select("id, user_id"),
+      supabase.from("internal_customers").select("id, customer_code, full_name, phone, plan_id, account_count, status, amount_paid_inr, started_at, renews_at, created_at").order("created_at", { ascending: false }),
       supabase.from("bot_setting_requests").select("id", { count: "exact", head: true }).eq("status", "pending"),
     ]);
     const planMap = new Map((plans ?? []).map((plan) => [plan.id, plan]));
@@ -393,9 +395,17 @@ export function AdminPortal() {
       const renewalDate = subscription?.renews_at ? new Date(subscription.renews_at) : null;
       const days = renewalDate ? Math.ceil((renewalDate.getTime() - Date.now()) / 86400000) : null;
       const status = subscription ? (subscription.status === "active" && days !== null && days <= 7 ? "due soon" : subscription.status.replaceAll("_", " ")) : "no subscription";
-      return { id: profile.customer_code || profile.id.slice(0, 8), userId: profile.id, subscriptionId: subscription?.id, planId: subscription?.plan_id, accountLimit: plan?.account_limit ?? 0, commandPrefix: profile.command_prefix || "!", name: profile.full_name, accounts: accountCounts.get(profile.id) ?? 0, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "Not scheduled", status, amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—", amountValue: subscription ? Number(subscription.amount_paid_inr) : 0, startedAt: subscription?.started_at, renewsAt: subscription?.renews_at };
+      return { id: profile.customer_code || profile.id.slice(0, 8), recordKind: "portal" as const, userId: profile.id, subscriptionId: subscription?.id, planId: subscription?.plan_id, accountLimit: plan?.account_limit ?? 0, commandPrefix: profile.command_prefix || "!", name: profile.full_name, accounts: accountCounts.get(profile.id) ?? 0, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate ? renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "Not scheduled", status, amount: subscription ? `₹${Number(subscription.amount_paid_inr).toLocaleString("en-IN")}` : "—", amountValue: subscription ? Number(subscription.amount_paid_inr) : 0, startedAt: subscription?.started_at, renewsAt: subscription?.renews_at };
     });
-    setCustomers(rows); setManagedAccounts((accounts ?? []).length); setPendingRequests(requestCount ?? 0); setLoading(false);
+    for (const record of internalCustomers ?? []) {
+      const plan = planMap.get(record.plan_id);
+      const renewalDate = new Date(record.renews_at);
+      const days = Math.ceil((renewalDate.getTime() - Date.now()) / 86400000);
+      const status = record.status === "active" && days <= 7 ? "due soon" : String(record.status).replaceAll("_", " ");
+      rows.push({ id: record.customer_code, recordKind: "internal", internalRecordId: record.id, planId: record.plan_id, accountLimit: plan?.account_limit ?? 0, commandPrefix: "—", name: record.full_name, phone: record.phone ?? undefined, accounts: record.account_count, plan: plan ? `${plan.account_limit} ${plan.account_limit === 1 ? "account" : "accounts"} · ${plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"}` : "Not assigned", renewal: renewalDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }), status, amount: `₹${Number(record.amount_paid_inr).toLocaleString("en-IN")}`, amountValue: Number(record.amount_paid_inr), startedAt: record.started_at, renewsAt: record.renews_at });
+    }
+    rows.sort((a, b) => new Date(b.startedAt ?? 0).getTime() - new Date(a.startedAt ?? 0).getTime());
+    setCustomers(rows); setManagedAccounts((accounts ?? []).length + (internalCustomers ?? []).reduce((sum, record) => sum + Number(record.account_count), 0)); setPendingRequests(requestCount ?? 0); setLoading(false);
   }
 
   useEffect(() => { loadAdminData(); }, []);
@@ -404,14 +414,15 @@ export function AdminPortal() {
   const activeValue = activeCustomers.reduce((sum, row) => sum + row.amountValue, 0);
   return <PortalFrame role="admin" active={active} setActive={setActive}>
     {active === "overview" && <AdminOverview setActive={setActive} onAdd={() => setAdding(true)} customers={customers} managedAccounts={managedAccounts} pendingRequests={pendingRequests} renewalsDue={renewalsDue} activeValue={activeValue} loading={loading} />}
-    {active === "customers" && <CustomersView onAdd={() => setAdding(true)} onManagePlan={setManagingPlan} onManageAccounts={setManagingAccounts} onManagePrefix={setManagingPrefix} rows={customers} loading={loading} />}
-    {active === "renewals" && <RenewalsView rows={customers} loading={loading} onManagePlan={setManagingPlan} />}
+    {active === "customers" && <CustomersView onAdd={() => setAdding(true)} onManagePlan={(customer) => customer.recordKind === "internal" ? setManagingInternal(customer) : setManagingPlan(customer)} onManageAccounts={(customer) => customer.recordKind === "internal" ? setManagingInternal(customer) : setManagingAccounts(customer)} onManagePrefix={setManagingPrefix} rows={customers} loading={loading} />}
+    {active === "renewals" && <RenewalsView rows={customers} loading={loading} onManagePlan={(customer) => customer.recordKind === "internal" ? setManagingInternal(customer) : setManagingPlan(customer)} />}
     {active === "requests" && <RequestsView />}
     {active === "plans" && <PlansView />}
     {adding && <AddCustomerDialog onClose={() => setAdding(false)} onSaved={() => { setAdding(false); setLoading(true); loadAdminData(); }} />}
     {managingPlan && <ManagePlanDialog customer={managingPlan} onClose={() => setManagingPlan(null)} onSaved={() => { setManagingPlan(null); setLoading(true); loadAdminData(); }} />}
     {managingAccounts && <ManageAccountsDialog customer={managingAccounts} onClose={() => setManagingAccounts(null)} onChanged={loadAdminData} />}
     {managingPrefix && <ManageCommandPrefixDialog customer={managingPrefix} onClose={() => setManagingPrefix(null)} onSaved={() => { setManagingPrefix(null); setLoading(true); loadAdminData(); }} />}
+    {managingInternal && <ManageInternalCustomerDialog customer={managingInternal} onClose={() => setManagingInternal(null)} onSaved={() => { setManagingInternal(null); setLoading(true); loadAdminData(); }} />}
   </PortalFrame>;
 }
 
@@ -425,7 +436,7 @@ function CustomerTable({ rows, loading = false, onManagePlan, onManageAccounts, 
   if (loading) return <div className="empty-state compact-empty"><RefreshCw /><h3>Loading customers…</h3></div>;
   if (!rows.length) return <div className="empty-state compact-empty"><Users /><h3>No customers yet</h3><p>Real customer records will appear after they are created.</p></div>;
   const hasActions = onManagePlan || onManageAccounts || onManagePrefix;
-  return <div className="table-wrap customer-table"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Prefix</th><th>Renewal</th><th>Amount</th><th>Status</th>{hasActions && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td data-label="Customer"><strong>{item.name}</strong><small>{item.id}</small></td><td data-label="Plan">{item.plan}</td><td data-label="Accounts">{item.accounts}{item.accountLimit ? ` / ${item.accountLimit}` : ""}</td><td data-label="Prefix"><code>{item.commandPrefix}</code></td><td data-label="Renewal">{item.renewal}</td><td data-label="Amount"><strong>{item.amount}</strong></td><td data-label="Status"><Status>{item.status}</Status></td>{hasActions && <td data-label="Actions"><div className="table-actions">{onManageAccounts && <button className="secondary-button table-action" onClick={() => onManageAccounts(item)}>Accounts</button>}{onManagePlan && <button className="secondary-button table-action" onClick={() => onManagePlan(item)}>Plan</button>}{onManagePrefix && <button className="secondary-button table-action" onClick={() => onManagePrefix(item)}>Prefix</button>}</div></td>}</tr>)}</tbody></table></div>;
+  return <div className="table-wrap customer-table"><table><thead><tr><th>Customer</th><th>Plan</th><th>Accounts</th><th>Prefix</th><th>Renewal</th><th>Amount</th><th>Status</th>{hasActions && <th />}</tr></thead><tbody>{rows.map((item) => <tr key={item.id}><td data-label="Customer"><strong>{item.name}</strong><small>{item.id} · {item.recordKind === "internal" ? "Internal record" : "Portal customer"}</small></td><td data-label="Plan">{item.plan}</td><td data-label="Accounts">{item.accounts}{item.accountLimit ? ` / ${item.accountLimit}` : ""}</td><td data-label="Prefix"><code>{item.commandPrefix}</code></td><td data-label="Renewal">{item.renewal}</td><td data-label="Amount"><strong>{item.amount}</strong></td><td data-label="Status"><Status>{item.status}</Status></td>{hasActions && <td data-label="Actions"><div className="table-actions">{onManageAccounts && <button className="secondary-button table-action" onClick={() => onManageAccounts(item)}>Accounts</button>}{onManagePlan && <button className="secondary-button table-action" onClick={() => onManagePlan(item)}>Plan</button>}{onManagePrefix && item.recordKind === "portal" && <button className="secondary-button table-action" onClick={() => onManagePrefix(item)}>Prefix</button>}</div></td>}</tr>)}</tbody></table></div>;
 }
 
 function CustomersView({ onAdd, onManagePlan, onManageAccounts, onManagePrefix, rows, loading }: { onAdd: () => void; onManagePlan: (customer: AdminCustomerRow) => void; onManageAccounts: (customer: AdminCustomerRow) => void; onManagePrefix: (customer: AdminCustomerRow) => void; rows: AdminCustomerRow[]; loading: boolean }) {
@@ -588,12 +599,64 @@ function ManagePlanDialog({ customer, onClose, onSaved }: { customer: AdminCusto
   return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card plan-modal" role="dialog" aria-modal="true" aria-labelledby="manage-plan-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Customer subscription</p><h2 id="manage-plan-title">Manage {customer.name}</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">Assign a plan, change its status and dates, or start a fresh renewal period.</p><div className="support-form"><label>Plan<select value={planId} onChange={(event) => selectPlan(event.target.value)}><option value="">Select a plan</option>{plans.map((plan) => <option key={plan.id} value={plan.id}>{plan.account_limit} {plan.account_limit === 1 ? "account" : "accounts"} · {plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"} · ₹{plan.price_inr.toLocaleString("en-IN")}</option>)}</select></label><div className="modal-form-grid"><label>Status<select value={status} onChange={(event) => setStatus(event.target.value)}><option value="pending">Pending</option><option value="active">Active</option><option value="past_due">Past due</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option></select></label><label>Amount paid (₹)<input type="number" min="0" value={amount} onChange={(event) => setAmount(Number(event.target.value))} /></label></div><div className="modal-form-grid"><label>Start date<input type="date" value={startedAt} onChange={(event) => { setStartedAt(event.target.value); setRenewalFromStart(event.target.value); }} /></label><label>Renewal date<input type="date" value={renewsAt} onChange={(event) => setRenewsAt(event.target.value)} /></label></div><div className="plan-dialog-actions"><button className="secondary-button" disabled={busy} onClick={() => save(false)}>{customer.subscriptionId ? "Save changes" : "Assign plan"}</button><button className="primary-button" disabled={busy || !planId} onClick={() => save(true)}><RefreshCw size={16} />Renew from today</button></div></div>{message && <p className="form-message">{message}</p>}</section></div>;
 }
 
+function ManageInternalCustomerDialog({ customer, onClose, onSaved }: { customer: AdminCustomerRow; onClose: () => void; onSaved: () => void }) {
+  const [plans, setPlans] = useState<{ id: string; account_limit: number; term_months: number; price_inr: number }[]>([]);
+  const [name, setName] = useState(customer.name);
+  const [phone, setPhone] = useState(customer.phone ?? "");
+  const [planId, setPlanId] = useState(customer.planId ?? "");
+  const [accounts, setAccounts] = useState(customer.accounts);
+  const [status, setStatus] = useState(customer.status === "due soon" ? "active" : customer.status.replaceAll(" ", "_"));
+  const [amount, setAmount] = useState(customer.amountValue);
+  const [startedAt, setStartedAt] = useState(customer.startedAt?.slice(0, 10) ?? "");
+  const [renewsAt, setRenewsAt] = useState(customer.renewsAt?.slice(0, 10) ?? "");
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    getSupabaseBrowserClient()?.from("plans").select("id, account_limit, term_months, price_inr").eq("active", true).order("account_limit").then(({ data }) => setPlans(data ?? []));
+  }, []);
+
+  function renewalDate(start: string, selectedPlanId = planId) {
+    const plan = plans.find((item) => item.id === selectedPlanId);
+    if (!plan || !start) return "";
+    const date = new Date(`${start}T00:00:00`); date.setMonth(date.getMonth() + plan.term_months); return date.toISOString().slice(0, 10);
+  }
+
+  function selectPlan(id: string) {
+    setPlanId(id);
+    const plan = plans.find((item) => item.id === id);
+    if (!plan) return;
+    setAccounts((current) => Math.min(current, plan.account_limit));
+    setAmount(plan.price_inr);
+    if (startedAt) setRenewsAt(renewalDate(startedAt, id));
+  }
+
+  async function save(renewNow = false) {
+    const supabase = getSupabaseBrowserClient();
+    const plan = plans.find((item) => item.id === planId);
+    if (!supabase || !customer.internalRecordId || !plan) { setMessage("Select a valid plan before saving."); return; }
+    if (!name.trim()) { setMessage("Customer name is required."); return; }
+    if (accounts < 0 || accounts > plan.account_limit) { setMessage(`This plan supports up to ${plan.account_limit} accounts.`); return; }
+    setBusy(true); setMessage("");
+    let start = startedAt;
+    let renewal = renewsAt;
+    if (renewNow) { start = new Date().toISOString().slice(0, 10); renewal = renewalDate(start); }
+    const { error } = await supabase.from("internal_customers").update({ full_name: name.trim(), phone: phone.trim() || null, plan_id: planId, account_count: accounts, status: renewNow ? "active" : status, amount_paid_inr: amount, started_at: `${start}T00:00:00.000Z`, renews_at: `${renewal}T00:00:00.000Z`, last_renewed_at: renewNow ? new Date().toISOString() : undefined, updated_at: new Date().toISOString() }).eq("id", customer.internalRecordId);
+    if (error) { setBusy(false); setMessage(error.message || "Could not update this customer."); return; }
+    setBusy(false); onSaved();
+  }
+
+  const selectedPlan = plans.find((item) => item.id === planId);
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card plan-modal" role="dialog" aria-modal="true" aria-labelledby="manage-internal-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Internal subscription record</p><h2 id="manage-internal-title">Manage {customer.name}</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close dialog"><X /></button></div><p className="muted">Update the customer’s payment, plan, managed-account count and next due date.</p><div className="support-form"><div className="modal-form-grid"><label>Customer name<input value={name} onChange={(event) => setName(event.currentTarget.value)} /></label><label>Phone or contact note<input value={phone} onChange={(event) => setPhone(event.currentTarget.value)} /></label></div><label>Plan<select value={planId} onChange={(event) => selectPlan(event.currentTarget.value)}>{plans.map((plan) => <option key={plan.id} value={plan.id}>{plan.account_limit} {plan.account_limit === 1 ? "account" : "accounts"} · {plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"} · ₹{plan.price_inr.toLocaleString("en-IN")}</option>)}</select></label><div className="modal-form-grid"><label>Payment status<select value={status} onChange={(event) => setStatus(event.currentTarget.value)}><option value="pending">Payment pending</option><option value="active">Paid · Active</option><option value="past_due">Past due</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option></select></label><label>Accounts being managed<input type="number" min="0" max={selectedPlan?.account_limit ?? 5} value={accounts} onChange={(event) => setAccounts(Number(event.currentTarget.value))} /></label></div><div className="modal-form-grid"><label>Amount paid (₹)<input type="number" min="0" value={amount} onChange={(event) => setAmount(Number(event.currentTarget.value))} /></label><label>Subscription start<input type="date" value={startedAt} onChange={(event) => { const start = event.currentTarget.value; setStartedAt(start); setRenewsAt(renewalDate(start)); }} /></label></div><label>Next due date<input type="date" value={renewsAt} onChange={(event) => setRenewsAt(event.currentTarget.value)} /></label><div className="plan-dialog-actions"><button className="secondary-button" disabled={busy} onClick={() => save(false)}>Save changes</button><button className="primary-button" disabled={busy || !planId} onClick={() => save(true)}><RefreshCw size={16} />Record renewal today</button></div></div>{message && <p className="form-message">{message}</p>}</section></div>;
+}
+
 function AddCustomerDialog({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const today = new Date().toISOString().slice(0, 10);
   const [planCode, setPlanCode] = useState("1A-M");
   const [amount, setAmount] = useState(150);
+  const [accountCount, setAccountCount] = useState(1);
   const [startedAt, setStartedAt] = useState(today);
   const [renewsAt, setRenewsAt] = useState(() => {
     const date = new Date(`${today}T00:00:00`); date.setMonth(date.getMonth() + 1); return date.toISOString().slice(0, 10);
@@ -612,22 +675,28 @@ function AddCustomerDialog({ onClose, onSaved }: { onClose: () => void; onSaved:
     const accounts = Number(accountPart.replace("A", ""));
     const plan = planPrices.find((item) => item.accounts === accounts);
     if (plan) setAmount(term === "Q" ? plan.quarterly : term === "Y" ? plan.yearly : plan.monthly);
+    setAccountCount((current) => Math.min(current, accounts));
     if (startedAt) setRenewsAt(renewalFrom(startedAt, code));
   }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
-    const body = Object.fromEntries(new FormData(event.currentTarget).entries());
     const supabase = getSupabaseBrowserClient();
     if (!supabase) { setBusy(false); setMessage("The business database is not connected."); return; }
-    const { data } = await supabase.auth.getSession();
-    const response = await fetch("/api/admin/customers", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${data.session?.access_token ?? ""}` }, body: JSON.stringify(body) });
-    const result = await response.json() as { error?: string };
+    const form = Object.fromEntries(new FormData(event.currentTarget).entries());
+    const [{ data: auth }, { data: plan, error: planError }] = await Promise.all([
+      supabase.auth.getUser(),
+      supabase.from("plans").select("id, account_limit").eq("code", planCode).eq("active", true).single(),
+    ]);
+    if (!auth.user || planError || !plan) { setBusy(false); setMessage(planError?.message || "The selected plan could not be loaded."); return; }
+    const code = `LC-${Date.now().toString(36).toUpperCase()}-${crypto.randomUUID().slice(0, 4).toUpperCase()}`;
+    const { error } = await supabase.from("internal_customers").insert({ customer_code: code, full_name: String(form.fullName).trim(), phone: String(form.phone || "").trim() || null, plan_id: plan.id, account_count: Math.min(accountCount, plan.account_limit), status: String(form.status), amount_paid_inr: amount, started_at: `${startedAt}T00:00:00.000Z`, renews_at: `${renewsAt}T00:00:00.000Z`, notes: "Internal admin record; no customer invitation sent.", created_by: auth.user.id });
     setBusy(false);
-    if (!response.ok) { setMessage(result.error ?? "Could not add customer."); return; }
+    if (error) { setMessage(error.message || "Could not save the customer record."); return; }
     onSaved();
   }
-  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card plan-modal" role="dialog" aria-modal="true" aria-labelledby="add-customer-title" onMouseDown={(e) => e.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Private business record</p><h2 id="add-customer-title">Add a customer</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">Create an internal subscription record for tracking payments and renewals. No email invitation or customer login will be created.</p><form onSubmit={submit} className="support-form"><div className="modal-form-grid"><label>Customer name<input name="fullName" placeholder="Customer name" required /></label><label>Phone or contact note<input name="phone" placeholder="Optional" /></label></div><label>Plan<select name="planCode" value={planCode} onChange={(event) => selectPlan(event.target.value)}>{planPrices.flatMap((plan) => [<option key={`${plan.accounts}A-M`} value={`${plan.accounts}A-M`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · Monthly · ₹{plan.monthly}</option>,<option key={`${plan.accounts}A-Q`} value={`${plan.accounts}A-Q`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · 3 months · ₹{plan.quarterly}</option>,<option key={`${plan.accounts}A-Y`} value={`${plan.accounts}A-Y`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · Yearly · ₹{plan.yearly}</option>])}</select></label><div className="modal-form-grid"><label>Payment status<select name="status" defaultValue="active"><option value="active">Paid · Active</option><option value="pending">Payment pending</option><option value="past_due">Past due</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option></select></label><label>Amount paid (₹)<input name="amountPaid" type="number" min="0" value={amount} onChange={(event) => setAmount(Number(event.currentTarget.value))} required /></label></div><div className="modal-form-grid"><label>Subscription start<input name="startedAt" type="date" value={startedAt} onChange={(event) => { const start = event.currentTarget.value; setStartedAt(start); if (start) setRenewsAt(renewalFrom(start, planCode)); }} required /></label><label>Next due date<input name="renewsAt" type="date" value={renewsAt} onChange={(event) => setRenewsAt(event.currentTarget.value)} required /></label></div><p className="credential-warning"><ShieldCheck size={15} />Internal record only. No invitation email will be sent.</p><button className="primary-button" disabled={busy}>{busy ? "Saving customer…" : "Save customer record"}</button></form>{message && <p className="form-message">{message}</p>}</section></div>;
+  const accountLimit = Number(planCode.split("-")[0].replace("A", ""));
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card plan-modal" role="dialog" aria-modal="true" aria-labelledby="add-customer-title" onMouseDown={(e) => e.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Private business record</p><h2 id="add-customer-title">Add a customer</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">Create an internal subscription record for tracking payments and renewals. No email invitation or customer login will be created.</p><form onSubmit={submit} className="support-form"><label>Customer name<input name="fullName" placeholder="Customer name" required /></label><div className="modal-form-grid"><label>Phone or contact note<input name="phone" placeholder="Optional" /></label><label>Accounts being managed<input name="accountCount" type="number" min="0" max={accountLimit} value={accountCount} onChange={(event) => setAccountCount(Number(event.currentTarget.value))} required /></label></div><label>Plan<select name="planCode" value={planCode} onChange={(event) => selectPlan(event.target.value)}>{planPrices.flatMap((plan) => [<option key={`${plan.accounts}A-M`} value={`${plan.accounts}A-M`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · Monthly · ₹{plan.monthly}</option>,<option key={`${plan.accounts}A-Q`} value={`${plan.accounts}A-Q`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · 3 months · ₹{plan.quarterly}</option>,<option key={`${plan.accounts}A-Y`} value={`${plan.accounts}A-Y`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · Yearly · ₹{plan.yearly}</option>])}</select></label><div className="modal-form-grid"><label>Payment status<select name="status" defaultValue="active"><option value="active">Paid · Active</option><option value="pending">Payment pending</option><option value="past_due">Past due</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option></select></label><label>Amount paid (₹)<input name="amountPaid" type="number" min="0" value={amount} onChange={(event) => setAmount(Number(event.currentTarget.value))} required /></label></div><div className="modal-form-grid"><label>Subscription start<input name="startedAt" type="date" value={startedAt} onChange={(event) => { const start = event.currentTarget.value; setStartedAt(start); if (start) setRenewsAt(renewalFrom(start, planCode)); }} required /></label><label>Next due date<input name="renewsAt" type="date" value={renewsAt} onChange={(event) => setRenewsAt(event.currentTarget.value)} required /></label></div><p className="credential-warning"><ShieldCheck size={15} />Internal record only. No invitation email will be sent.</p><button className="primary-button" disabled={busy}>{busy ? "Saving customer…" : "Save customer record"}</button></form>{message && <p className="form-message">{message}</p>}</section></div>;
 }
 
 function RenewalsView({ rows, loading, onManagePlan }: { rows: AdminCustomerRow[]; loading: boolean; onManagePlan: (customer: AdminCustomerRow) => void }) {

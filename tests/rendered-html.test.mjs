@@ -141,7 +141,7 @@ test("private admin subscription register tracks customers, plans, accounts and 
   const publicHeaderSource = await readFile(new URL("../app/SupportHeader.tsx", import.meta.url), "utf8");
   const supabaseSource = await readFile(new URL("../lib/supabase.ts", import.meta.url), "utf8");
   const publicConfigSource = await readFile(new URL("../lib/public-supabase-config.ts", import.meta.url), "utf8");
-  const customerRouteSource = await readFile(new URL("../app/api/admin/customers/route.ts", import.meta.url), "utf8");
+  const ledgerMigration = await readFile(new URL("../supabase/migrations/003_internal_customer_ledger.sql", import.meta.url), "utf8");
   assert.match(portalSource, /Total subscribers/);
   assert.match(portalSource, /Active subscriptions/);
   assert.match(portalSource, /Managed accounts/);
@@ -156,13 +156,13 @@ test("private admin subscription register tracks customers, plans, accounts and 
   assert.match(portalSource, /window\.location\.href = "\/admin-login"/);
   assert.match(portalSource, /Private business record/);
   assert.match(portalSource, /No invitation email will be sent/);
-  assert.match(portalSource, /fetch\("\/api\/admin\/customers"/);
+  assert.match(portalSource, /from\("internal_customers"\)\.insert/);
+  assert.match(portalSource, /ManageInternalCustomerDialog/);
+  assert.match(portalSource, /Record renewal today/);
   assert.doesNotMatch(portalSource, /Invite customer|Sending invitation/);
-  assert.match(customerRouteSource, /admin\.createUser/);
-  assert.match(customerRouteSource, /internal_record: true/);
-  assert.match(customerRouteSource, /internal_customer_created/);
-  assert.match(customerRouteSource, /invitation_sent: false/);
-  assert.doesNotMatch(customerRouteSource, /inviteUserByEmail/);
+  assert.match(ledgerMigration, /create table public\.internal_customers/);
+  assert.match(ledgerMigration, /admins manage internal customers/);
+  assert.doesNotMatch(ledgerMigration, /auth\.users/);
   assert.match(portalSource, /role === "admin" \? "\/admin-login" : "\/"/);
   assert.match(loginSource, /robots: \{ index: false, follow: false \}/);
   assert.match(loginSource, /<LoginPanel adminOnly \/>/);
