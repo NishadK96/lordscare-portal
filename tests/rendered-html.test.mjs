@@ -139,6 +139,8 @@ test("private admin subscription register tracks customers, plans, accounts and 
   const loginSource = await readFile(new URL("../app/admin-login/page.tsx", import.meta.url), "utf8");
   const loginPanelSource = await readFile(new URL("../app/LoginPanel.tsx", import.meta.url), "utf8");
   const publicHeaderSource = await readFile(new URL("../app/SupportHeader.tsx", import.meta.url), "utf8");
+  const supabaseSource = await readFile(new URL("../lib/supabase.ts", import.meta.url), "utf8");
+  const publicConfigSource = await readFile(new URL("../lib/public-supabase-config.ts", import.meta.url), "utf8");
   assert.match(portalSource, /Total subscribers/);
   assert.match(portalSource, /Active subscriptions/);
   assert.match(portalSource, /Managed accounts/);
@@ -150,6 +152,10 @@ test("private admin subscription register tracks customers, plans, accounts and 
   assert.match(loginSource, /robots: \{ index: false, follow: false \}/);
   assert.match(loginSource, /<LoginPanel adminOnly \/>/);
   assert.match(loginPanelSource, /does not have administrator access/);
+  assert.match(supabaseSource, /publicSupabaseUrl/);
+  assert.match(supabaseSource, /publicSupabaseKey/);
+  assert.match(publicConfigSource, /sb_publishable_/);
+  assert.doesNotMatch(publicConfigSource, /service_role|secret/i);
   assert.doesNotMatch(publicHeaderSource, /admin-login|Admin sign in/);
 });
 

@@ -1,7 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
+import { publicSupabaseUrl } from "@/lib/public-supabase-config";
 
 export async function POST(request: Request) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url = publicSupabaseUrl;
   const serviceKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   const bearer = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   if (!url || !serviceKey) return Response.json({ error: "Server connection is not configured." }, { status: 503 });
