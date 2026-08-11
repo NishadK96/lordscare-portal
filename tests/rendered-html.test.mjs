@@ -134,6 +134,25 @@ test("responsive layout covers phones, tablets, drawers, tables, and dialogs", a
   assert.match(cssSource, /\.modal-card, \.plan-modal, \.accounts-modal \{[^}]*border-radius: 20px 20px 0 0/s);
 });
 
+test("private admin subscription register tracks customers, plans, accounts and renewals", async () => {
+  const portalSource = await readFile(new URL("../app/PortalShell.tsx", import.meta.url), "utf8");
+  const loginSource = await readFile(new URL("../app/admin-login/page.tsx", import.meta.url), "utf8");
+  const loginPanelSource = await readFile(new URL("../app/LoginPanel.tsx", import.meta.url), "utf8");
+  const publicHeaderSource = await readFile(new URL("../app/SupportHeader.tsx", import.meta.url), "utf8");
+  assert.match(portalSource, /Total subscribers/);
+  assert.match(portalSource, /Active subscriptions/);
+  assert.match(portalSource, /Managed accounts/);
+  assert.match(portalSource, /Renewals due/);
+  assert.match(portalSource, /Subscription register/);
+  assert.match(portalSource, /All statuses/);
+  assert.match(portalSource, /Manage renewal/);
+  assert.match(portalSource, /role === "admin" \? "\/admin-login" : "\/"/);
+  assert.match(loginSource, /robots: \{ index: false, follow: false \}/);
+  assert.match(loginSource, /<LoginPanel adminOnly \/>/);
+  assert.match(loginPanelSource, /does not have administrator access/);
+  assert.doesNotMatch(publicHeaderSource, /admin-login|Admin sign in/);
+});
+
 test("monster guide ships a complete local catalog and companion-tool architecture", async () => {
   const monsters = JSON.parse(await readFile(new URL("../app/monsters/monsters.json", import.meta.url), "utf8"));
   const heroes = JSON.parse(await readFile(new URL("../app/monsters/heroes.json", import.meta.url), "utf8"));

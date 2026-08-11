@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowRight, Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 
-export function LoginPanel() {
+export function LoginPanel({ adminOnly = false }: { adminOnly?: boolean }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -32,6 +32,12 @@ export function LoginPanel() {
       .select("role")
       .eq("id", data.user.id)
       .single();
+    if (adminOnly && profile?.role !== "admin") {
+      await supabase.auth.signOut();
+      setMessage("This account does not have administrator access.");
+      setBusy(false);
+      return;
+    }
     window.location.href = profile?.role === "admin" ? "/admin" : "/customer";
   }
 
@@ -56,11 +62,11 @@ export function LoginPanel() {
       <div className="login-card-head">
         <div className="brand-mark small">LC</div>
         <div>
-          <p className="eyebrow">Secure customer portal</p>
-          <h2>Welcome back</h2>
+          <p className="eyebrow">{adminOnly ? "Private business console" : "Secure customer portal"}</p>
+          <h2>{adminOnly ? "Admin sign in" : "Welcome back"}</h2>
         </div>
       </div>
-      <p className="muted">Sign in to view your accounts, plan and configuration requests.</p>
+      <p className="muted">{adminOnly ? "Sign in with an administrator account to manage subscriptions and renewals." : "Sign in to view your accounts, plan and configuration requests."}</p>
       <form onSubmit={signIn} className="login-form">
         <label>
           Email address
@@ -84,7 +90,7 @@ export function LoginPanel() {
           </div>
         </div>
       )}
-      <p className="login-help">Need access? Contact LordsCare support.</p>
+      <p className="login-help">{adminOnly ? "This page is not linked from the public website." : "Need access? Contact LordsCare support."}</p>
     </div>
   );
 }
