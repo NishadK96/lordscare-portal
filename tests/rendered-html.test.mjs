@@ -142,6 +142,7 @@ test("private admin subscription register tracks customers, plans, accounts and 
   const supabaseSource = await readFile(new URL("../lib/supabase.ts", import.meta.url), "utf8");
   const publicConfigSource = await readFile(new URL("../lib/public-supabase-config.ts", import.meta.url), "utf8");
   const ledgerMigration = await readFile(new URL("../supabase/migrations/003_internal_customer_ledger.sql", import.meta.url), "utf8");
+  const removeRouteSource = await readFile(new URL("../app/api/admin/customers/remove/route.ts", import.meta.url), "utf8");
   assert.match(portalSource, /Total subscribers/);
   assert.match(portalSource, /Active subscriptions/);
   assert.match(portalSource, /Managed accounts/);
@@ -159,10 +160,17 @@ test("private admin subscription register tracks customers, plans, accounts and 
   assert.match(portalSource, /from\("internal_customers"\)\.insert/);
   assert.match(portalSource, /ManageInternalCustomerDialog/);
   assert.match(portalSource, /Record renewal today/);
+  assert.match(portalSource, /Remove customer permanently/);
+  assert.match(portalSource, /Type the customer name exactly/);
+  assert.match(portalSource, /fetch\("\/api\/admin\/customers\/remove"/);
   assert.doesNotMatch(portalSource, /Invite customer|Sending invitation/);
   assert.match(ledgerMigration, /create table public\.internal_customers/);
   assert.match(ledgerMigration, /admins manage internal customers/);
   assert.doesNotMatch(ledgerMigration, /auth\.users/);
+  assert.match(removeRouteSource, /internal_customer_removed/);
+  assert.match(removeRouteSource, /portal_customer_removed/);
+  assert.match(removeRouteSource, /auth\.admin\.deleteUser/);
+  assert.match(removeRouteSource, /profile\.role !== "customer"/);
   assert.match(portalSource, /role === "admin" \? "\/admin-login" : "\/"/);
   assert.match(loginSource, /robots: \{ index: false, follow: false \}/);
   assert.match(loginSource, /<LoginPanel adminOnly \/>/);

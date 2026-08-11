@@ -1025,6 +1025,11 @@ td:first-child small { color: #9aa39f; font-size: 8px; }
 .admin-note-field textarea { width: 100%; resize: vertical; border: 1px solid #dfe6e2; border-radius: 9px; padding: 10px 11px; outline: 0; }
 .workflow-actions { flex-wrap: wrap; }
 .secondary-button.danger { color: #a04440; border-color: #efd0cd; background: #fffafa; }
+.removal-warning { display: flex; align-items: center; gap: 11px; margin: 18px 0; padding: 13px; color: #8f3e3a; border: 1px solid #f0d3d0; border-radius: 10px; background: #fff7f6; }
+.removal-warning > svg { flex: 0 0 auto; width: 20px; }
+.removal-warning > span { display: grid; gap: 3px; }
+.removal-warning strong { font-size: 11px; }
+.removal-warning small { color: #9a6561; font-size: 9px; }
 .plan-table { border: 1px solid #e3e9e6; border-radius: 12px; overflow: hidden; }
 .plan-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 14px 18px; border-top: 1px solid #e9eeeb; font-size: 11px; }
 .plan-row:first-child { border: 0; }
