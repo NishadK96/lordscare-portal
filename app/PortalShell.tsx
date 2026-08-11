@@ -408,7 +408,7 @@ export function AdminPortal() {
     {active === "renewals" && <RenewalsView rows={customers} loading={loading} onManagePlan={setManagingPlan} />}
     {active === "requests" && <RequestsView />}
     {active === "plans" && <PlansView />}
-    {adding && <AddCustomerDialog onClose={() => setAdding(false)} />}
+    {adding && <AddCustomerDialog onClose={() => setAdding(false)} onSaved={() => { setAdding(false); setLoading(true); loadAdminData(); }} />}
     {managingPlan && <ManagePlanDialog customer={managingPlan} onClose={() => setManagingPlan(null)} onSaved={() => { setManagingPlan(null); setLoading(true); loadAdminData(); }} />}
     {managingAccounts && <ManageAccountsDialog customer={managingAccounts} onClose={() => setManagingAccounts(null)} onChanged={loadAdminData} />}
     {managingPrefix && <ManageCommandPrefixDialog customer={managingPrefix} onClose={() => setManagingPrefix(null)} onSaved={() => { setManagingPrefix(null); setLoading(true); loadAdminData(); }} />}
@@ -588,20 +588,46 @@ function ManagePlanDialog({ customer, onClose, onSaved }: { customer: AdminCusto
   return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card plan-modal" role="dialog" aria-modal="true" aria-labelledby="manage-plan-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Customer subscription</p><h2 id="manage-plan-title">Manage {customer.name}</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">Assign a plan, change its status and dates, or start a fresh renewal period.</p><div className="support-form"><label>Plan<select value={planId} onChange={(event) => selectPlan(event.target.value)}><option value="">Select a plan</option>{plans.map((plan) => <option key={plan.id} value={plan.id}>{plan.account_limit} {plan.account_limit === 1 ? "account" : "accounts"} · {plan.term_months === 1 ? "Monthly" : plan.term_months === 3 ? "3 months" : "Yearly"} · ₹{plan.price_inr.toLocaleString("en-IN")}</option>)}</select></label><div className="modal-form-grid"><label>Status<select value={status} onChange={(event) => setStatus(event.target.value)}><option value="pending">Pending</option><option value="active">Active</option><option value="past_due">Past due</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option></select></label><label>Amount paid (₹)<input type="number" min="0" value={amount} onChange={(event) => setAmount(Number(event.target.value))} /></label></div><div className="modal-form-grid"><label>Start date<input type="date" value={startedAt} onChange={(event) => { setStartedAt(event.target.value); setRenewalFromStart(event.target.value); }} /></label><label>Renewal date<input type="date" value={renewsAt} onChange={(event) => setRenewsAt(event.target.value)} /></label></div><div className="plan-dialog-actions"><button className="secondary-button" disabled={busy} onClick={() => save(false)}>{customer.subscriptionId ? "Save changes" : "Assign plan"}</button><button className="primary-button" disabled={busy || !planId} onClick={() => save(true)}><RefreshCw size={16} />Renew from today</button></div></div>{message && <p className="form-message">{message}</p>}</section></div>;
 }
 
-function AddCustomerDialog({ onClose }: { onClose: () => void }) {
+function AddCustomerDialog({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const today = new Date().toISOString().slice(0, 10);
+  const [planCode, setPlanCode] = useState("1A-M");
+  const [amount, setAmount] = useState(150);
+  const [startedAt, setStartedAt] = useState(today);
+  const [renewsAt, setRenewsAt] = useState(() => {
+    const date = new Date(`${today}T00:00:00`); date.setMonth(date.getMonth() + 1); return date.toISOString().slice(0, 10);
+  });
+
+  function renewalFrom(start: string, code: string) {
+    const term = code.split("-")[1];
+    const date = new Date(`${start}T00:00:00`);
+    date.setMonth(date.getMonth() + (term === "Q" ? 3 : term === "Y" ? 12 : 1));
+    return date.toISOString().slice(0, 10);
+  }
+
+  function selectPlan(code: string) {
+    setPlanCode(code);
+    const [accountPart, term] = code.split("-");
+    const accounts = Number(accountPart.replace("A", ""));
+    const plan = planPrices.find((item) => item.accounts === accounts);
+    if (plan) setAmount(term === "Q" ? plan.quarterly : term === "Y" ? plan.yearly : plan.monthly);
+    if (startedAt) setRenewsAt(renewalFrom(startedAt, code));
+  }
+
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage("");
     const body = Object.fromEntries(new FormData(event.currentTarget).entries());
     const supabase = getSupabaseBrowserClient();
-    if (!supabase) { setTimeout(() => { setBusy(false); setMessage("Preview complete. Connect Supabase to send a real invitation."); }, 400); return; }
+    if (!supabase) { setBusy(false); setMessage("The business database is not connected."); return; }
     const { data } = await supabase.auth.getSession();
-    const response = await fetch("/api/admin/invite", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${data.session?.access_token ?? ""}` }, body: JSON.stringify(body) });
+    const response = await fetch("/api/admin/customers", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${data.session?.access_token ?? ""}` }, body: JSON.stringify(body) });
     const result = await response.json() as { error?: string };
-    setBusy(false); setMessage(response.ok ? "Invitation sent and pending subscription created." : result.error ?? "Could not add customer.");
+    setBusy(false);
+    if (!response.ok) { setMessage(result.error ?? "Could not add customer."); return; }
+    onSaved();
   }
-  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="add-customer-title" onMouseDown={(e) => e.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Admin action</p><h2 id="add-customer-title">Add a customer</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">The customer receives a secure email invitation. You can activate service after verifying payment.</p><form onSubmit={submit} className="support-form"><label>Full name<input name="fullName" placeholder="Customer name" required /></label><label>Email address<input name="email" type="email" placeholder="customer@example.com" required /></label><label>Plan<select name="planCode" defaultValue="1A-M">{planPrices.flatMap((plan) => [<option key={`${plan.accounts}A-M`} value={`${plan.accounts}A-M`}>{plan.accounts} account · Monthly · ₹{plan.monthly}</option>,<option key={`${plan.accounts}A-Q`} value={`${plan.accounts}A-Q`}>{plan.accounts} account · 3 months · ₹{plan.quarterly}</option>,<option key={`${plan.accounts}A-Y`} value={`${plan.accounts}A-Y`}>{plan.accounts} account · Yearly · ₹{plan.yearly}</option>])}</select></label><button className="primary-button" disabled={busy}>{busy ? "Sending invitation…" : "Invite customer"}</button></form>{message && <p className="form-message">{message}</p>}</section></div>;
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card plan-modal" role="dialog" aria-modal="true" aria-labelledby="add-customer-title" onMouseDown={(e) => e.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Private business record</p><h2 id="add-customer-title">Add a customer</h2></div><button className="icon-btn" onClick={onClose}><X /></button></div><p className="muted">Create an internal subscription record for tracking payments and renewals. No email invitation or customer login will be created.</p><form onSubmit={submit} className="support-form"><div className="modal-form-grid"><label>Customer name<input name="fullName" placeholder="Customer name" required /></label><label>Phone or contact note<input name="phone" placeholder="Optional" /></label></div><label>Plan<select name="planCode" value={planCode} onChange={(event) => selectPlan(event.target.value)}>{planPrices.flatMap((plan) => [<option key={`${plan.accounts}A-M`} value={`${plan.accounts}A-M`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · Monthly · ₹{plan.monthly}</option>,<option key={`${plan.accounts}A-Q`} value={`${plan.accounts}A-Q`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · 3 months · ₹{plan.quarterly}</option>,<option key={`${plan.accounts}A-Y`} value={`${plan.accounts}A-Y`}>{plan.accounts} {plan.accounts === 1 ? "account" : "accounts"} · Yearly · ₹{plan.yearly}</option>])}</select></label><div className="modal-form-grid"><label>Payment status<select name="status" defaultValue="active"><option value="active">Paid · Active</option><option value="pending">Payment pending</option><option value="past_due">Past due</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option></select></label><label>Amount paid (₹)<input name="amountPaid" type="number" min="0" value={amount} onChange={(event) => setAmount(Number(event.currentTarget.value))} required /></label></div><div className="modal-form-grid"><label>Subscription start<input name="startedAt" type="date" value={startedAt} onChange={(event) => { const start = event.currentTarget.value; setStartedAt(start); if (start) setRenewsAt(renewalFrom(start, planCode)); }} required /></label><label>Next due date<input name="renewsAt" type="date" value={renewsAt} onChange={(event) => setRenewsAt(event.currentTarget.value)} required /></label></div><p className="credential-warning"><ShieldCheck size={15} />Internal record only. No invitation email will be sent.</p><button className="primary-button" disabled={busy}>{busy ? "Saving customer…" : "Save customer record"}</button></form>{message && <p className="form-message">{message}</p>}</section></div>;
 }
 
 function RenewalsView({ rows, loading, onManagePlan }: { rows: AdminCustomerRow[]; loading: boolean; onManagePlan: (customer: AdminCustomerRow) => void }) {
