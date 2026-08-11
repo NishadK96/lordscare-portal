@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Bell, CalendarDays, Check, ChevronDown, Clock3, Command,
   Copy, CreditCard, Gauge, Gamepad2, Headphones, LayoutDashboard, LogOut,
-  Menu, Pencil, Plus, RefreshCw, Search, Settings2, ShieldCheck,
+  LockKeyhole, Menu, Pencil, Plus, RefreshCw, Search, Settings2, ShieldCheck,
   SlidersHorizontal, Sparkles, Trash2, Users, WalletCards, X,
 } from "lucide-react";
 import { planPrices } from "./data";
@@ -57,6 +57,7 @@ function Status({ children }: { children: React.ReactNode }) {
 
 function PortalFrame({ role, active, setActive, children }: { role: Role; active: string; setActive: (id: string) => void; children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
   const [accessReady, setAccessReady] = useState(!isSupabaseConfigured);
   const [identity, setIdentity] = useState({ name: role === "admin" ? "Admin" : "Customer", email: "" });
   const items = role === "admin" ? adminNav : customerNav;
@@ -120,6 +121,7 @@ function PortalFrame({ role, active, setActive, children }: { role: Role; active
         <div className="sidebar-foot">
           {role === "customer" && <div className="help-card"><Sparkles size={20} /><strong>Need help?</strong><span>We usually reply within a few hours.</span><button onClick={() => setActive("support")}>Contact support</button></div>}
           <button className="profile-button"><span>{displayName[0]}</span><div><strong>{displayName}</strong><small>{role === "admin" ? "Owner · Admin" : identity.email}</small></div><ChevronDown size={16} /></button>
+          {role === "admin" && <button className="signout-button" onClick={() => setChangingPassword(true)}><LockKeyhole size={17} />Change password</button>}
           <button className="signout-button" onClick={signOut}><LogOut size={17} />Sign out</button>
         </div>
       </aside>
@@ -132,8 +134,38 @@ function PortalFrame({ role, active, setActive, children }: { role: Role; active
         </header>
         <div className="page-content">{children}</div>
       </section>
+      {changingPassword && <ChangePasswordDialog email={identity.email} onClose={() => setChangingPassword(false)} />}
     </main>
   );
+}
+
+function ChangePasswordDialog({ email, onClose }: { email: string; onClose: () => void }) {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function changePassword(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (newPassword.length < 12) { setMessage("Use at least 12 characters for the new password."); return; }
+    if (newPassword !== confirmPassword) { setMessage("The new passwords do not match."); return; }
+    if (newPassword === currentPassword) { setMessage("Choose a password different from the current one."); return; }
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase || !email) { setMessage("Your secure session is not ready. Sign in again and retry."); return; }
+    setBusy(true); setMessage("");
+    const { error: verifyError } = await supabase.auth.signInWithPassword({ email, password: currentPassword });
+    if (verifyError) { setBusy(false); setMessage("The current password is incorrect."); return; }
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) { setBusy(false); setMessage(error.message); return; }
+    setMessage("Password changed. Signing you out securely…");
+    window.setTimeout(async () => {
+      await supabase.auth.signOut();
+      window.location.href = "/admin-login";
+    }, 900);
+  }
+
+  return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="change-password-title" onMouseDown={(event) => event.stopPropagation()}><div className="modal-head"><div><p className="eyebrow">Admin security</p><h2 id="change-password-title">Change password</h2></div><button className="icon-btn" onClick={onClose} aria-label="Close change password dialog"><X /></button></div><p className="muted">Confirm your current password, then choose a new password with at least 12 characters.</p><form className="support-form" onSubmit={changePassword}><label>Current password<input type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} autoComplete="current-password" required /></label><label>New password<input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} autoComplete="new-password" minLength={12} required /></label><label>Confirm new password<input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} autoComplete="new-password" minLength={12} required /></label><p className="credential-warning"><ShieldCheck size={15} />You will be signed out after the password is changed.</p><button className="primary-button" disabled={busy}>{busy ? "Changing password…" : "Change password"}</button></form>{message && <p className="form-message" role="status">{message}</p>}</section></div>;
 }
 
 export function CustomerPortal() {

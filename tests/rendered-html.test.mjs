@@ -148,6 +148,11 @@ test("private admin subscription register tracks customers, plans, accounts and 
   assert.match(portalSource, /Subscription register/);
   assert.match(portalSource, /All statuses/);
   assert.match(portalSource, /Manage renewal/);
+  assert.match(portalSource, /Change password/);
+  assert.match(portalSource, /signInWithPassword\(\{ email, password: currentPassword \}\)/);
+  assert.match(portalSource, /updateUser\(\{ password: newPassword \}\)/);
+  assert.match(portalSource, /newPassword\.length < 12/);
+  assert.match(portalSource, /window\.location\.href = "\/admin-login"/);
   assert.match(portalSource, /role === "admin" \? "\/admin-login" : "\/"/);
   assert.match(loginSource, /robots: \{ index: false, follow: false \}/);
   assert.match(loginSource, /<LoginPanel adminOnly \/>/);
