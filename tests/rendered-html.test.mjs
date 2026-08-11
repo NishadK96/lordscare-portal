@@ -182,6 +182,27 @@ test("private admin subscription register tracks customers, plans, accounts and 
   assert.doesNotMatch(publicHeaderSource, /admin-login|Admin sign in/);
 });
 
+test("private business analytics tracks sales, monthly earnings, expenses, slots and profit", async () => {
+  const portalSource = await readFile(new URL("../app/PortalShell.tsx", import.meta.url), "utf8");
+  const analyticsSource = await readFile(new URL("../app/BusinessAnalytics.tsx", import.meta.url), "utf8");
+  const analyticsMigration = await readFile(new URL("../supabase/migrations/004_business_analytics.sql", import.meta.url), "utf8");
+  assert.match(portalSource, /Business analytics/);
+  assert.match(portalSource, /<BusinessAnalytics \/>/);
+  assert.match(analyticsSource, /Total sales collected/);
+  assert.match(analyticsSource, /Bot earning this month/);
+  assert.match(analyticsSource, /Overall profit \/ loss/);
+  assert.match(analyticsSource, /Prepaid plans allocated monthly/);
+  assert.match(analyticsSource, /Number\(item\.amount_inr\) \/ item\.service_months/);
+  assert.match(analyticsSource, /purchased_extra_slots \* settings\.extra_slot_cost_inr/);
+  assert.match(analyticsMigration, /monthly_bot_cost_inr integer not null default 2000/);
+  assert.match(analyticsMigration, /included_slots integer not null default 7/);
+  assert.match(analyticsMigration, /extra_slot_cost_inr integer not null default 780/);
+  assert.match(analyticsMigration, /create table public\.business_transactions/);
+  assert.match(analyticsMigration, /admins manage business transactions/);
+  assert.match(analyticsMigration, /track_internal_customer_payment_trigger/);
+  assert.match(analyticsMigration, /track_portal_subscription_payment_trigger/);
+});
+
 test("monster guide ships a complete local catalog and companion-tool architecture", async () => {
   const monsters = JSON.parse(await readFile(new URL("../app/monsters/monsters.json", import.meta.url), "utf8"));
   const heroes = JSON.parse(await readFile(new URL("../app/monsters/heroes.json", import.meta.url), "utf8"));

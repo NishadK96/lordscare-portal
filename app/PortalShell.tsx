@@ -3,7 +3,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import {
-  Bell, CalendarDays, Check, ChevronDown, Clock3, Command,
+  BarChart3, Bell, CalendarDays, Check, ChevronDown, Clock3, Command,
   Copy, CreditCard, Gauge, Gamepad2, Headphones, LayoutDashboard, LogOut,
   LockKeyhole, Menu, Pencil, Plus, RefreshCw, Search, Settings2, ShieldCheck,
   SlidersHorizontal, Sparkles, Trash2, Users, WalletCards, X,
@@ -12,6 +12,7 @@ import { planPrices } from "./data";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 import { CommandLibrary } from "./CommandLibrary";
 import Link from "next/link";
+import { BusinessAnalytics } from "./BusinessAnalytics";
 
 type Role = "customer" | "admin";
 type NavItem = { id: string; label: string; icon: React.ComponentType<{ size?: number }> };
@@ -44,6 +45,7 @@ const customerNav: NavItem[] = [
 
 const adminNav: NavItem[] = [
   { id: "overview", label: "Overview", icon: Gauge },
+  { id: "analytics", label: "Business analytics", icon: BarChart3 },
   { id: "customers", label: "Customers", icon: Users },
   { id: "renewals", label: "Renewals", icon: CalendarDays },
   { id: "requests", label: "Setting requests", icon: SlidersHorizontal },
@@ -415,6 +417,7 @@ export function AdminPortal() {
   const activeValue = activeCustomers.reduce((sum, row) => sum + row.amountValue, 0);
   return <PortalFrame role="admin" active={active} setActive={setActive}>
     {active === "overview" && <AdminOverview setActive={setActive} onAdd={() => setAdding(true)} customers={customers} managedAccounts={managedAccounts} pendingRequests={pendingRequests} renewalsDue={renewalsDue} activeValue={activeValue} loading={loading} />}
+    {active === "analytics" && <BusinessAnalytics />}
     {active === "customers" && <CustomersView onAdd={() => setAdding(true)} onManagePlan={(customer) => customer.recordKind === "internal" ? setManagingInternal(customer) : setManagingPlan(customer)} onManageAccounts={(customer) => customer.recordKind === "internal" ? setManagingInternal(customer) : setManagingAccounts(customer)} onManagePrefix={setManagingPrefix} onRemove={setRemovingCustomer} rows={customers} loading={loading} />}
     {active === "renewals" && <RenewalsView rows={customers} loading={loading} onManagePlan={(customer) => customer.recordKind === "internal" ? setManagingInternal(customer) : setManagingPlan(customer)} />}
     {active === "requests" && <RequestsView />}
